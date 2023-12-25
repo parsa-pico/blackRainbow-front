@@ -7,6 +7,8 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
+import Nav from "./Components/Nav/Nav";
+import Home from "./Components/Home/Home";
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [prefixer, rtlPlugin],
@@ -28,8 +30,9 @@ function App() {
       <CacheProvider value={cacheRtl}>
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
+          <Nav />
           <Routes>
-            <Route path="/" exact element={<Navigate to={"/items"} />} />
+            <Route path="/" exact element={<Home />} />
             <Route path="/items/:itemId" exact element={<Item />} />
           </Routes>
         </ThemeProvider>
