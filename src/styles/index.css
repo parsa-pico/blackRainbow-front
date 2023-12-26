@@ -1,6 +1,7 @@
 @import url("./items.css");
 @import url("./itemImage.css");
 @import url("./nav.css");
+@import url("./login.css");
 body {
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -8,6 +9,10 @@ body {
     sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: rgb(0, 0, 0);
+  background: url("/public/bg4.jpg");
+  background-repeat: repeat;
+  background-size: 70%;
 }
 ul {
   padding: 0;
@@ -23,13 +28,9 @@ code {
 .App {
   color: white;
   min-height: 100vh;
-  width: 100%;
   min-height: 100vh;
+  width: 100%;
   height: 100%;
-
-  /* background: rgb(0, 0, 0);
-  background: url("/public/bg.jpg");
-  background-repeat: round; */
 }
 /* html,
 body,
@@ -261,4 +262,7 @@ body,
   height: 1.5rem;
 
   margin-right: 1rem;
+}
+.my-toast {
+  max-width: 90vw;
 }

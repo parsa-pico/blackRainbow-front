@@ -28,3 +28,7 @@
 .item-purchase-btn {
   height: 50px;
 }
+.item-path-wrapper {
+  background-color: black;
+  border-radius: 2px;
+}

@@ -10,15 +10,38 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { SocketProvider } from "./context/socket";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import { prefixer } from "stylis";
 import "./styles/index.css";
+import { ToastProvider } from "./context/toastContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [prefixer, rtlPlugin],
+});
+const darkTheme = createTheme({
+  direction: "rtl",
+  palette: {
+    mode: "dark",
+  },
+});
 root.render(
   // <React.StrictMode>
   <>
     <Router>
-      <SocketProvider>
-        <App />
-      </SocketProvider>
+      <ToastProvider>
+        <SocketProvider>
+          <CacheProvider value={cacheRtl}>
+            <ThemeProvider theme={darkTheme}>
+              <CssBaseline />
+              <App />
+            </ThemeProvider>
+          </CacheProvider>
+        </SocketProvider>
+      </ToastProvider>
     </Router>
   </>
   //  </React.StrictMode>

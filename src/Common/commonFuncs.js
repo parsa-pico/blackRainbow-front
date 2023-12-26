@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { clearToken } from "../Services/authService.js";
 export const persianDays = [
   "شنبه",
@@ -25,7 +26,13 @@ export async function tryHTTP(func, doFinally, doCatch) {
     if (e && e.response) {
       const expectedError =
         e.response && e.response.status >= 400 && e.response.status < 500;
-      if (expectedError) alert(e.response.data);
+      if (expectedError) {
+        try {
+          toast.error(e.response.data.msg);
+        } catch (error) {
+          toast.error(e.response.data);
+        }
+      }
     } else alert(e.message);
 
     if (doCatch) doCatch(e);

@@ -6,8 +6,8 @@ import Link from "@mui/material/Link";
 export default function ItemPath({ links }) {
   console.log(links);
   return (
-    <div>
-      <Breadcrumbs aria-label="breadcrumb">
+    <div className="item-path-wrapper">
+      <Breadcrumbs separator=">" aria-label="breadcrumb">
         {links &&
           links.length > 0 &&
           links.map((link, i) => {
@@ -22,6 +22,7 @@ export default function ItemPath({ links }) {
               </Link>
             );
           })}
+        ,
       </Breadcrumbs>
     </div>
   );

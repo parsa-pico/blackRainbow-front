@@ -6,56 +6,75 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
-
+import { NavLink } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
 export default function MyNav() {
   const expand = "md";
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
   return (
     <div>
-      <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
+      <Navbar
+        id="my-nav"
+        fixed="top"
+        key={expand}
+        expand={expand}
+        className="bg-body-tertiary mb-3"
+      >
         <Container fluid>
-          <Navbar.Brand href="#">
+          <Navbar.Toggle
+            onClick={toggleMenu}
+            aria-controls={`offcanvasNavbar-expand-${expand}`}
+          />
+          <Navbar.Brand href="/">
             <img className="nav-logo" src="/logo.png" alt="" />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
           <Navbar.Offcanvas
+            show={menuOpen}
+            onHide={() => {
+              setMenuOpen(false);
+            }}
             id={`offcanvasNavbar-expand-${expand}`}
             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
             placement="end"
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                Offcanvas
+                Black Rainbow
               </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="#action1">Home</Nav.Link>
-                <Nav.Link href="#action2">Link</Nav.Link>
-                <NavDropdown
-                  title="Dropdown"
-                  id={`offcanvasNavbarDropdown-expand-${expand}`}
-                >
-                  <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action4">
-                    Another action
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
-                    Something else here
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-              <Form className="d-flex">
+            <Offcanvas.Body className="">
+              <Form className="nav-search-wrapper d-flex">
                 <Form.Control
-                  type="search"
-                  placeholder="Search"
-                  className="me-2"
+                  // type="search"
+                  placeholder="جستجو"
+                  className="nav-search"
                   aria-label="Search"
                 />
-                <Button variant="outline-success">Search</Button>
+
+                <SearchIcon className="nav-search-icon" />
               </Form>
+              <Nav className=" flex-grow-1 pe-3">
+                <Nav.Link>
+                  {/* <NavLink style={{ all: "inherit" }} to={"/"}>
+                    خانه
+                  </NavLink> */}
+                </Nav.Link>
+                <Nav.Link onClick={toggleMenu}>
+                  <NavLink style={{ all: "inherit" }} to={"/login"}>
+                    ورود/ثبت نام
+                  </NavLink>{" "}
+                </Nav.Link>
+              </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
+          <div>
+            <ShoppingCartIcon />
+          </div>
         </Container>
       </Navbar>
     </div>
