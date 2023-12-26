@@ -58,17 +58,10 @@ export default function MyNav() {
 
                 <SearchIcon className="nav-search-icon" />
               </Form>
-              <Nav className=" flex-grow-1 pe-3">
-                <Nav.Link>
-                  {/* <NavLink style={{ all: "inherit" }} to={"/"}>
-                    خانه
-                  </NavLink> */}
-                </Nav.Link>
-                <Nav.Link onClick={toggleMenu}>
-                  <NavLink style={{ all: "inherit" }} to={"/login"}>
-                    ورود/ثبت نام
-                  </NavLink>{" "}
-                </Nav.Link>
+              <Nav className=" flex-grow-1 pe-3 mt-2">
+                <NavLink style={{ all: "inherit" }} to={"/login"}>
+                  ورود/ثبت نام
+                </NavLink>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

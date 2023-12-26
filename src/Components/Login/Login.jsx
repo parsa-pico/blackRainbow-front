@@ -78,7 +78,7 @@ export default function Login() {
             <p>لطفا شماره موبایل خود را وارد کنید</p>
             <TextField
               id="standard-basic"
-              label="شماره همراه"
+              label="شماره موبایل"
               className="mb-5 w-100"
               variant="standard"
               value={phoneNumber}

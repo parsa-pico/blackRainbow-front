@@ -15,10 +15,8 @@ axios.interceptors.response.use(null, (error) => {
   }
   return Promise.reject(error);
 });
-
-export default {
-  get: axios.get,
-  post: axios.post,
-  put: axios.put,
-  delete: axios.delete,
-};
+const axiosInstance = axios.create({
+  withCredentials: true,
+  // Other default configuration options can be added here
+});
+export default axiosInstance;

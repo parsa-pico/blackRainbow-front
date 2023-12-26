@@ -7,6 +7,7 @@ import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login";
 import { Button, ToastContainer } from "react-bootstrap";
+import NewItem from "./Components/Admin/NewItem";
 
 function App() {
   const loc = useLocation();
@@ -31,6 +32,9 @@ function App() {
         <Route path="/" exact element={<Home />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
+        <Route path="/admin">
+          <Route path="new-item" element={<NewItem />} />
+        </Route>
       </Routes>
       <ToastContainer />
     </div>

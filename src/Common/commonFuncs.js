@@ -27,11 +27,8 @@ export async function tryHTTP(func, doFinally, doCatch) {
       const expectedError =
         e.response && e.response.status >= 400 && e.response.status < 500;
       if (expectedError) {
-        try {
-          toast.error(e.response.data.msg);
-        } catch (error) {
-          toast.error(e.response.data);
-        }
+        const msg = e.response.data.msg || e.response.data;
+        toast.error(msg);
       }
     } else alert(e.message);
 
