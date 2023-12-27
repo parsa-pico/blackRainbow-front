@@ -16,6 +16,7 @@ import { tryHTTP } from "../../../Common/commonFuncs";
 import SubCategory from "./SubCategory";
 import { toast } from "react-toastify";
 import TextFields from "./TextFields";
+import Tags from "./Tags";
 export default function NewItem() {
   const [textFields, setTextFields] = useState([
     {
@@ -37,7 +38,12 @@ export default function NewItem() {
       required: true,
     },
     { name: "brand", label: " برند" },
-    { name: "description", label: "توضیحات محصول", multiline: true },
+    {
+      name: "description",
+      label: "توضیحات محصول",
+      multiline: true,
+      required: true,
+    },
   ]);
   const categoryBase = { title: "", _id: "" };
   const subCategoryBase = {
@@ -67,12 +73,13 @@ export default function NewItem() {
     itemCopy[name] = target.value;
     setItem(itemCopy);
   };
-  async function insertCategory(title, parentId) {
+  async function insertCategory(title, parentId, isTag = false) {
     let data = {};
     await tryHTTP(async () => {
       const obj = { title };
+      const api = isTag ? "/tags" : "/categories";
       if (parentId) obj.parentId = parentId;
-      data = (await httpSerivce.post("/categories", obj)).data.obj;
+      data = (await httpSerivce.post(api, obj)).data.obj;
       toast("دسته بندی اضافه شد");
     });
     return data;
@@ -91,6 +98,18 @@ export default function NewItem() {
     setSubCategory(subCategoryBase);
     return data;
   }
+  async function getTag(textValue) {
+    const { data } = await httpSerivce.post("/tags/get-by-title", {
+      title: textValue,
+    });
+    return data;
+  }
+  function appendTag(title) {
+    if (title) setTags([...tags, title]);
+  }
+  useEffect(() => {
+    if (tag && tag.title) appendTag(tag.title);
+  }, [tag]);
   return (
     <div className="page-wrapper">
       <div className="page">
@@ -130,19 +149,18 @@ export default function NewItem() {
             label="زیر دسته بندی"
             getOptions={getSubCategory}
           />
-
-          {/* <SubCategory
-            subState={[subCategory, setSubCategory]}
-            flag={category}
-            insertCategory={insertCategory}
-            getOptions={async () => {
-              if (!category || !category._id) return [];
-              const { data } = await httpSerivce.post("/categories/get-sub", {
-                parentId: category._id,
-              });
-              return data;
+          <Category
+            insertCategory={async (val) => {
+              const data = await insertCategory(val, undefined, true);
+              appendTag(data.title);
             }}
-          /> */}
+            className="my-4"
+            value={tag}
+            setValue={setTag}
+            label="برچسب ها"
+            getOptions={getTag}
+          />
+          <Tags tags={tags} setTags={setTags} />
           <div>
             <Button variant="outlined" className="w-100 mt-4" type="submit">
               ثبت

@@ -10,12 +10,15 @@ import { NavLink } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
+import { clearUser, getUser } from "../../Services/authService";
 export default function MyNav() {
+  const user = getUser();
   const expand = "md";
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
   return (
     <div>
       <Navbar
@@ -59,9 +62,32 @@ export default function MyNav() {
                 <SearchIcon className="nav-search-icon" />
               </Form>
               <Nav className=" flex-grow-1 pe-3 mt-2">
-                <NavLink style={{ all: "inherit" }} to={"/login"}>
-                  ورود/ثبت نام
-                </NavLink>
+                {user && user.isAdmin && (
+                  <div>
+                    <NavLink style={{ all: "inherit" }} to={"/admin/new-item"}>
+                      مدیریت محصولات
+                    </NavLink>
+                  </div>
+                )}
+                <div>
+                  {!user && (
+                    <NavLink style={{ all: "inherit" }} to={"/login"}>
+                      ورود/ثبت نام
+                    </NavLink>
+                  )}
+                  {user && (
+                    <NavLink
+                      onClick={() => {
+                        clearUser();
+                        window.location = "/";
+                        //TODO:remove cookies from server side
+                      }}
+                      style={{ all: "inherit" }}
+                    >
+                      خروج
+                    </NavLink>
+                  )}
+                </div>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

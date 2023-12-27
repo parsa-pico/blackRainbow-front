@@ -278,14 +278,19 @@ body,
   align-items: center;
 }
 .page {
-  background-color: black;
-  padding: 2rem 4rem;
+  background-color: rgb(0, 0, 0);
+  padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-
+.pointer-cursor {
+  cursor: pointer;
+}
+.bg-none {
+  background-color: transparent;
+}
 @media screen and (min-width: 1024px) {
   .page {
     width: 50%;

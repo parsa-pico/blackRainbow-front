@@ -1,6 +1,15 @@
 import jwtDecode from "jwt-decode";
 // TODO: change this
 const storage = sessionStorage;
+export function getUser() {
+  return JSON.parse(storage.getItem("userInfo"));
+}
+export function setUser(obj) {
+  return storage.setItem("userInfo", JSON.stringify(obj));
+}
+export function clearUser() {
+  return storage.removeItem("userInfo");
+}
 export function getToken() {
   return storage.getItem("token");
 }
