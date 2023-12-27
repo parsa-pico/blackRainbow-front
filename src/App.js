@@ -7,7 +7,7 @@ import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login";
 import { Button, ToastContainer } from "react-bootstrap";
-import NewItem from "./Components/Admin/NewItem";
+import NewItem from "./Components/Admin/Item/NewItem";
 
 function App() {
   const loc = useLocation();
@@ -22,6 +22,7 @@ function App() {
       setMarginTop(navHeight + 10);
     }
     if (loc.pathname.includes("login")) setShowNav(false);
+    else setShowNav(true);
   }, [loc]);
 
   return (

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { tryHTTP } from "../Common/commonFuncs";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
