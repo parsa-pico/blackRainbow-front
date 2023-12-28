@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
+
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
@@ -12,9 +12,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { clearUser, getUser } from "../../Services/authService";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Button } from "@mui/material";
+import { searchText } from "../../Common/commonFuncs";
+
 export default function MyNav() {
   const nav = useNavigate();
   const user = getUser();
+  const [searchValue, setSearchValue] = useState("");
   const expand = "xl";
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => {
@@ -23,13 +27,11 @@ export default function MyNav() {
 
   return (
     <div>
-      <Navbar
-        id="my-nav"
-        fixed="top"
-        key={expand}
-        className="bg-body-tertiary mb-3"
-      >
-        <Container fluid>
+      <div id="my-nav" key={expand} className="bg-body-tertiary py-1">
+        <Container
+          style={{ display: "flex", justifyContent: "space-between" }}
+          fluid
+        >
           <MenuIcon
             sx={{ cursor: "pointer" }}
             fontSize="large"
@@ -49,35 +51,31 @@ export default function MyNav() {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                Black Rainbow
+                منو
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body className="">
-              <Nav className=" flex-grow-1 pe-3 mt-2">
-                {user && user.isAdmin && (
-                  <div>
-                    <CustuomLink to="/admin/new-item">
-                      مدیریت محصولات
-                    </CustuomLink>
-                    <CustuomLink to="/admin/options">آپشن ها</CustuomLink>
-                  </div>
+              {user && user.isAdmin && (
+                <>
+                  <CustuomLink to="/admin/new-item">مدیریت محصولات</CustuomLink>
+                  <CustuomLink to="/admin/options">آپشن ها</CustuomLink>
+                </>
+              )}
+              <>
+                {!user && <CustuomLink to="/login">ورود/ثبت نام</CustuomLink>}
+                {user && (
+                  <CustuomLink
+                    onClick={() => {
+                      console.log("here");
+                      clearUser();
+                      window.location = "/";
+                      //TODO:remove cookies from server side
+                    }}
+                  >
+                    خروج
+                  </CustuomLink>
                 )}
-                <div>
-                  {!user && <CustuomLink to="/login">ورود/ثبت نام</CustuomLink>}
-                  {user && (
-                    <CustuomLink
-                      onClick={() => {
-                        console.log("here");
-                        clearUser();
-                        window.location = "/";
-                        //TODO:remove cookies from server side
-                      }}
-                    >
-                      خروج
-                    </CustuomLink>
-                  )}
-                </div>
-              </Nav>
+              </>
             </Offcanvas.Body>
           </Offcanvas>
           <div>
@@ -85,23 +83,33 @@ export default function MyNav() {
           </div>
         </Container>
         <Container className="d-flex mt-2" style={{ justifyContent: "center" }}>
-          <Form className="nav-search-wrapper d-flex">
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              searchText(searchValue);
+            }}
+            className="nav-search-wrapper d-flex"
+          >
             <Form.Control
+              value={searchValue}
+              onChange={({ target }) => setSearchValue(target.value)}
               // type="search"
               placeholder="جستجو"
               className="nav-search mb-2"
               aria-label="Search"
             />
-
-            <SearchIcon className="nav-search-icon" />
+            <Button style={{ color: "var(--dark)" }}>
+              <SearchIcon className="nav-search-icon" />
+            </Button>
           </Form>
         </Container>
-      </Navbar>
+      </div>
     </div>
   );
   function CustuomLink({ to, onClick, children }) {
     return (
-      <Nav.Link
+      <p
+        style={{ display: "block", cursor: "pointer" }}
         onClick={() => {
           if (onClick) onClick();
           if (to) nav(to);
@@ -109,7 +117,7 @@ export default function MyNav() {
         }}
       >
         {children}
-      </Nav.Link>
+      </p>
     );
   }
 }

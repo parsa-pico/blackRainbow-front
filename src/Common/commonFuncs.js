@@ -106,3 +106,6 @@ export function requestFullscreen(elementId) {
     container.webkitRequestFullscreen();
   else if (container.msRequestFullscreen) container.msRequestFullscreen();
 }
+export function searchText(value) {
+  window.location = `/items/?search=${value}`;
+}

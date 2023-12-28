@@ -18,7 +18,18 @@ function App() {
   const loc = useLocation();
   const [showNav, setShowNav] = useState(true);
   const [marginTop, setMarginTop] = useState(10);
-
+  // hide menu
+  var prevScrollpos = window.pageYOffset;
+  window.onscroll = function () {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      document.getElementById("my-nav").style.top = "0";
+    } else {
+      document.getElementById("my-nav").style.top = "-300px";
+    }
+    prevScrollpos = currentScrollPos;
+  };
+  //
   useEffect(() => {
     const user = getUser();
     const now = new Date().getTime();

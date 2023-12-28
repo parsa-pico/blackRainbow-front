@@ -7,6 +7,8 @@ import ItemImage from "./ItemImage";
 import ItemPath from "./ItemPath";
 import ItemOptions from "./ItemOptions";
 import ItemPurchase from "./ItemPurchase";
+import { Chip } from "@mui/material";
+import ItemTags from "./ItemTags";
 export default function Item() {
   const params = useParams();
   const [itemData, setItemData] = useState({});
@@ -22,6 +24,7 @@ export default function Item() {
           (p) => `${process.env.REACT_APP_API_URL}/pictures/${p}`
         );
       setItemData(data);
+
       if (data.optionsData) {
         const obj = {};
         for (let optionObj of data.optionsData) {
@@ -53,6 +56,7 @@ export default function Item() {
           setSelectedOptions={setSelectedOptions}
           itemOptions={itemData && itemData.optionsData}
         />
+        <ItemTags tags={itemData.tags} />
       </div>
       <ItemPurchase itemData={itemData} />
     </div>
