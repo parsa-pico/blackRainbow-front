@@ -27,7 +27,7 @@ export async function tryHTTP(func, doFinally, doCatch) {
     if (e && e.response) {
       const expectedError =
         e.response && e.response.status >= 400 && e.response.status < 500;
-      console.log(expectedError);
+
       if (expectedError) {
         const msg = e.response.data.msg || e.response.data;
         toast.error(msg);
@@ -47,6 +47,9 @@ export function areDatesOnSameDay(date1, date2) {
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
+}
+export function getPrice(price) {
+  return (price / 10).toLocaleString();
 }
 export function hasOptions(question) {
   return ["checkbox", "radio"].includes(question.type);

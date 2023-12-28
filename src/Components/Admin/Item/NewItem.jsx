@@ -1,46 +1,55 @@
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Category from "./Category";
 import httpSerivce from "../../../Services/httpService";
 import { tryHTTP } from "../../../Common/commonFuncs";
-import SubCategory from "./SubCategory";
+
 import { toast } from "react-toastify";
 import TextFields from "./TextFields";
 import Tags from "./Tags";
 import SelectOptions from "./SelectOptions";
-import { fields, subCategoryBase, categoryBase } from "./baseFields";
+import { fields, subCategoryBase, categoryBase, itemBase } from "./baseFields";
+import SelectPictures from "./SelectPictures/SelectPictures";
+
 export default function NewItem() {
-  const [textFields, setTextFields] = useState(fields);
+  const textFields = fields;
   const [category, setCategory] = useState(categoryBase);
   const [subCategory, setSubCategory] = useState(subCategoryBase);
   const [tag, setTag] = useState(categoryBase);
   const [tags, setTags] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [pictures, setPictures] = useState([]);
+  const [customersPictures, setCustomersPictures] = useState([]);
+  const [item, setItem] = useState(itemBase);
+  function submitForm() {
+    const obj = { ...item };
+    obj.category = category._id;
+    obj.subCategory = subCategory._id;
+    obj.tags = tags;
+    obj.options = selectedOptions.map((opt) => opt._id);
+    obj.pictures = pictures.map((pic) => pic.uploadedFileName);
+    obj.customersPictures = customersPictures.map(
+      (pic) => pic.uploadedFileName
+    );
 
-  const [item, setItem] = useState({
-    productName: "",
-    stock: "",
-    price: "",
-    brand: "",
-    private: false,
-    category: categoryBase,
-    subCategory: subCategoryBase,
-  });
-
+    if (!obj.brand) delete obj.brand;
+    obj.price *= 10;
+    console.log(obj);
+    tryHTTP(async (http) => {
+      await http.post("/items", obj);
+      toast("آیتم اضافه شد");
+    });
+  }
   const handleChange = ({ target }) => {
+    let value = target.value;
+    if (target.type === "checkbox") value = target.checked;
+    if (target.type === "number") {
+      value = parseInt(value);
+    }
     const itemCopy = { ...item };
     const name = target.name;
-    itemCopy[name] = target.value;
+    itemCopy[name] = value;
     setItem(itemCopy);
   };
   async function insertCategory(title, parentId, isTag = false) {
@@ -80,6 +89,7 @@ export default function NewItem() {
   useEffect(() => {
     if (tag && tag.title) appendTag(tag.title);
   }, [tag]);
+
   return (
     <div className="page-wrapper">
       <div className="page">
@@ -88,7 +98,7 @@ export default function NewItem() {
           className="w-100"
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("hi");
+            submitForm();
           }}
         >
           <TextFields
@@ -131,8 +141,24 @@ export default function NewItem() {
             getOptions={getTag}
           />
           <Tags tags={tags} setTags={setTags} />
+          <hr />
+          <SelectOptions
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+          />
+          <hr />
+          <SelectPictures
+            label="آپلود عکس محصول "
+            pictures={pictures}
+            setPictures={setPictures}
+          />
+          <hr />
+          <SelectPictures
+            label="آپلود عکس مشتریان"
+            pictures={customersPictures}
+            setPictures={setCustomersPictures}
+          />
 
-          <SelectOptions />
           <div>
             <Button variant="outlined" className="w-100 mt-4" type="submit">
               ثبت

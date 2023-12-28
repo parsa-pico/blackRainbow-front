@@ -31,3 +31,17 @@ export const subCategoryBase = {
   _id: "",
   parentId: "",
 };
+export const itemBase = {
+  productName: "",
+  stock: "",
+  price: "",
+  brand: "",
+  private: false,
+  // category: categoryBase,
+  // subCategory: subCategoryBase,
+  // tags: [],
+  // pictures: [],
+  // customersPictures: [],
+  // description: "",
+  // options: [],
+};

@@ -14,7 +14,6 @@ axiosInstance.interceptors.response.use(null, (error) => {
     error.response.status < 500;
 
   if (!expectedError) {
-    console.log("aaa");
     console.log(error);
     alert("خطای غیر منتظره");
   }

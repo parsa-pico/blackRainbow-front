@@ -1,8 +1,10 @@
+@import url("./item.css");
 @import url("./items.css");
 @import url("./itemImage.css");
 @import url("./nav.css");
 @import url("./login.css");
 @import url("./newItem.css");
+@import url("./cropper.css");
 body {
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -42,6 +44,12 @@ body,
 } */
 * {
   font-family: "IBM Plex Sans Arabic", sans-serif;
+}
+.relative {
+  position: relative !important;
+}
+.absolute {
+  position: absolute !important;
 }
 .clickable {
   cursor: pointer;

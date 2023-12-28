@@ -69,9 +69,13 @@ export default function GetOptions({
   }
   function search() {
     tryHTTP(async (http) => {
-      let { data } = await http.post("/options/get-options", {
-        searchValue: searchVal,
-      });
+      let { data } = await http.post(
+        "/options/get-options",
+        {
+          searchValue: searchVal,
+        },
+        { withCredentials: true }
+      );
       console.log(data);
       data.unshift(optionBase);
       setOptions(data);

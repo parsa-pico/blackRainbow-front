@@ -47,7 +47,7 @@ export default function Item() {
         <h3 className="mt-2">{itemData.productName}</h3>
         <hr />
         <h6>ویژگی های کالا:</h6>
-        <p>{itemData.description}</p>
+        <p className="item-desc">{itemData.description}</p>
         <ItemOptions
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions}

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-bootstrap";
 import { NoCallBackErr } from "../socket";
+
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 export function RadioButton({ id, name, label, error, ...rest }) {
   return (
     <div className="form-check">
@@ -89,4 +94,31 @@ export const ClickButton = ({ onClick, children, ...rest }) => {
 };
 export function simpleToolTip(id, text) {
   return <Tooltip id={id}>{text}</Tooltip>;
+}
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
+export default function InputFileUpload({ className, label, ...rest }) {
+  return (
+    <div className={className}>
+      <Button
+        component="label"
+        variant="contained"
+        startIcon={<CloudUploadIcon />}
+      >
+        {label}
+        <VisuallyHiddenInput {...rest} type="file" />
+      </Button>
+    </div>
+  );
 }

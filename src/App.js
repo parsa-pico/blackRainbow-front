@@ -11,6 +11,8 @@ import NewItem from "./Components/Admin/Item/NewItem";
 import GetOptions from "./Components/Admin/Options/GetOptions";
 import NotFound from "./Components/NotFound";
 import OptionsPage from "./Components/Admin/Options/OptionsPage";
+import SelectPictures from "./Components/Admin/Item/SelectPictures/SelectPictures";
+import GetItems from "./Components/GetItems/GetItems";
 
 function App() {
   const loc = useLocation();
@@ -42,12 +44,16 @@ function App() {
         <Route path="/" exact element={<Home />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
+        <Route path="/items" exact element={<GetItems />} />
+
         <Route path="/admin">
           <Route path="new-item" element={<NewItem />} />
           <Route path="options" element={<OptionsPage />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <div style={{ marginTop: "200px" }} />
       <ToastContainer />
     </div>
   );

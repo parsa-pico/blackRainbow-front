@@ -11,10 +11,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { clearUser, getUser } from "../../Services/authService";
+import MenuIcon from "@mui/icons-material/Menu";
 export default function MyNav() {
   const nav = useNavigate();
   const user = getUser();
-  const expand = "md";
+  const expand = "xl";
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -26,18 +27,18 @@ export default function MyNav() {
         id="my-nav"
         fixed="top"
         key={expand}
-        expand={expand}
         className="bg-body-tertiary mb-3"
       >
         <Container fluid>
-          <Navbar.Toggle
+          <MenuIcon
+            sx={{ cursor: "pointer" }}
+            fontSize="large"
             onClick={toggleMenu}
-            aria-controls={`offcanvasNavbar-expand-${expand}`}
           />
           <Navbar.Brand href="/">
             <img className="nav-logo" src="/logo.png" alt="" />
           </Navbar.Brand>
-          <Navbar.Offcanvas
+          <Offcanvas
             show={menuOpen}
             onHide={() => {
               setMenuOpen(false);
@@ -52,16 +53,6 @@ export default function MyNav() {
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body className="">
-              <Form className="nav-search-wrapper d-flex">
-                <Form.Control
-                  // type="search"
-                  placeholder="جستجو"
-                  className="nav-search mb-2"
-                  aria-label="Search"
-                />
-
-                <SearchIcon className="nav-search-icon" />
-              </Form>
               <Nav className=" flex-grow-1 pe-3 mt-2">
                 {user && user.isAdmin && (
                   <div>
@@ -76,6 +67,7 @@ export default function MyNav() {
                   {user && (
                     <CustuomLink
                       onClick={() => {
+                        console.log("here");
                         clearUser();
                         window.location = "/";
                         //TODO:remove cookies from server side
@@ -87,10 +79,22 @@ export default function MyNav() {
                 </div>
               </Nav>
             </Offcanvas.Body>
-          </Navbar.Offcanvas>
+          </Offcanvas>
           <div>
             <ShoppingCartIcon />
           </div>
+        </Container>
+        <Container className="d-flex mt-2" style={{ justifyContent: "center" }}>
+          <Form className="nav-search-wrapper d-flex">
+            <Form.Control
+              // type="search"
+              placeholder="جستجو"
+              className="nav-search mb-2"
+              aria-label="Search"
+            />
+
+            <SearchIcon className="nav-search-icon" />
+          </Form>
         </Container>
       </Navbar>
     </div>
@@ -99,7 +103,7 @@ export default function MyNav() {
     return (
       <Nav.Link
         onClick={() => {
-          if (onclick) onClick();
+          if (onClick) onClick();
           if (to) nav(to);
           setMenuOpen(false);
         }}

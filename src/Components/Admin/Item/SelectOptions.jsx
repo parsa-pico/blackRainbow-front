@@ -32,35 +32,38 @@ export default function SelectOptions({ selectedOptions, setSelectedOptions }) {
       <Button onClick={handleClickOpen} variant="contained">
         انتخاب آپشن ها
       </Button>
-      <Dialog
-        PaperProps={{
-          style: {
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          },
-        }}
-        scroll="body"
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <div className="">
+      <div>
+        <Dialog
+          PaperProps={{
+            style: {
+              backgroundColor: "transparent",
+              boxShadow: "none",
+            },
+          }}
+          scroll="body"
+          fullScreen
+          open={open}
+          onClose={handleClose}
+          TransitionComponent={Transition}
+        >
           <IconButton
             edge="start"
             color="inherit"
             onClick={handleClose}
             aria-label="close"
+            style={{ position: "relative", right: "2%" }}
           >
             <CloseIcon />
           </IconButton>
-          <GetOptions
-            readOnly={true}
-            selectedOptions={selectedOptions}
-            setSelectedOptions={setSelectedOptions}
-          />
-        </div>
-      </Dialog>
+          <div className="vstack justify-content-center align-items-center">
+            <GetOptions
+              readOnly={true}
+              selectedOptions={selectedOptions}
+              setSelectedOptions={setSelectedOptions}
+            />
+          </div>
+        </Dialog>
+      </div>
     </>
   );
 }
