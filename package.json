@@ -17,6 +17,7 @@
     "chart.js": "^4.4.0",
     "jalali-date": "^1.1.4",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "mkcert": "^3.0.0",
     "mui-image": "^1.0.7",
     "react": "^18.2.0",

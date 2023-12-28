@@ -6,12 +6,13 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { clearUser, getUser } from "../../Services/authService";
 export default function MyNav() {
+  const nav = useNavigate();
   const user = getUser();
   const expand = "md";
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,7 +56,7 @@ export default function MyNav() {
                 <Form.Control
                   // type="search"
                   placeholder="جستجو"
-                  className="nav-search"
+                  className="nav-search mb-2"
                   aria-label="Search"
                 />
 
@@ -64,19 +65,24 @@ export default function MyNav() {
               <Nav className=" flex-grow-1 pe-3 mt-2">
                 {user && user.isAdmin && (
                   <div>
-                    <NavLink style={{ all: "inherit" }} to={"/admin/new-item"}>
+                    <Nav.Link
+                      onClick={() => {
+                        setMenuOpen(false);
+                        nav("/admin/new-item");
+                      }}
+                    >
                       مدیریت محصولات
-                    </NavLink>
+                    </Nav.Link>
                   </div>
                 )}
                 <div>
                   {!user && (
-                    <NavLink style={{ all: "inherit" }} to={"/login"}>
+                    <Nav.Link style={{ all: "inherit" }} to={"/login"}>
                       ورود/ثبت نام
-                    </NavLink>
+                    </Nav.Link>
                   )}
                   {user && (
-                    <NavLink
+                    <Nav.Link
                       onClick={() => {
                         clearUser();
                         window.location = "/";
@@ -85,7 +91,7 @@ export default function MyNav() {
                       style={{ all: "inherit" }}
                     >
                       خروج
-                    </NavLink>
+                    </Nav.Link>
                   )}
                 </div>
               </Nav>
