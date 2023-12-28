@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 // TODO: change this
-const storage = sessionStorage;
+const storage = localStorage;
 export function getUser() {
   return JSON.parse(storage.getItem("userInfo"));
 }

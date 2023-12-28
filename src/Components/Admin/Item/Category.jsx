@@ -11,7 +11,7 @@ export default function Category({
   setValue,
   label,
   getOptions,
-  canSearch,
+  canSearch: myReadOnly,
   flag,
   insertCategory,
   ...rest
@@ -21,53 +21,74 @@ export default function Category({
   const [textValue, setTextValue] = useState("");
   const [loading, setLoading] = useState(false);
   const newID = "newId";
-  const timeout = 0.5;
-  const [sendTimeout, setSendTimeout] = useState(timeout);
+  const timeout = 500; //millis
+
+  // const [sendTimeout, setSendTimeout] = useState(timeout);
+
+  const [timeoutId, setTimeoutId] = useState(null);
+
   useEffect(() => {
-    if (canSearch) {
+    if (myReadOnly) {
       getOptionsWrapper();
     }
   }, [flag]);
-  useEffect(() => {
-    if (loading && !canSearch) {
-      if (sendTimeout === 0) {
-        getOptionsWrapper(textValue);
-      } else {
-        setTimeout(
-          () => {
-            const t = Math.max(sendTimeout - timeout, 0);
-            setSendTimeout(t);
-          },
-          timeout >= 1 ? 1000 : timeout * 1000
-        );
-      }
-    }
-  }, [loading, sendTimeout]);
+
+  // useEffect(() => {
+  //   if (loading && !canSearch) {
+  //     if (sendTimeout === 0) {
+  //       getOptionsWrapper(textValue);
+  //     } else {
+  //       setTimeout(
+  //         () => {
+  //           const t = Math.max(sendTimeout - timeout, 0);
+  //           setSendTimeout(t);
+  //         },
+  //         timeout >= 1 ? 1000 : timeout * 1000
+  //       );
+  //     }
+  //   }
+  // }, [loading, sendTimeout]);
 
   function inputChanged(value) {
-    if (!canSearch) setLoading(true);
-    setSendTimeout(timeout);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    if (!myReadOnly) setLoading(true);
+    // setSendTimeout(timeout);
+
     setTextValue(value);
+
+    const newTimeoutId = setTimeout(!myReadOnly && getOptionsWrapper, timeout);
+    setTimeoutId(newTimeoutId);
   }
   function getOptionsWrapper() {
     tryHTTP(
       async () => {
-        const data = await getOptions();
+        const data = await getOptions(textValue);
         console.log(data);
         setOptions(data);
       },
       () => {
-        if (!canSearch) setSendTimeout(timeout);
+        // if (!myReadOnly) setSendTimeout(timeout);
         setLoading(false);
       }
     );
   }
 
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (!open) {
+  //     setOptions([]);
+  //   }
+  // }, [open]);
+  useEffect(() => {
+    console.log("here");
+    // Cleanup function to clear the timeout when the component unmounts or inputValue changes
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
   const filter = createFilterOptions();
   return (
     <Autocomplete

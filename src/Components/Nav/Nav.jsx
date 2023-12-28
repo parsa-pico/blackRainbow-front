@@ -65,33 +65,24 @@ export default function MyNav() {
               <Nav className=" flex-grow-1 pe-3 mt-2">
                 {user && user.isAdmin && (
                   <div>
-                    <Nav.Link
-                      onClick={() => {
-                        setMenuOpen(false);
-                        nav("/admin/new-item");
-                      }}
-                    >
+                    <CustuomLink to="/admin/new-item">
                       مدیریت محصولات
-                    </Nav.Link>
+                    </CustuomLink>
+                    <CustuomLink to="/admin/options">آپشن ها</CustuomLink>
                   </div>
                 )}
                 <div>
-                  {!user && (
-                    <Nav.Link style={{ all: "inherit" }} to={"/login"}>
-                      ورود/ثبت نام
-                    </Nav.Link>
-                  )}
+                  {!user && <CustuomLink to="/login">ورود/ثبت نام</CustuomLink>}
                   {user && (
-                    <Nav.Link
+                    <CustuomLink
                       onClick={() => {
                         clearUser();
                         window.location = "/";
                         //TODO:remove cookies from server side
                       }}
-                      style={{ all: "inherit" }}
                     >
                       خروج
-                    </Nav.Link>
+                    </CustuomLink>
                   )}
                 </div>
               </Nav>
@@ -104,4 +95,17 @@ export default function MyNav() {
       </Navbar>
     </div>
   );
+  function CustuomLink({ to, onClick, children }) {
+    return (
+      <Nav.Link
+        onClick={() => {
+          if (onclick) onClick();
+          if (to) nav(to);
+          setMenuOpen(false);
+        }}
+      >
+        {children}
+      </Nav.Link>
+    );
+  }
 }

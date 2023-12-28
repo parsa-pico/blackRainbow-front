@@ -10,6 +10,7 @@ import { Button, ToastContainer } from "react-bootstrap";
 import NewItem from "./Components/Admin/Item/NewItem";
 import GetOptions from "./Components/Admin/Options/GetOptions";
 import NotFound from "./Components/NotFound";
+import OptionsPage from "./Components/Admin/Options/OptionsPage";
 
 function App() {
   const loc = useLocation();
@@ -43,7 +44,7 @@ function App() {
         <Route path="/items/:itemId" exact element={<Item />} />
         <Route path="/admin">
           <Route path="new-item" element={<NewItem />} />
-          <Route path="options" element={<GetOptions />} />
+          <Route path="options" element={<OptionsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

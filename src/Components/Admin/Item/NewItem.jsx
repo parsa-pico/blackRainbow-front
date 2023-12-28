@@ -17,45 +17,15 @@ import SubCategory from "./SubCategory";
 import { toast } from "react-toastify";
 import TextFields from "./TextFields";
 import Tags from "./Tags";
+import SelectOptions from "./SelectOptions";
+import { fields, subCategoryBase, categoryBase } from "./baseFields";
 export default function NewItem() {
-  const [textFields, setTextFields] = useState([
-    {
-      name: "productName",
-      label: "نام محصول",
-      required: true,
-    },
-
-    {
-      name: "price",
-      label: "قیمت به تومان",
-      type: "number",
-      required: true,
-    },
-    {
-      name: "stock",
-      label: "موجودی انبار",
-      type: "number",
-      required: true,
-    },
-    { name: "brand", label: " برند" },
-    {
-      name: "description",
-      label: "توضیحات محصول",
-      multiline: true,
-      required: true,
-    },
-  ]);
-  const categoryBase = { title: "", _id: "" };
-  const subCategoryBase = {
-    title: "",
-    _id: "",
-    parentId: "",
-  };
+  const [textFields, setTextFields] = useState(fields);
   const [category, setCategory] = useState(categoryBase);
   const [subCategory, setSubCategory] = useState(subCategoryBase);
   const [tag, setTag] = useState(categoryBase);
-
   const [tags, setTags] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const [item, setItem] = useState({
     productName: "",
@@ -161,6 +131,8 @@ export default function NewItem() {
             getOptions={getTag}
           />
           <Tags tags={tags} setTags={setTags} />
+
+          <SelectOptions />
           <div>
             <Button variant="outlined" className="w-100 mt-4" type="submit">
               ثبت
