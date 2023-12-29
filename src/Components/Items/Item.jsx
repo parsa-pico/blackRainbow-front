@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import http from "../../Services/httpService";
-import { tryHTTP } from "../../Common/commonFuncs";
+import { getPicture, tryHTTP } from "../../Common/commonFuncs";
 
 import ItemImage from "./ItemImage";
 import ItemPath from "./ItemPath";
@@ -12,29 +12,60 @@ import ItemTags from "./ItemTags";
 export default function Item() {
   const params = useParams();
   const [itemData, setItemData] = useState({});
+  const [cartItem, setCartItem] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
-  useEffect(() => {
-    tryHTTP(async () => {
-      const { itemId } = params;
-      let { data } = await http.get(`/items/${itemId}`);
-      data = data[0];
-      console.log(data);
-      if (data.pictures)
-        data.pictures = data.pictures.map(
-          (p) => `${process.env.REACT_APP_API_URL}/pictures/${p}`
-        );
-      setItemData(data);
+  const [loading, setLoading] = useState(false);
 
-      if (data.optionsData) {
-        const obj = {};
-        for (let optionObj of data.optionsData) {
-          obj[optionObj.title] = optionObj.choices[0];
+  function getItem() {
+    tryHTTP(
+      async () => {
+        setLoading(true);
+        const { itemId } = params;
+        let { data } = await http.get(`/items/${itemId}`);
+        data = data[0];
+        console.log(data);
+        if (data.pictures)
+          data.pictures = data.pictures.map((p) => getPicture(p));
+        setItemData(data);
+
+        if (data.optionsData) {
+          const obj = {};
+          for (let optionObj of data.optionsData) {
+            obj[optionObj.title] = optionObj.choices[0];
+          }
+          setSelectedOptions(obj);
+          const { data: cartItemData } = await http.get(`/carts/${itemId}`);
+          console.log(cartItemData);
+          setCartItem(cartItemData);
         }
-        setSelectedOptions(obj);
+      },
+      () => {
+        setLoading(false);
       }
-    });
+    );
+  }
+
+  useEffect(() => {
+    getItem();
   }, []);
 
+  function handleCart(quantity_) {
+    tryHTTP(
+      async (http) => {
+        setLoading(true);
+        const quantity = cartItem ? quantity_ : 1;
+        const { data } = await http.post(`/carts/new/${itemData._id}`, {
+          options: selectedOptions,
+          quantity,
+        });
+        setCartItem(data.obj);
+        console.log(data);
+      },
+      () => {
+        setLoading(false);
+      }
+    );
+  }
   return (
     <div className="item-wrapper container mt-2">
       <ItemPath
@@ -58,7 +89,12 @@ export default function Item() {
         />
         <ItemTags tags={itemData.tags} />
       </div>
-      <ItemPurchase itemData={itemData} />
+      <ItemPurchase
+        loading={loading}
+        cartItem={cartItem}
+        handleCart={handleCart}
+        itemData={itemData}
+      />
     </div>
   );
 }

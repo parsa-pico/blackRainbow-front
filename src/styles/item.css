@@ -16,7 +16,7 @@
   bottom: 0;
   right: 0;
   left: 0;
-  background-color: rgb(35 37 55);
+  background-color: var(--bg-purchase);
   /* height: 50px; */
   flex-wrap: wrap;
   align-items: center;
@@ -28,6 +28,58 @@
 .item-purchase-btn {
   font-size: 0.9rem;
   /* padding: 0; */
+}
+@keyframes animatedgradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.purchase-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.2rem 0;
+
+  background: var(--bg-purchase);
+  position: relative;
+  border-radius: var(--purchaseBorderWidth);
+}
+.purchase-btns:after {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--purchaseBorderWidth));
+  left: calc(-1 * var(--purchaseBorderWidth));
+  height: calc(100% + var(--purchaseBorderWidth) * 2);
+  width: calc(100% + var(--purchaseBorderWidth) * 2);
+  background: linear-gradient(
+    60deg,
+    #f79533,
+    #f37055,
+    #ef4e7b,
+    #a166ab,
+    #5073b8,
+    #1098ad,
+    #07b39b,
+    #6fba82
+  );
+  border-radius: calc(2 * var(--purchaseBorderWidth));
+  z-index: -1;
+  animation: animatedgradient 20s ease alternate infinite;
+  background-size: 300% 300%;
+}
+.item-purchase-middle {
+  display: inline-block;
+  width: 30px;
+  height: 20px;
+  text-align: center;
 }
 .item-path-wrapper {
   background-color: black;

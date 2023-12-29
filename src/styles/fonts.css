@@ -1,0 +1,6 @@
+@font-face {
+  font-family: "yekan"; /* Choose a name for your font */
+  src: url("../fonts/Qs_Iranyekan.ttf") format("truetype"); /* Path to your TTF font file */
+  font-weight: normal;
+  font-style: normal;
+}

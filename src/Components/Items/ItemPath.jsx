@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 export default function ItemPath({ links }) {
-  console.log(links);
   return (
     <div className="item-path-wrapper">
       <Breadcrumbs separator=">" aria-label="breadcrumb">

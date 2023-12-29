@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getPrice, tryHTTP } from "../../Common/commonFuncs";
+import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Card,
@@ -30,7 +30,7 @@ export default function GetItems() {
   return (
     <div className="items-page-wrapper">
       <div className="items-page">
-        <div className="items-page-filters-wrapper">فیلتر ها</div>
+        <div className="items-page-filters-wrapper">{/* فیلتر ها  */}</div>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
@@ -42,14 +42,15 @@ export default function GetItems() {
               <Grid item xs={1} sm={1} md={1} lg={1} key={index}>
                 <Card>
                   <CardActionArea
+                    // sx={{ display: "flex" }}
                     onClick={() => {
                       nav("/items/" + obj._id);
                     }}
                   >
                     <CardMedia
                       component="img"
-                      //   height="300"
-                      image={`${process.env.REACT_APP_API_URL}/pictures/${obj.pictures[0]}`}
+                      // style={{ width: "100px" }}
+                      image={getPicture(obj.pictures[0])}
                     />
                     <CardContent>
                       <Typography className="mb-5" gutterBottom component="div">

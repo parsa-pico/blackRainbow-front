@@ -108,10 +108,16 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function InputFileUpload({ className, label, ...rest }) {
+export default function InputFileUpload({
+  className,
+  label,
+  disabled,
+  ...rest
+}) {
   return (
     <div className={className}>
       <Button
+        disabled={disabled}
         component="label"
         variant="contained"
         startIcon={<CloudUploadIcon />}

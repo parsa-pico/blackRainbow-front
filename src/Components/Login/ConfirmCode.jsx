@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setUser } from "../../Services/authService";
+import { getAnonymousId, setUser } from "../../Services/authService";
 export default function ConfirmCode({
   phoneNumber,
   countDownThresh,
@@ -35,6 +35,7 @@ export default function ConfirmCode({
     tryHTTP(
       async () => {
         setLoading(true);
+
         const { data: result } = await httpService.post(
           "/customers/login-sms",
           {
@@ -42,6 +43,7 @@ export default function ConfirmCode({
             code,
           }
         );
+
         setUser(result.userInfo);
         const navPath = loc.state || "/";
         window.location = navPath;

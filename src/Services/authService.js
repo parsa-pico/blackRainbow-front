@@ -7,21 +7,40 @@ export function getUser() {
 export function setUser(obj) {
   return storage.setItem("userInfo", JSON.stringify(obj));
 }
+
 export function clearUser() {
   return storage.removeItem("userInfo");
 }
-export function getToken() {
-  return storage.getItem("token");
+// export function setAnonymousId(id) {
+//   return storage.setItem("anonymous", id);
+// }
+export function getAnonymousId() {
+  return getCookie("sessionId");
 }
-export function setToken(token) {
-  storage.setItem("token", token);
+function getCookie(cookieName) {
+  const cookies = document.cookie.split(";");
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+    if (name === cookieName) {
+      return decodeURIComponent(value);
+    }
+  }
+
+  return null;
 }
-export function clearToken() {
-  storage.removeItem("token");
-}
-export function getDecodedToken() {
-  return jwtDecode(getToken());
-}
-export const authHeader = {
-  headers: { ["x-auth-token"]: getToken() },
-};
+// export function getToken() {
+//   return storage.getItem("token");
+// }
+// export function setToken(token) {
+//   storage.setItem("token", token);
+// }
+// export function clearToken() {
+//   storage.removeItem("token");
+// }
+// export function getDecodedToken() {
+//   return jwtDecode(getToken());
+// }
+// export const authHeader = {
+//   headers: { ["x-auth-token"]: getToken() },
+// };

@@ -13,9 +13,21 @@ import { useState } from "react";
 import { clearUser, getUser } from "../../Services/authService";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button } from "@mui/material";
-import { searchText } from "../../Common/commonFuncs";
-
+import { searchText, tryHTTP } from "../../Common/commonFuncs";
+import { useCartCount } from "../../context/cartCountContext";
+import { styled } from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
 export default function MyNav() {
+  const [cartCount] = useCartCount();
   const nav = useNavigate();
   const user = getUser();
   const [searchValue, setSearchValue] = useState("");
@@ -68,7 +80,12 @@ export default function MyNav() {
                     onClick={() => {
                       console.log("here");
                       clearUser();
+                      tryHTTP(async (http) => {
+                        const { data } = await http.post("/customers/logout");
+                        console.log(data);
+                      });
                       window.location = "/";
+
                       //TODO:remove cookies from server side
                     }}
                   >
@@ -79,7 +96,16 @@ export default function MyNav() {
             </Offcanvas.Body>
           </Offcanvas>
           <div>
-            <ShoppingCartIcon />
+            <IconButton
+              onClick={() => {
+                nav("/cart");
+              }}
+              aria-label="cart"
+            >
+              <StyledBadge badgeContent={cartCount} color="secondary">
+                <ShoppingCartIcon fontSize="medium" />
+              </StyledBadge>
+            </IconButton>
           </div>
         </Container>
         <Container className="d-flex mt-2" style={{ justifyContent: "center" }}>
@@ -98,7 +124,7 @@ export default function MyNav() {
               className="nav-search mb-2"
               aria-label="Search"
             />
-            <Button style={{ color: "var(--dark)" }}>
+            <Button type="submit" style={{ color: "var(--dark)" }}>
               <SearchIcon className="nav-search-icon" />
             </Button>
           </Form>

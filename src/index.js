@@ -17,6 +17,7 @@ import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import "./styles/index.css";
 import { ToastProvider } from "./context/toastContext";
+import { CartCountProvider } from "./context/cartCountContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const cacheRtl = createCache({
   key: "muirtl",
@@ -32,16 +33,18 @@ root.render(
   // <React.StrictMode>
   <>
     <Router>
-      <ToastProvider>
-        <SocketProvider>
-          <CacheProvider value={cacheRtl}>
-            <ThemeProvider theme={darkTheme}>
-              <CssBaseline />
-              <App />
-            </ThemeProvider>
-          </CacheProvider>
-        </SocketProvider>
-      </ToastProvider>
+      <CartCountProvider>
+        <ToastProvider>
+          <SocketProvider>
+            <CacheProvider value={cacheRtl}>
+              <ThemeProvider theme={darkTheme}>
+                <CssBaseline />
+                <App />
+              </ThemeProvider>
+            </CacheProvider>
+          </SocketProvider>
+        </ToastProvider>
+      </CartCountProvider>
     </Router>
   </>
   //  </React.StrictMode>

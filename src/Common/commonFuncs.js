@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { clearToken } from "../Services/authService.js";
+
 import httpService from "../Services/httpService.js";
 export const persianDays = [
   "شنبه",
@@ -12,14 +12,14 @@ export const persianDays = [
 ];
 export function getBackUrl() {
   const url = process.env.REACT_APP_API_URL;
-  console.log(url);
+
   if (!url) throw new Error("back end url not defined");
   else return url;
 }
-export function handleLogout() {
-  clearToken();
-  window.location = `/`;
-}
+// export function handleLogout() {
+//   clearToken();
+//   window.location = `/`;
+// }
 export async function tryHTTP(func, doFinally, doCatch) {
   try {
     await func(httpService);
@@ -47,6 +47,13 @@ export function areDatesOnSameDay(date1, date2) {
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
+}
+export function readFile(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result), false);
+    reader.readAsDataURL(file);
+  });
 }
 export function getPrice(price) {
   return (price / 10).toLocaleString();
@@ -108,4 +115,7 @@ export function requestFullscreen(elementId) {
 }
 export function searchText(value) {
   window.location = `/items/?search=${value}`;
+}
+export function getPicture(pictureName) {
+  return `${getBackUrl()}/pictures/${pictureName}`;
 }

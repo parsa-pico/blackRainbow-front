@@ -1,5 +1,10 @@
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { clearUser, getToken, getUser } from "./Services/authService";
+import {
+  clearUser,
+  getAnonymousId,
+  getToken,
+  getUser,
+} from "./Services/authService";
 import { useEffect, useState } from "react";
 import Item from "./Components/Items/Item";
 
@@ -13,30 +18,58 @@ import NotFound from "./Components/NotFound";
 import OptionsPage from "./Components/Admin/Options/OptionsPage";
 import SelectPictures from "./Components/Admin/Item/SelectPictures/SelectPictures";
 import GetItems from "./Components/GetItems/GetItems";
+import { tryHTTP } from "./Common/commonFuncs";
+import { useCartCount } from "./context/cartCountContext";
+import CartPage from "./Components/Cart/CartPage";
 
 function App() {
   const loc = useLocation();
   const [showNav, setShowNav] = useState(true);
   const [marginTop, setMarginTop] = useState(10);
+  const [cartCount, setCartCount] = useCartCount();
   // hide menu
-  var prevScrollpos = window.pageYOffset;
-  window.onscroll = function () {
-    var currentScrollPos = window.pageYOffset;
-    if (prevScrollpos > currentScrollPos) {
-      document.getElementById("my-nav").style.top = "0";
-    } else {
-      document.getElementById("my-nav").style.top = "-300px";
-    }
-    prevScrollpos = currentScrollPos;
-  };
+  useEffect(() => {
+    // Your scroll event listener code here
+
+    var prevScrollpos = window.pageYOffset;
+    const handleScroll = () => {
+      var currentScrollPos = window.pageYOffset;
+      if (prevScrollpos > currentScrollPos) {
+        document.getElementById("my-nav").style.top = "0";
+      } else {
+        document.getElementById("my-nav").style.top = "-300px";
+      }
+      prevScrollpos = currentScrollPos;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup function
+    return () => {
+      // Remove the scroll event listener when the component is unmounted
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   //
   useEffect(() => {
     const user = getUser();
     const now = new Date().getTime();
+
+    if (!user && !getAnonymousId()) {
+      tryHTTP(async (http) => {
+        await http.post("/customers/login-anonymous");
+      });
+    }
     if (user && now > user.exp) {
       clearUser();
       window.location = "/";
     }
+
+    tryHTTP(async (http) => {
+      const { data } = await http.post("/carts/count-cart");
+      setCartCount(data.count);
+    });
+
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const nav = document.getElementById("my-nav");
     if (nav) {
@@ -56,6 +89,7 @@ function App() {
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
         <Route path="/items" exact element={<GetItems />} />
+        <Route path="/cart" exact element={<CartPage />} />
 
         <Route path="/admin">
           <Route path="new-item" element={<NewItem />} />

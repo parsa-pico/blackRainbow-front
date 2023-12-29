@@ -5,7 +5,7 @@ import { getCroppedImg, getRotatedImage } from "./canvasUtils";
 import { Dialog, Grid, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InputFileUpload from "../../../../Common/commonComponents";
-import { tryHTTP } from "../../../../Common/commonFuncs";
+import { readFile, tryHTTP } from "../../../../Common/commonFuncs";
 import { toast } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -173,13 +173,5 @@ const SelectPictures = ({ pictures, setPictures, label }) => {
     </div>
   );
 };
-
-function readFile(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => resolve(reader.result), false);
-    reader.readAsDataURL(file);
-  });
-}
 
 export default SelectPictures;

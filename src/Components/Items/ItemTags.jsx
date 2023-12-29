@@ -10,7 +10,6 @@ export default function ItemTags({ tags }) {
         {tags &&
           tags.length > 0 &&
           tags.map((tag, i) => {
-            console.log(tag);
             return (
               <Grid className="my-1" xs={2} md={1} key={i} item>
                 <Chip
