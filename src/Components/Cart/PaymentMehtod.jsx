@@ -20,8 +20,8 @@ export default function PaymentMehtod({
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
-  const cardNumber = "6037991943291835";
-  const cardOwner = "پارسا فروزمند";
+  const cardNumber = "5892101329383372";
+  const cardOwner = "معصومه وطن";
   const onFileChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
       tryHTTP(
@@ -117,6 +117,7 @@ export default function PaymentMehtod({
           )}
         </div>
       )}
+      <small className="mt-1">*ارسال سفارشات 2 هفته زمان میبرد</small>
       <h5 className="mt-3 ">
         هزینه نهایی :{getTotalPrice().total} {" تومان"}{" "}
       </h5>
