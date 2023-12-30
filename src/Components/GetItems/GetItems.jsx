@@ -8,20 +8,32 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
   Grid,
   Typography,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 
 export default function GetItems() {
   const nav = useNavigate();
   const [items, setItems] = useState();
   const [searchParams] = useSearchParams();
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(1);
   function search() {
     tryHTTP(async (http) => {
       const search = searchParams.get("search");
       const { data } = await http.post("/items/get-by-keyword", { search });
-      console.log(data);
+
       setItems(data);
+    });
+    tryHTTP(async (http) => {
+      const search = searchParams.get("search");
+      const { data } = await http.get("/categories");
+      console.log(data);
     });
   }
   useEffect(() => {
@@ -30,7 +42,22 @@ export default function GetItems() {
   return (
     <div className="items-page-wrapper">
       <div className="items-page">
-        <div className="items-page-filters-wrapper">{/* فیلتر ها  */}</div>
+        <div className="items-page-filters-wrapper">
+          <h6> فیلتر ها </h6>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <FormControl className="w-50" fullWidth>
+              <InputLabel id="category"> دسته بندی</InputLabel>
+              <Select
+                labelId="category"
+                // value={OrderStatus ? status : ""}
+                label="دسته بندی"
+                // onChange={(e) => setStatus(parseInt(e.target.value))}
+              >
+                <MenuItem value={1}>1</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        </div>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
@@ -61,7 +88,12 @@ export default function GetItems() {
                         className="hstack"
                       >
                         <div></div>
-                        <small>{getPrice(obj.price)}تومان</small>
+                        <Chip
+                          size="lg"
+                          variant="outlined"
+                          color="success"
+                          label={getPrice(obj.price) + " تومان"}
+                        />
                       </div>
                     </CardContent>
                   </CardActionArea>

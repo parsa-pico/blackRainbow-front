@@ -3,17 +3,25 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { PurchaseIncrease } from "../Items/PurchaseIncrease";
-import { Chip, Stepper } from "@mui/material";
+import { Box, Button, Chip, Modal, Stepper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GetCart from "./GetCart";
 import MyStepper from "./MyStepper";
 import FillInfo from "./FillInfo";
 import PaymentMehtod from "./PaymentMehtod";
+import { fields } from "./baseFields";
+import {
+  getAnonymousId,
+  getOrderInfo,
+  setOrderInfoStroage,
+} from "../../Services/authService";
+import { toast } from "react-toastify";
 
 export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState([]);
-  const [orderInfo, setOrderInfo] = useState({});
+  const [postPrice, setPostPrice] = useState(0);
+  const [orderInfo, setOrderInfo] = useState(getOrderInfo() || {});
   const nav = useNavigate();
   const totalSteps = 4;
   const [activeStep, setActiveStep] = React.useState(0);
@@ -21,10 +29,28 @@ export default function CartPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeStep]);
-
+  function handleSubmitPurchase() {
+    tryHTTP(
+      async (http) => {
+        const order = { ...orderInfo };
+        if (!order.description) delete order.description;
+        const { data } = await http.post("/orders/submitPurchase", order);
+        toast.success("خرید شما با موفقیت ثبت شد");
+        setTimeout(() => {
+          window.location = "/";
+        }, 1000);
+      },
+      undefined,
+      () => {
+        setActiveStep(totalSteps - 2);
+      }
+    );
+  }
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    console.log("h");
+    if (getAnonymousId()) return nav("/login", { state: "/cart" });
+    const newStep = activeStep + 1;
+    setActiveStep(newStep);
+    if (newStep === totalSteps - 1) handleSubmitPurchase();
   };
 
   const handleBack = () => {
@@ -34,13 +60,12 @@ export default function CartPage() {
     getCart();
   }, []);
   function getTotalPrice() {
-    const postPrice = 350000;
-    let total =
-      cart && cart.length > 0
-        ? cart.reduce((a, b) => a.price + b.price * b.quantity)
-        : 0;
+    let total = 0;
+    if (cart && cart.length > 0)
+      cart.forEach((obj) => (total += obj.price * obj.quantity));
+
     const cartTotal = total;
-    total += 350000; //TODO: make this something that backend tells
+    total += postPrice;
     return {
       total: getPrice(total),
       cartTotal: getPrice(cartTotal),
@@ -66,7 +91,8 @@ export default function CartPage() {
   async function getCart() {
     tryHTTP(async (http) => {
       const { data } = await http.get("/carts");
-      setCart(data);
+      setCart(data.cart);
+      setPostPrice(data.postPrice);
       console.log(data);
     });
   }
@@ -77,16 +103,35 @@ export default function CartPage() {
     if (target.type === "number") {
       value = parseInt(value);
     }
+    if (target.name === "paymentMethod") value = parseInt(value);
     const itemCopy = { ...orderInfo };
     const name = target.name;
-    console.log(name, value);
     itemCopy[name] = value;
+
     setOrderInfo(itemCopy);
+    setOrderInfoStroage(itemCopy);
   };
+
+  function nextDisabled() {
+    if (activeStep === totalSteps - 1) return true;
+    if (activeStep === 1)
+      for (let { name } of fields) {
+        if (name !== "description" && !orderInfo[name]) return true;
+      }
+
+    if (
+      activeStep === 2 &&
+      orderInfo.paymentMethod === 2 &&
+      !orderInfo.paymentPicture
+    )
+      return true;
+  }
   return (
     <div className="cart-page-wrapper">
       <h1 className="mb-5">تکمیل خرید</h1>
-      {activeStep === 0 && (
+      {cart.length === 0 && <h4>سبد خرید شما خالی است</h4>}
+
+      {activeStep === 0 && cart.length > 0 && (
         <GetCart
           getTotalPrice={getTotalPrice}
           handleCart={handleCart}
@@ -105,13 +150,16 @@ export default function CartPage() {
           orderInfo={orderInfo}
         />
       )}
-      <MyStepper
-        orderInfo={orderInfo}
-        totalSteps={totalSteps}
-        activeStep={activeStep}
-        handleBack={handleBack}
-        handleNext={handleNext}
-      />
+      {cart.length > 0 && (
+        <MyStepper
+          nextDisabled={nextDisabled}
+          orderInfo={orderInfo}
+          totalSteps={totalSteps}
+          activeStep={activeStep}
+          handleBack={handleBack}
+          handleNext={handleNext}
+        />
+      )}
     </div>
   );
 }

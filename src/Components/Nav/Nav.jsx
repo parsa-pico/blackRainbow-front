@@ -69,28 +69,38 @@ export default function MyNav() {
             <Offcanvas.Body className="">
               {user && user.isAdmin && (
                 <>
-                  <CustuomLink to="/admin/new-item">مدیریت محصولات</CustuomLink>
-                  <CustuomLink to="/admin/options">آپشن ها</CustuomLink>
+                  <CustuomLink
+                    onClick={() => {
+                      window.location = "/admin/new-item";
+                    }}
+                  >
+                    محصول جدید
+                  </CustuomLink>
+                  <CustuomLink to="/admin/options">مدیریت آپشن ها</CustuomLink>
+                  <CustuomLink to="/admin/orders">مدیریت سفارشات</CustuomLink>
+                  <hr />
                 </>
               )}
               <>
                 {!user && <CustuomLink to="/login">ورود/ثبت نام</CustuomLink>}
                 {user && (
-                  <CustuomLink
-                    onClick={() => {
-                      console.log("here");
-                      clearUser();
-                      tryHTTP(async (http) => {
-                        const { data } = await http.post("/customers/logout");
-                        console.log(data);
-                      });
-                      window.location = "/";
-
-                      //TODO:remove cookies from server side
-                    }}
-                  >
-                    خروج
-                  </CustuomLink>
+                  <div>
+                    <CustuomLink to="/orders">سفارشات من</CustuomLink>
+                    <CustuomLink
+                      onClick={() => {
+                        console.log("here");
+                        clearUser();
+                        tryHTTP(async (http) => {
+                          const { data } = await http.post("/customers/logout");
+                          console.log(data);
+                        });
+                        window.location = "/";
+                        //TODO:remove cookies from server side
+                      }}
+                    >
+                      خروج
+                    </CustuomLink>
+                  </div>
                 )}
               </>
             </Offcanvas.Body>
@@ -98,7 +108,7 @@ export default function MyNav() {
           <div>
             <IconButton
               onClick={() => {
-                nav("/cart");
+                window.location = "/cart";
               }}
               aria-label="cart"
             >

@@ -19,6 +19,7 @@ export default function PaymentMehtod({
   setOrderInfo,
 }) {
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const cardNumber = "6037991943291835";
   const cardOwner = "پارسا فروزمند";
   const onFileChange = async (e) => {
@@ -29,6 +30,7 @@ export default function PaymentMehtod({
           setLoading(true);
           const file = e.target.files[0];
           const formData = new FormData();
+          setFile(URL.createObjectURL(file));
 
           formData.append("picture", file, file.name);
           const { data } = await http.post(
@@ -41,6 +43,12 @@ export default function PaymentMehtod({
         },
         () => {
           setLoading(false);
+        },
+        () => {
+          const copy = { ...orderInfo };
+          delete copy.paymentPicture;
+          setOrderInfo(copy);
+          setFile(null);
         }
       );
     }
@@ -56,7 +64,7 @@ export default function PaymentMehtod({
           name="paymentMethod"
         >
           <FormControlLabel
-            value="1"
+            value={1}
             disabled
             control={<Radio />}
             label={
@@ -67,7 +75,7 @@ export default function PaymentMehtod({
             }
           />
           <FormControlLabel
-            value="2"
+            value={2}
             control={<Radio />}
             label={
               <div>
@@ -78,7 +86,7 @@ export default function PaymentMehtod({
           />
         </RadioGroup>
       </FormControl>
-      {orderInfo && orderInfo.paymentMethod === "2" && (
+      {orderInfo && orderInfo.paymentMethod === 2 && (
         <div className="mt-4 cart-payment-2">
           <p>لطفا هزینه نهایی را به شماره زیر کارت به کارت کنید</p>
           <p>سپس عکس فیش را آپلود کنید</p>
@@ -99,7 +107,14 @@ export default function PaymentMehtod({
             label={"اپلود عکس فیش"}
             accept="image/*"
           />
-          <small>{orderInfo.paymentPicture}</small>
+          {/* <small>{orderInfo.paymentPicture}</small> */}
+          {file && (
+            <img
+              className="mt-2"
+              src={file}
+              style={{ maxWidth: "20%", height: "auto" }}
+            />
+          )}
         </div>
       )}
       <h5 className="mt-3 ">

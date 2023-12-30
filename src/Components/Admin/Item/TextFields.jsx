@@ -14,7 +14,7 @@ export default function TextFields({ textFields, item, handleChange }) {
             type={type || "text"}
             required={required}
             onChange={handleChange}
-            value={item[name]}
+            value={item[name] || ""}
             label={label}
             {...rest}
             variant="outlined"
@@ -24,7 +24,7 @@ export default function TextFields({ textFields, item, handleChange }) {
       })}
       <FormControlLabel
         name="private"
-        value={item.private}
+        checked={item.private}
         onChange={handleChange}
         control={<Checkbox />}
         label="فقط به اعضا نشان داده شود"

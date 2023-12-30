@@ -21,6 +21,10 @@ import GetItems from "./Components/GetItems/GetItems";
 import { tryHTTP } from "./Common/commonFuncs";
 import { useCartCount } from "./context/cartCountContext";
 import CartPage from "./Components/Cart/CartPage";
+import Order from "./Components/Orders/Order";
+import Orders from "./Components/Orders/Orders";
+import AdminOrders from "./Components/Admin/Orders/AdminOrders";
+import AdminOrder from "./Components/Admin/Orders/AdminOrder";
 
 function App() {
   const loc = useLocation();
@@ -65,10 +69,16 @@ function App() {
       window.location = "/";
     }
 
-    tryHTTP(async (http) => {
-      const { data } = await http.post("/carts/count-cart");
-      setCartCount(data.count);
-    });
+    tryHTTP(
+      async (http) => {
+        const { data } = await http.post("/carts/count-cart");
+        setCartCount(data.count);
+      },
+      undefined,
+      () => {
+        window.location = "/";
+      }
+    );
 
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const nav = document.getElementById("my-nav");
@@ -90,10 +100,14 @@ function App() {
         <Route path="/items/:itemId" exact element={<Item />} />
         <Route path="/items" exact element={<GetItems />} />
         <Route path="/cart" exact element={<CartPage />} />
+        <Route path="/orders" exact element={<Orders />} />
+        <Route path="/orders/:orderId" exact element={<Order />} />
 
         <Route path="/admin">
           <Route path="new-item" element={<NewItem />} />
           <Route path="options" element={<OptionsPage />} />
+          <Route path="orders" exact element={<AdminOrders />} />
+          <Route path="orders/:orderId" exact element={<AdminOrder />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

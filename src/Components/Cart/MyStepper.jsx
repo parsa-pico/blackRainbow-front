@@ -12,6 +12,7 @@ export default function MyStepper({
   handleBack,
   totalSteps,
   orderInfo,
+  nextDisabled,
 }) {
   useEffect(() => {
     console.log(orderInfo.paymentMethod);
@@ -25,12 +26,8 @@ export default function MyStepper({
       activeStep={activeStep}
       sx={{ position: "fixed", bottom: 0, zIndex: 99999 }}
       nextButton={
-        <Button
-          size="small"
-          onClick={handleNext}
-          disabled={activeStep === totalSteps - 1}
-        >
-          {activeStep === totalSteps - 2 && orderInfo.paymentMethod === "2"
+        <Button size="small" onClick={handleNext} disabled={nextDisabled()}>
+          {activeStep === totalSteps - 2 && orderInfo.paymentMethod === 2
             ? "ثبت خرید"
             : stepNames[activeStep]}
           {theme.direction === "rtl" ? (

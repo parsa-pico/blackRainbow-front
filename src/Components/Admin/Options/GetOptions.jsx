@@ -212,7 +212,9 @@ export default function GetOptions({
                         const index = copy.findIndex(
                           (opt) => opt._id === option._id
                         );
-                        copy.splice(index);
+                        // console.log(selectedOptions);
+                        // console.log(index);
+                        copy.splice(index, 1);
                         setSelectedOptions(copy);
                       }
                     }}

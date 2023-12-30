@@ -20,6 +20,8 @@ export default function ItemOptions({
   }
   return (
     <div>
+      <hr />
+      <p>گزینه های محصول:</p>
       {itemOptions &&
         itemOptions.length > 0 &&
         itemOptions.map((optionObj, i) => {

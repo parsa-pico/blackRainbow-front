@@ -29,33 +29,37 @@ export default function GetCart({
                     nav("/items/" + item.itemId);
                   }}
                   src={getPicture(item.picture)}
-                  className="img-fluid cart-img"
+                  className="img-fluid cart-img pointer"
                 />
-                <div className="cart-purchase-wrapper">
-                  <PurchaseIncrease
-                    handleCart={(q) => handleCart(q, item)}
-                    fontSize="small"
-                    className="bg-dark"
-                    quantity={item.quantity}
-                    loading={loading}
-                  />
-                </div>
+                {!readOnly && (
+                  <div className="cart-purchase-wrapper">
+                    <PurchaseIncrease
+                      handleCart={(q) => handleCart(q, item)}
+                      fontSize="small"
+                      className="bg-dark"
+                      quantity={item.quantity}
+                      loading={loading}
+                    />
+                  </div>
+                )}
               </div>
               <div className="cart-item-desc me-2">
                 <h3 className="cart-item-title mt-2">{item.productName}</h3>
                 <div className="mt-1">
                   <p className="mb-1">قیمت واحد:{getPrice(item.price)} تومان</p>
-
-                  {item.options &&
-                    Object.entries(item.options).map(([key, value], i) => {
-                      return (
-                        <div key={i}>
-                          <small>
-                            {key}:{value}
-                          </small>
-                        </div>
-                      );
-                    })}
+                  {readOnly && <p>تعداد:{item.quantity}</p>}
+                  <div className="mb-5">
+                    {item.options &&
+                      Object.entries(item.options).map(([key, value], i) => {
+                        return (
+                          <div key={i}>
+                            <div>
+                              {key}:{value}
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
                 <Chip
                   size="small"

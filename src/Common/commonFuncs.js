@@ -119,3 +119,13 @@ export function searchText(value) {
 export function getPicture(pictureName) {
   return `${getBackUrl()}/pictures/${pictureName}`;
 }
+export function getDate(dateValue) {
+  let date = new Date(dateValue);
+  date = date.toLocaleString("fa-IR").split(" ")[0].replace(/,/g, "").trim();
+  return date;
+}
+export function getOrderStatus(result, OrderStatus) {
+  return result.paymentMethod === 2 && result.status === 1
+    ? { text: "در انتظار تایید پرداخت", color: "yellow" }
+    : { text: OrderStatus[result.status], color: "" };
+}

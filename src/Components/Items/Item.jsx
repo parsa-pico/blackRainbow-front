@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import http from "../../Services/httpService";
 import { getPicture, tryHTTP } from "../../Common/commonFuncs";
 
@@ -7,10 +7,13 @@ import ItemImage from "./ItemImage";
 import ItemPath from "./ItemPath";
 import ItemOptions from "./ItemOptions";
 import ItemPurchase from "./ItemPurchase";
-import { Chip } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import ItemTags from "./ItemTags";
+import { getUser } from "../../Services/authService";
 export default function Item() {
+  const nav = useNavigate();
   const params = useParams();
+  const user = getUser();
   const [itemData, setItemData] = useState({});
   const [cartItem, setCartItem] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -80,7 +83,7 @@ export default function Item() {
         <ItemImage picsData={itemData.pictures} />
         <h3 className="mt-2">{itemData.productName}</h3>
         <hr />
-        <h6>ویژگی های کالا:</h6>
+        <h6>ویژگی های محصول:</h6>
         <p className="item-desc">{itemData.description}</p>
         <ItemOptions
           selectedOptions={selectedOptions}
@@ -88,6 +91,18 @@ export default function Item() {
           itemOptions={itemData && itemData.optionsData}
         />
         <ItemTags tags={itemData.tags} />
+        {user && user.isAdmin && (
+          <Button
+            onClick={() => {
+              nav(`/admin/new-item?itemId=${itemData._id}`);
+            }}
+            className="mt-2"
+            variant="outlined"
+            color="warning"
+          >
+            ادیت کالا
+          </Button>
+        )}
       </div>
       <ItemPurchase
         loading={loading}

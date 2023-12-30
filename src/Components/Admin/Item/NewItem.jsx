@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Category from "./Category";
 import httpSerivce from "../../../Services/httpService";
-import { tryHTTP } from "../../../Common/commonFuncs";
+import { getPicture, tryHTTP } from "../../../Common/commonFuncs";
 
 import { toast } from "react-toastify";
 import TextFields from "./TextFields";
@@ -11,10 +11,13 @@ import Tags from "./Tags";
 import SelectOptions from "./SelectOptions";
 import { fields, subCategoryBase, categoryBase, itemBase } from "./baseFields";
 import SelectPictures from "./SelectPictures/SelectPictures";
+import { useSearchParams } from "react-router-dom";
 
 export default function NewItem() {
   const textFields = fields;
   const [category, setCategory] = useState(categoryBase);
+  const [searchParmas] = useSearchParams();
+  const [itemId, setItemId] = useState(null);
   const [subCategory, setSubCategory] = useState(subCategoryBase);
   const [tag, setTag] = useState(categoryBase);
   const [tags, setTags] = useState([]);
@@ -37,8 +40,20 @@ export default function NewItem() {
     obj.price *= 10;
     console.log(obj);
     tryHTTP(async (http) => {
-      await http.post("/items", obj);
-      toast("آیتم اضافه شد");
+      if (!itemId) {
+        await http.post("/items", obj);
+        toast("آیتم اضافه شد");
+        setTimeout(() => {
+          window.location = "/items";
+        }, 1000);
+      } else {
+        console.log(obj);
+        await http.put(`/items/${itemId}`, obj);
+        toast("آیتم ادیت شد");
+      }
+      // setTimeout(() => {
+      //   window.location = "/items";
+      // }, 1000);
     });
   }
   const handleChange = ({ target }) => {
@@ -90,10 +105,49 @@ export default function NewItem() {
     if (tag && tag.title) appendTag(tag.title);
   }, [tag]);
 
+  useEffect(() => {
+    async function search() {
+      const itemId = searchParmas.get("itemId");
+      if (!itemId) return;
+      setItemId(itemId);
+
+      tryHTTP(async (http) => {
+        let { data } = await http.get(`/items/${itemId}`);
+        data = data[0];
+
+        data.price /= 10;
+        setCategory(data.categoryData);
+        setSubCategory(data.subCategoryData);
+        setTags(data.tags);
+        setSelectedOptions(data.optionsData);
+        const pics = data.pictures.map((pic) => {
+          return { blob: getPicture(pic), uploadedFileName: pic };
+        });
+        const customersPics = data.customersPictures.map((pic) => {
+          return { blob: getPicture(pic), uploadedFileName: pic };
+        });
+        setCustomersPictures(customersPics);
+        setPictures(pics);
+        //
+        delete data.categoryData;
+        delete data.subCategoryData;
+        delete data.tags;
+        delete data.optionsData;
+        delete data.pictures;
+        delete data._id;
+        delete data.views;
+        //
+        console.log(data);
+        setItem(data);
+        console.log(data);
+      });
+    }
+    search();
+  }, []);
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper" style={{ alignItems: "stretch" }}>
       <div className="page">
-        <h2>کالای جدید</h2>
+        {itemId ? <h2>ادیت کالا</h2> : <h2>کالای جدید</h2>}
         <form
           className="w-100"
           onSubmit={(e) => {
@@ -161,7 +215,7 @@ export default function NewItem() {
 
           <div>
             <Button variant="outlined" className="w-100 mt-4" type="submit">
-              ثبت
+              {!itemId ? "ثبت" : "ادیت"}
             </Button>
           </div>
         </form>

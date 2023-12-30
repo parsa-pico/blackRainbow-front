@@ -29,6 +29,12 @@ function getCookie(cookieName) {
 
   return null;
 }
+export function getOrderInfo() {
+  return JSON.parse(storage.getItem("orderInfo"));
+}
+export function setOrderInfoStroage(info) {
+  storage.setItem("orderInfo", JSON.stringify(info));
+}
 // export function getToken() {
 //   return storage.getItem("token");
 // }
