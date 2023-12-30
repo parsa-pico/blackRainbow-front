@@ -2,19 +2,25 @@
   padding: 1.5rem;
 }
 .items-page {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 .items-page-filters-wrapper {
-  display: flex;
+  /* display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-bottom: 2rem;
+  
+  margin-bottom: 2rem; */
+  border: 1px solid white;
+
+  padding: 0.5rem;
+  border-radius: 5px;
 }
 @media screen and (min-width: 1024px) {
   .items-page {
-    flex-direction: row;
+    /* flex-direction: row; */
   }
   .items-page-filters-wrapper {
-    margin-left: 10rem;
+    /* margin-left: 10rem; */
   }
 }
