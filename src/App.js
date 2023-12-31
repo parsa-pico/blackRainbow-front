@@ -70,16 +70,11 @@ function App() {
       window.location = "/";
     }
 
-    tryHTTP(
-      async (http) => {
-        const { data } = await http.post("/carts/count-cart");
-        setCartCount(data.count);
-      },
-      undefined,
-      () => {
-        window.location = "/";
-      }
-    );
+    tryHTTP(async (http) => {
+      const { data } = await http.post("/carts/count-cart");
+      setCartCount(data.count);
+      window.location = "/";
+    });
 
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const nav = document.getElementById("my-nav");
