@@ -18,6 +18,7 @@ import { prefixer } from "stylis";
 import "./styles/index.css";
 import { ToastProvider } from "./context/toastContext";
 import { CartCountProvider } from "./context/cartCountContext";
+import { GlobalLoadingProvider } from "./context/globalLoadingContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const cacheRtl = createCache({
   key: "muirtl",
@@ -33,18 +34,20 @@ root.render(
   // <React.StrictMode>
   <>
     <Router>
-      <CartCountProvider>
-        <ToastProvider>
-          <SocketProvider>
-            <CacheProvider value={cacheRtl}>
-              <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
-                <App />
-              </ThemeProvider>
-            </CacheProvider>
-          </SocketProvider>
-        </ToastProvider>
-      </CartCountProvider>
+      <GlobalLoadingProvider>
+        <CartCountProvider>
+          <ToastProvider>
+            <SocketProvider>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={darkTheme}>
+                  <CssBaseline />
+                  <App />
+                </ThemeProvider>
+              </CacheProvider>
+            </SocketProvider>
+          </ToastProvider>
+        </CartCountProvider>
+      </GlobalLoadingProvider>
     </Router>
   </>
   //  </React.StrictMode>

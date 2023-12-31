@@ -10,13 +10,14 @@ export default function ItemPath({ links }) {
         {links &&
           links.length > 0 &&
           links.map((link, i) => {
-            const keyWord = link.parentId ? "subCategory" : "category";
+            let query = `category=${links[0]._id}`;
+            if (i === 1) query += `&subCategory=${links[1]._id}`;
             return (
               <Link
                 key={i}
                 underline="hover"
                 color="inherit"
-                href={`/items?${keyWord}=${link._id}`}
+                href={`/items?${query}`}
               >
                 {link.title}
               </Link>

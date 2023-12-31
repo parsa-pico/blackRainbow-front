@@ -3,9 +3,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Card,
-  CardActionArea,
+  div,
   CardContent,
   CardMedia,
   Chip,
@@ -17,6 +19,7 @@ import {
   InputLabel,
   Button,
 } from "@mui/material";
+import { useGlobalLoading } from "../../context/globalLoadingContext";
 
 export default function GetItems() {
   const nav = useNavigate();
@@ -25,26 +28,38 @@ export default function GetItems() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [selectedSortIndex, setSelectedSortIndex] = useState("");
+  const [globalLoading, setGlobalLoading] = useGlobalLoading();
   const searchValue = searchParams.get("search") || "";
 
   const category = searchParams.get("category") || "";
   const subCategory = searchParams.get("subCategory") || "";
+  const sortIndex =
+    parseInt(searchParams.get("sortIndex")) || (searchValue ? 1 : 2);
 
   function search() {
-    tryHTTP(async (http) => {
-      const { data } = await http.post("/items/get-by-keyword", {
-        search: searchValue,
-        category,
-        subCategory,
-      });
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        const { data } = await http.post("/items/get-by-keyword", {
+          search: searchValue,
+          category,
+          subCategory,
+          sortIndex,
+        });
 
-      setItems(data);
-    });
+        setItems(data.result);
+        console.log(data.sortBy);
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
     tryHTTP(async (http) => {
       const { data } = await http.get("/categories");
       setSelectedCategory(category);
       setSelectedSubCategory(subCategory);
-      console.log(data);
+      setSelectedSortIndex(sortIndex);
       setCategories(data);
     });
   }
@@ -118,9 +133,27 @@ export default function GetItems() {
                 {getSubCategoryItems()}
               </Select>
             </FormControl>
+            <FormControl
+              className="my-2"
+              sx={{ width: { xs: "100%", md: "50%", xl: "100%" } }}
+              fullWidth
+            >
+              <InputLabel id="sub-category">مرتب سازی بر اساس</InputLabel>
+              <Select
+                labelId="sub-category"
+                value={selectedSortIndex}
+                label="مرتب سازی بر اساس"
+                onChange={(e) => setSelectedSortIndex(parseInt(e.target.value))}
+              >
+                {searchValue && <MenuItem value={1}>مرتبط ترین</MenuItem>}
+                <MenuItem value={2}>پربازدید ترین</MenuItem>
+                <MenuItem value={3}> جدید ترین</MenuItem>
+                <MenuItem value={4}>قدیمی ترین</MenuItem>
+              </Select>
+            </FormControl>
             <Button
               onClick={() => {
-                window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}`;
+                window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}`;
               }}
               variant="outlined"
             >
@@ -142,19 +175,25 @@ export default function GetItems() {
             items.map((obj, index) => (
               <Grid item xs={1} sm={1} md={1} lg={1} key={index}>
                 <Card>
-                  <CardActionArea
-                    // sx={{ display: "flex" }}
-                    onClick={() => {
-                      nav("/items/" + obj._id);
-                    }}
+                  <div
+                  // sx={{ display: "flex" }}
                   >
                     <CardMedia
+                      onClick={() => {
+                        nav("/items/" + obj._id);
+                      }}
                       component="img"
                       // style={{ width: "100px" }}
                       image={getPicture(obj.pictures[0])}
                     />
+
                     <CardContent>
-                      <Typography className="mb-5" gutterBottom component="div">
+                      <Typography
+                        fontFamily={"yekan"}
+                        className="mb-5"
+                        gutterBottom
+                        variant="h6"
+                      >
                         {obj.productName}
                       </Typography>
                       <div
@@ -163,14 +202,14 @@ export default function GetItems() {
                       >
                         <div></div>
                         <Chip
-                          size="lg"
+                          size="medium"
                           variant="outlined"
                           color="success"
                           label={getPrice(obj.price) + " تومان"}
                         />
                       </div>
                     </CardContent>
-                  </CardActionArea>
+                  </div>
                 </Card>
               </Grid>
             ))}

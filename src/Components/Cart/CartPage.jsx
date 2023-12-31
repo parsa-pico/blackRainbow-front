@@ -16,12 +16,14 @@ import {
   setOrderInfoStroage,
 } from "../../Services/authService";
 import { toast } from "react-toastify";
+import { useGlobalLoading } from "../../context/globalLoadingContext";
 
 export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState([]);
   const [postPrice, setPostPrice] = useState(0);
   const [orderInfo, setOrderInfo] = useState(getOrderInfo() || {});
+  const [globalLoading, setGlobalLoading] = useGlobalLoading();
   const nav = useNavigate();
   const totalSteps = 4;
   const [activeStep, setActiveStep] = React.useState(0);
@@ -89,12 +91,18 @@ export default function CartPage() {
     );
   }
   async function getCart() {
-    tryHTTP(async (http) => {
-      const { data } = await http.get("/carts");
-      setCart(data.cart);
-      setPostPrice(data.postPrice);
-      console.log(data);
-    });
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        const { data } = await http.get("/carts");
+        setCart(data.cart);
+        setPostPrice(data.postPrice);
+        console.log(data);
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
   }
   const handleChange = ({ target }) => {
     let value = target.value;

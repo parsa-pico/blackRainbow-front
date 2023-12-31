@@ -7,9 +7,12 @@ import ItemImage from "./ItemImage";
 import ItemPath from "./ItemPath";
 import ItemOptions from "./ItemOptions";
 import ItemPurchase from "./ItemPurchase";
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, Typography } from "@mui/material";
 import ItemTags from "./ItemTags";
 import { getUser } from "../../Services/authService";
+import { useGlobalLoading } from "../../context/globalLoadingContext";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 export default function Item() {
   const nav = useNavigate();
   const params = useParams();
@@ -18,10 +21,11 @@ export default function Item() {
   const [cartItem, setCartItem] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [loading, setLoading] = useState(false);
-
+  const [globalLoading, setGlobalLoading] = useGlobalLoading();
   function getItem() {
     tryHTTP(
       async () => {
+        setGlobalLoading(true);
         setLoading(true);
         const { itemId } = params;
         let { data } = await http.get(`/items/${itemId}`);
@@ -44,18 +48,28 @@ export default function Item() {
       },
       () => {
         setLoading(false);
+        setGlobalLoading(false);
       }
     );
+  }
+  function getLiked() {
+    tryHTTP(async () => {
+      const { itemId } = params;
+      let { data } = await http.get(`/likes/${itemId}`);
+      setItemData((obj) => ({ ...obj, liked: data }));
+    });
   }
 
   useEffect(() => {
     getItem();
+    getLiked();
   }, []);
 
   function handleCart(quantity_) {
     tryHTTP(
       async (http) => {
         setLoading(true);
+
         const quantity = cartItem ? quantity_ : 1;
         const { data } = await http.post(`/carts/new/${itemData._id}`, {
           options: selectedOptions,
@@ -66,6 +80,20 @@ export default function Item() {
       },
       () => {
         setLoading(false);
+      }
+    );
+  }
+
+  function likeItem() {
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+
+        await http.post(`/likes/${itemData._id}`);
+        setItemData((obj) => ({ ...obj, liked: true }));
+      },
+      () => {
+        setGlobalLoading(false);
       }
     );
   }
@@ -81,7 +109,15 @@ export default function Item() {
       />
       <div className="item-upper my-5">
         <ItemImage picsData={itemData.pictures} />
-        <h3 className="mt-2">{itemData.productName}</h3>
+
+        <div style={{ justifyContent: "space-between" }} className="hstack">
+          <Typography className="my-2" gutterBottom variant="h3">
+            {itemData.productName}
+          </Typography>
+          <div>
+            {itemData.liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </div>
+        </div>
         <hr />
         <h6>ویژگی های محصول:</h6>
         <p className="item-desc">{itemData.description}</p>
@@ -91,6 +127,23 @@ export default function Item() {
           itemOptions={itemData && itemData.optionsData}
         />
         <ItemTags tags={itemData.tags} />
+
+        {user && user.isAdmin && (
+          <div className="my-3">
+            <table>
+              <tbody>
+                <tr>
+                  <td>{itemData.views}</td>
+                  <td>بازدید</td>
+                </tr>
+                <tr>
+                  <td>{itemData.sold}</td>
+                  <td>فروش</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
         {user && user.isAdmin && (
           <Button
             onClick={() => {
