@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 
 import httpService from "../Services/httpService.js";
+import { AxiosError } from "axios";
 export const persianDays = [
   "شنبه",
   "یکشنبه",
@@ -24,15 +25,17 @@ export async function tryHTTP(func, doFinally, doCatch) {
   try {
     await func(httpService);
   } catch (e) {
-    if (e && e.response) {
-      const expectedError =
-        e.response && e.response.status >= 400 && e.response.status < 500;
+    const expectedError =
+      e.response && e.response.status >= 400 && e.response.status < 500;
 
+    if (e && e instanceof AxiosError && e.response) {
       if (expectedError) {
         const msg = e.response.data.msg || e.response.data;
         toast.error(msg);
       }
-    } else {
+    } else if (!e instanceof AxiosError) {
+      console.log("here");
+
       alert(e.message);
     }
 
