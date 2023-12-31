@@ -86,6 +86,7 @@ export default function MyNav() {
                 {user && (
                   <div>
                     <CustuomLink to="/orders">سفارشات من</CustuomLink>
+                    <CustuomLink to="/likes">علاقه مندی ها</CustuomLink>
                     <CustuomLink
                       onClick={() => {
                         console.log("here");

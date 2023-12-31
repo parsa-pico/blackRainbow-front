@@ -13,6 +13,7 @@ import { getUser } from "../../Services/authService";
 import { useGlobalLoading } from "../../context/globalLoadingContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { toast } from "react-toastify";
 export default function Item() {
   const nav = useNavigate();
   const params = useParams();
@@ -53,11 +54,13 @@ export default function Item() {
     );
   }
   function getLiked() {
-    tryHTTP(async () => {
-      const { itemId } = params;
-      let { data } = await http.get(`/likes/${itemId}`);
-      setItemData((obj) => ({ ...obj, liked: data }));
-    });
+    if (user)
+      tryHTTP(async () => {
+        const { itemId } = params;
+        let { data } = await http.get(`/likes/${itemId}`);
+        console.log(data);
+        setItemData((obj) => ({ ...obj, liked: data }));
+      });
   }
 
   useEffect(() => {
@@ -85,17 +88,38 @@ export default function Item() {
   }
 
   function likeItem() {
-    tryHTTP(
-      async (http) => {
-        setGlobalLoading(true);
+    if (user)
+      tryHTTP(
+        async (http) => {
+          setGlobalLoading(true);
 
-        await http.post(`/likes/${itemData._id}`);
-        setItemData((obj) => ({ ...obj, liked: true }));
-      },
-      () => {
-        setGlobalLoading(false);
-      }
-    );
+          await http.post(`/likes/${itemData._id}`);
+          setItemData((obj) => ({ ...obj, liked: true }));
+        },
+        () => {
+          setGlobalLoading(false);
+        }
+      );
+    else {
+      toast.dark("ابتدا وارد حساب خود شوید");
+    }
+  }
+  function dislikeItem() {
+    if (user)
+      tryHTTP(
+        async (http) => {
+          setGlobalLoading(true);
+
+          await http.delete(`/likes/${itemData._id}`);
+          setItemData((obj) => ({ ...obj, liked: false }));
+        },
+        () => {
+          setGlobalLoading(false);
+        }
+      );
+    else {
+      toast.dark("ابتدا وارد حساب خود شوید");
+    }
   }
   return (
     <div className="item-wrapper container mt-2">
@@ -114,8 +138,12 @@ export default function Item() {
           <Typography className="my-2" gutterBottom variant="h3">
             {itemData.productName}
           </Typography>
-          <div>
-            {itemData.liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          <div className="pointer">
+            {itemData.liked ? (
+              <FavoriteIcon onClick={dislikeItem} />
+            ) : (
+              <FavoriteBorderIcon onClick={likeItem} />
+            )}
           </div>
         </div>
         <hr />

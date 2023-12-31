@@ -1,0 +1,12 @@
+.liked-items-grid {
+  display: grid;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .liked-items-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -25,6 +25,7 @@ import Order from "./Components/Orders/Order";
 import Orders from "./Components/Orders/Orders";
 import AdminOrders from "./Components/Admin/Orders/AdminOrders";
 import AdminOrder from "./Components/Admin/Orders/AdminOrder";
+import GetLikedItems from "./Components/Liked/GetLikedItems";
 
 function App() {
   const loc = useLocation();
@@ -102,6 +103,7 @@ function App() {
         <Route path="/cart" exact element={<CartPage />} />
         <Route path="/orders" exact element={<Orders />} />
         <Route path="/orders/:orderId" exact element={<Order />} />
+        <Route path="/likes" exact element={<GetLikedItems />} />
 
         <Route path="/admin">
           <Route path="new-item" element={<NewItem />} />

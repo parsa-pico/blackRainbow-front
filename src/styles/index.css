@@ -9,6 +9,7 @@
 @import url("./fonts.css");
 @import url("./orders.css");
 @import url("./order.css");
+@import url("./likedItems.css");
 
 body {
   --bg-purchase: rgb(35 37 55);

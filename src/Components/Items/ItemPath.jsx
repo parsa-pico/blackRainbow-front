@@ -8,20 +8,22 @@ export default function ItemPath({ links }) {
     <div className="item-path-wrapper">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
         {links &&
-          links.length > 0 &&
+          links.length > 1 &&
           links.map((link, i) => {
-            let query = `category=${links[0]._id}`;
-            if (i === 1) query += `&subCategory=${links[1]._id}`;
-            return (
-              <Link
-                key={i}
-                underline="hover"
-                color="inherit"
-                href={`/items?${query}`}
-              >
-                {link.title}
-              </Link>
-            );
+            if (links[1]) {
+              let query = `category=${links[0]._id}`;
+              if (i === 1) query += `&subCategory=${links[1]._id}`;
+              return (
+                <Link
+                  key={i}
+                  underline="hover"
+                  color="inherit"
+                  href={`/items?${query}`}
+                >
+                  {link.title}
+                </Link>
+              );
+            }
           })}
         ,
       </Breadcrumbs>
