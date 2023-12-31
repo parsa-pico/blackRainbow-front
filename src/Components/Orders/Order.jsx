@@ -74,6 +74,10 @@ export default function Order() {
               <td>{order.postalCode}</td>
             </tr>
             <tr>
+              <td> توضیحات سفارش</td>
+              <td>{order.description}</td>
+            </tr>
+            <tr>
               <td>تاریخ ثبت سفارش</td>
               <td>{getDate(order.createdAt)}</td>
             </tr>
