@@ -70,16 +70,17 @@ function App() {
       window.location = "/";
     }
 
-    tryHTTP(
-      async (http) => {
-        const { data } = await http.post("/carts/count-cart");
-        setCartCount(data.count);
-      },
-      undefined,
-      (e) => {
-        if (e.response && e.response.status === 403) window.location = "/";
-      }
-    );
+    // if (user || getAnonymousId())
+    //   tryHTTP(
+    //     async (http) => {
+    //       const { data } = await http.post("/carts/count-cart");
+    //       setCartCount(data.count);
+    //     },
+    //     undefined,
+    //     (e) => {
+    //       if (e.response && e.response.status === 403) window.location = "/";
+    //     }
+    //   );
 
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const nav = document.getElementById("my-nav");
