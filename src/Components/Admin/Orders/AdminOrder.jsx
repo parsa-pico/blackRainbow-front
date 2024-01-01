@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import {
   getDate,
   getOrderStatus,
+  getPicture,
   getPrice,
   tryHTTP,
 } from "../../../Common/commonFuncs";
@@ -142,6 +143,16 @@ export default function AdminOrder() {
             <tr>
               <td> کد رهگیری پست</td>
               <td>{order.postTrackingCode || "-"}</td>
+            </tr>
+            <tr>
+              <td> عکس فیش </td>
+              <td>
+                {order.paymentPicture ? (
+                  <a href={getPicture(order.paymentPicture)}>لینک</a>
+                ) : (
+                  "-"
+                )}
+              </td>
             </tr>
           </tbody>
         </Table>

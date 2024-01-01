@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import {
   getDate,
   getOrderStatus,
+  getPicture,
   getPrice,
   tryHTTP,
 } from "../../Common/commonFuncs";
@@ -20,7 +21,7 @@ export default function Order() {
   function search() {
     tryHTTP(async (http) => {
       const { data } = await http.get("/orders/" + params.orderId);
-
+      console.log(data);
       const { result, OrderStatus } = data;
       result.status = getOrderStatus(result, OrderStatus);
 
@@ -108,6 +109,16 @@ export default function Order() {
             <tr>
               <td> کد رهگیری پست</td>
               <td>{order.postTrackingCode || "-"}</td>
+            </tr>
+            <tr>
+              <td> عکس فیش </td>
+              <td>
+                {order.paymentPicture ? (
+                  <a href={getPicture(order.paymentPicture)}>لینک</a>
+                ) : (
+                  "-"
+                )}
+              </td>
             </tr>
           </tbody>
         </Table>

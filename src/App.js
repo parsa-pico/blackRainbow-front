@@ -90,7 +90,6 @@ function App() {
     }
     if (loc.pathname.includes("login")) setShowNav(false);
     else setShowNav(true);
-    console.log(process.env); //TODO: remove thissss
   }, [loc]);
 
   return (
