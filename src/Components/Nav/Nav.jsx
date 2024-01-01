@@ -53,6 +53,7 @@ export default function MyNav() {
             <img className="nav-logo" src="/logo.png" alt="" />
           </Navbar.Brand>
           <Offcanvas
+            style={{ zIndex: 9999999 }}
             show={menuOpen}
             onHide={() => {
               setMenuOpen(false);
