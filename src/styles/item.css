@@ -23,6 +23,7 @@
   justify-content: space-between;
   z-index: 99999;
   padding: 0.5rem 1rem;
+  padding-bottom: 1.5rem;
   box-shadow: 0 -2px 1px 0px rgba(0, 0, 0, 0.557);
 }
 .item-purchase-btn {

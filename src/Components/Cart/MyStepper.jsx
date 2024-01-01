@@ -24,7 +24,12 @@ export default function MyStepper({
       variant="progress"
       steps={totalSteps}
       activeStep={activeStep}
-      sx={{ position: "fixed", bottom: 0, zIndex: 99999 }}
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        zIndex: 99999,
+        paddingBottom: "1.3rem",
+      }}
       nextButton={
         <Button size="small" onClick={handleNext} disabled={nextDisabled()}>
           {activeStep === totalSteps - 2 && orderInfo.paymentMethod === 2
