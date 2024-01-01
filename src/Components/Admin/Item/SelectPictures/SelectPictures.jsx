@@ -9,6 +9,7 @@ import { readFile, tryHTTP } from "../../../../Common/commonFuncs";
 import { toast } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect } from "react";
 const ORIENTATION_TO_ANGLE = {
   3: 180,
   6: 90,
@@ -81,6 +82,11 @@ const SelectPictures = ({ pictures, setPictures, label }) => {
     setImageSrc(null);
     setOpen(false);
   }
+  useEffect(() => {
+    const nav = document.getElementById("my-nav");
+    if (imageSrc) nav.style.display = "none";
+    else nav.style.display = "block";
+  }, [imageSrc]);
   return (
     <div>
       {imageSrc ? (

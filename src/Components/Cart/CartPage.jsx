@@ -34,6 +34,7 @@ export default function CartPage() {
   function handleSubmitPurchase() {
     tryHTTP(
       async (http) => {
+        setGlobalLoading(true);
         const order = { ...orderInfo };
         if (!order.description) delete order.description;
         const { data } = await http.post("/orders/submitPurchase", order);
@@ -42,7 +43,9 @@ export default function CartPage() {
           window.location = "/";
         }, 1000);
       },
-      undefined,
+      () => {
+        setGlobalLoading(false);
+      },
       () => {
         setActiveStep(totalSteps - 2);
       }

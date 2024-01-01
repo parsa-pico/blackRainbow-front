@@ -12,6 +12,7 @@ import SelectOptions from "./SelectOptions";
 import { fields, subCategoryBase, categoryBase, itemBase } from "./baseFields";
 import SelectPictures from "./SelectPictures/SelectPictures";
 import { useSearchParams } from "react-router-dom";
+import { useGlobalLoading } from "./../../../context/globalLoadingContext";
 
 export default function NewItem() {
   const textFields = fields;
@@ -25,6 +26,7 @@ export default function NewItem() {
   const [pictures, setPictures] = useState([]);
   const [customersPictures, setCustomersPictures] = useState([]);
   const [item, setItem] = useState(itemBase);
+  const setGlobalLoading = useGlobalLoading()[1];
   function submitForm() {
     const obj = { ...item };
     obj.category = category._id;
@@ -35,26 +37,33 @@ export default function NewItem() {
     obj.customersPictures = customersPictures.map(
       (pic) => pic.uploadedFileName
     );
-
-    if (!obj.brand) delete obj.brand;
+    delete obj.sold;
+    delete obj.views;
+    if (!obj.brand) obj.brand = "";
     obj.price *= 10;
     console.log(obj);
-    tryHTTP(async (http) => {
-      if (!itemId) {
-        await http.post("/items", obj);
-        toast("آیتم اضافه شد");
-        setTimeout(() => {
-          window.location = "/items";
-        }, 1000);
-      } else {
-        console.log(obj);
-        await http.put(`/items/${itemId}`, obj);
-        toast("آیتم ادیت شد");
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        if (!itemId) {
+          await http.post("/items", obj);
+          toast("آیتم اضافه شد");
+          setTimeout(() => {
+            window.location = "/items";
+          }, 1000);
+        } else {
+          console.log(obj);
+          await http.put(`/items/${itemId}`, obj);
+          toast("آیتم ادیت شد");
+        }
+        // setTimeout(() => {
+        //   window.location = "/items";
+        // }, 1000);
+      },
+      () => {
+        setGlobalLoading(false);
       }
-      // setTimeout(() => {
-      //   window.location = "/items";
-      // }, 1000);
-    });
+    );
   }
   const handleChange = ({ target }) => {
     let value = target.value;

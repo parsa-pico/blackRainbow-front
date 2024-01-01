@@ -135,9 +135,22 @@ export default function Item() {
         <ItemImage picsData={itemData.pictures} />
 
         <div style={{ justifyContent: "space-between" }} className="hstack">
-          <Typography className="my-2" gutterBottom variant="h3">
-            {itemData.productName}
-          </Typography>
+          <div>
+            <Typography className="my-2" gutterBottom variant="h3">
+              {itemData.productName}
+            </Typography>
+            {itemData.brand && (
+              <Typography
+                className="my-2"
+                gutterBottom
+                color="whitesmoke"
+                variant="h6"
+              >
+                برند {itemData.brand}
+              </Typography>
+            )}
+          </div>
+
           <div className="pointer">
             {itemData.liked ? (
               <FavoriteIcon onClick={dislikeItem} />
@@ -147,6 +160,7 @@ export default function Item() {
           </div>
         </div>
         <hr />
+
         <h6>ویژگی های محصول:</h6>
         <p className="item-desc">{itemData.description}</p>
         <ItemOptions

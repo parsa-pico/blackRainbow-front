@@ -64,7 +64,8 @@ export default function MyNav() {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                منو
+                فروشگاه بلک رینبو
+                <hr />
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body className="">
