@@ -80,6 +80,9 @@ export default function MyNav() {
                   </CustuomLink>
                   <CustuomLink to="/admin/options">مدیریت آپشن ها</CustuomLink>
                   <CustuomLink to="/admin/orders">مدیریت سفارشات</CustuomLink>
+                  <CustuomLink to="/admin/background">
+                    انتخاب پس زمینه
+                  </CustuomLink>
                   <hr />
                 </>
               )}

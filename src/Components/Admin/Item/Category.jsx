@@ -106,6 +106,7 @@ export default function Category({
         // Suggest the creation of a new value
         if (
           params.inputValue !== "" &&
+          !loading &&
           !options.find((opt) => opt.title === params.inputValue)
         ) {
           const obj = {

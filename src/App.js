@@ -26,6 +26,7 @@ import Orders from "./Components/Orders/Orders";
 import AdminOrders from "./Components/Admin/Orders/AdminOrders";
 import AdminOrder from "./Components/Admin/Orders/AdminOrder";
 import GetLikedItems from "./Components/Liked/GetLikedItems";
+import SelectBackground from "./Components/Admin/Background/SelectBackground";
 
 function App() {
   const loc = useLocation();
@@ -35,7 +36,7 @@ function App() {
   // hide menu
   useEffect(() => {
     // Your scroll event listener code here
-
+    document.body.style.backgroundImage = `url(${process.env.REACT_APP_API_URL}/pictures/bg.jpg)`;
     var prevScrollpos = window.pageYOffset;
     const handleScroll = () => {
       var currentScrollPos = window.pageYOffset;
@@ -111,6 +112,7 @@ function App() {
           <Route path="options" element={<OptionsPage />} />
           <Route path="orders" exact element={<AdminOrders />} />
           <Route path="orders/:orderId" exact element={<AdminOrder />} />
+          <Route path="background" exact element={<SelectBackground />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -57,6 +57,7 @@ export default function GetItems() {
     );
     tryHTTP(async (http) => {
       const { data } = await http.get("/categories");
+
       setSelectedCategory(category);
       setSelectedSubCategory(subCategory);
       setSelectedSortIndex(sortIndex);
@@ -81,6 +82,14 @@ export default function GetItems() {
   }
   return (
     <div className="items-page-wrapper">
+      <Typography
+        fontFamily={"yekan"}
+        className="mb-5"
+        gutterBottom
+        variant="h6"
+      >
+        جستجوی محصولات
+      </Typography>
       {searchValue && <h3>نتایج برای "{searchValue}"</h3>}
       <Grid
         columns={{ xs: 2, md: 2, lg: 5 }}
