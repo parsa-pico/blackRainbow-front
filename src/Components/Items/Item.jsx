@@ -30,6 +30,7 @@ export default function Item() {
         setLoading(true);
         const { itemId } = params;
         let { data } = await http.get(`/items/${itemId}`);
+
         data = data[0];
         console.log(data);
         if (data.pictures)

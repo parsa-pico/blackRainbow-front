@@ -27,4 +27,5 @@ test.mkv
 #BE SURE TO REMOVE THIS BEFORE PRODUCTION
 package-lock.json
 #
+logo.psd
 t.py
