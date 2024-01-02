@@ -33,7 +33,7 @@ export const subCategoryBase = {
 };
 export const itemBase = {
   productName: "",
-  stock: "",
+  stock: 100,
   price: "",
   brand: "",
   private: false,
