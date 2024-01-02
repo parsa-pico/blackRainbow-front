@@ -26,3 +26,5 @@ yarn-error.log*
 test.mkv
 #BE SURE TO REMOVE THIS BEFORE PRODUCTION
 package-lock.json
+#
+t.py

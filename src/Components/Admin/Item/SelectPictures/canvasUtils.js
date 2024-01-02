@@ -1,3 +1,5 @@
+import logo from "./logoCircle.png";
+
 export const createImage = (url) =>
   new Promise((resolve, reject) => {
     const image = new Image();
@@ -35,7 +37,8 @@ export async function getCroppedImg(
   imageSrc,
   pixelCrop,
   rotation = 0,
-  flip = { horizontal: false, vertical: false }
+  flip = { horizontal: false, vertical: false },
+  withLogo = false
 ) {
   const image = await createImage(imageSrc);
   const canvas = document.createElement("canvas");
@@ -91,7 +94,23 @@ export async function getCroppedImg(
     pixelCrop.width,
     pixelCrop.height
   );
+  if (withLogo) {
+    const logoMargin = 10;
+    const logoImage = await createImage(logo);
 
+    const newWidth = 0.15 * croppedCanvas.width;
+    const newHeight = logoImage.height / (logoImage.width / newWidth);
+
+    console.log("here");
+
+    croppedCtx.drawImage(
+      logoImage,
+      logoMargin,
+      croppedCanvas.height - newHeight - logoMargin,
+      newWidth,
+      newHeight
+    );
+  }
   // As Base64 string
   // return croppedCanvas.toDataURL('image/jpeg');
 

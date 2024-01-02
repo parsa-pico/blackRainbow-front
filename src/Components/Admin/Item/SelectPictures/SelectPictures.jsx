@@ -16,7 +16,7 @@ const ORIENTATION_TO_ANGLE = {
   8: -90,
 };
 
-const SelectPictures = ({ pictures, setPictures, label }) => {
+const SelectPictures = ({ pictures, setPictures, label, withLogo }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [imageSrc, setImageSrc] = React.useState(null);
@@ -35,7 +35,9 @@ const SelectPictures = ({ pictures, setPictures, label }) => {
       const croppedImage = await getCroppedImg(
         imageSrc,
         croppedAreaPixels,
-        rotation
+        rotation,
+        undefined,
+        withLogo
       );
       await tryHTTP(async (http) => {
         const response = await fetch(croppedImage);

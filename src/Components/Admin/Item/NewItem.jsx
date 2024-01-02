@@ -214,12 +214,14 @@ export default function NewItem() {
             label="آپلود عکس محصول "
             pictures={pictures}
             setPictures={setPictures}
+            withLogo={true}
           />
           <hr />
           <SelectPictures
             label="آپلود عکس مشتریان"
             pictures={customersPictures}
             setPictures={setCustomersPictures}
+            withLogo={true}
           />
 
           <div>
