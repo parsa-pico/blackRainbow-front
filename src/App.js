@@ -98,7 +98,7 @@ function App() {
       {showNav && <Nav />}
       {showNav && <div style={{ marginTop: `${marginTop}px` }} />}
       <Routes>
-        <Route path="/" exact element={<Home />} />
+        <Route path="/" exact element={<Navigate to="/items" />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
         <Route path="/items" exact element={<GetItems />} />
