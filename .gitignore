@@ -26,6 +26,6 @@ yarn-error.log*
 test.mkv
 logo.psd
 t.py
-
+logo-assets/
 #BE SURE TO REMOVE THIS BEFORE PRODUCTION
 package-lock.json
