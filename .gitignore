@@ -28,4 +28,4 @@ logo.psd
 t.py
 
 #BE SURE TO REMOVE THIS BEFORE PRODUCTION
-# package-lock.json
+package-lock.json
