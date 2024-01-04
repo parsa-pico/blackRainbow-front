@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 
 import httpService from "../Services/httpService.js";
 import { AxiosError } from "axios";
+
 export const persianDays = [
   "شنبه",
   "یکشنبه",
@@ -44,6 +45,17 @@ export async function tryHTTP(func, doFinally, doCatch) {
     if (doFinally) doFinally();
   }
 }
+// export async function tryLoadingHTTP(func, doFinally, doCatch) {
+//   function f() {
+//     setGlobalLoading(true);
+//     func();
+//   }
+//   function doF() {
+//     doFinally();
+//     setGlobalLoading(false);
+//   }
+//   await tryHTTP(f, doF, doCatch);
+// }
 export function areDatesOnSameDay(date1, date2) {
   return (
     date1.getFullYear() === date2.getFullYear() &&

@@ -1,4 +1,10 @@
-import { Button } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Category from "./Category";
@@ -13,13 +19,15 @@ import { fields, subCategoryBase, categoryBase, itemBase } from "./baseFields";
 import SelectPictures from "./SelectPictures/SelectPictures";
 import { useSearchParams } from "react-router-dom";
 import { useGlobalLoading } from "./../../../context/globalLoadingContext";
+import { useCategories } from "../../../context/categoryContext";
 
 export default function NewItem() {
   const textFields = fields;
-  const [category, setCategory] = useState(categoryBase);
+  const [categories, setCategories] = useCategories();
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
   const [searchParmas] = useSearchParams();
   const [itemId, setItemId] = useState(null);
-  const [subCategory, setSubCategory] = useState(subCategoryBase);
   const [tag, setTag] = useState(categoryBase);
   const [tags, setTags] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -29,8 +37,8 @@ export default function NewItem() {
   const setGlobalLoading = useGlobalLoading()[1];
   function submitForm() {
     const obj = { ...item };
-    obj.category = category._id;
-    obj.subCategory = subCategory._id;
+    obj.category = category;
+    obj.subCategory = subCategory;
     obj.tags = tags;
     obj.options = selectedOptions.map((opt) => opt._id);
     obj.pictures = pictures.map((pic) => pic.uploadedFileName);
@@ -87,20 +95,20 @@ export default function NewItem() {
     });
     return data;
   }
-  async function getSubCategory() {
-    if (!category || !category._id) return [];
-    const { data } = await httpSerivce.post("/categories/get-sub", {
-      parentId: category._id,
-    });
-    return data;
-  }
-  async function getCategory(textValue) {
-    const { data } = await httpSerivce.post("/categories/get-by-title", {
-      title: textValue,
-    });
-    setSubCategory(subCategoryBase);
-    return data;
-  }
+  // async function getSubCategory() {
+  //   if (!category || !category._id) return [];
+  //   const { data } = await httpSerivce.post("/categories/get-sub", {
+  //     parentId: category._id,
+  //   });
+  //   return data;
+  // }
+  // async function getCategory(textValue) {
+  //   const { data } = await httpSerivce.post("/categories/get-by-title", {
+  //     title: textValue,
+  //   });
+  //   setSubCategory(subCategoryBase);
+  //   return data;
+  // }
   async function getTag(textValue) {
     const { data } = await httpSerivce.post("/tags/get-by-title", {
       title: textValue,
@@ -125,8 +133,8 @@ export default function NewItem() {
         data = data[0];
 
         data.price /= 10;
-        setCategory(data.categoryData);
-        setSubCategory(data.subCategoryData);
+        setCategory(data.categoryData._id);
+        setSubCategory(data.subCategoryData._id);
         setTags(data.tags);
         setSelectedOptions(data.optionsData);
         const pics = data.pictures.map((pic) => {
@@ -153,6 +161,17 @@ export default function NewItem() {
     }
     search();
   }, []);
+  function getSubCategoryItems() {
+    const index = categories.findIndex((o) => o._id === category);
+    if (index !== -1)
+      return categories[index].subCategories.map((obj) => {
+        return (
+          <MenuItem key={obj._id} value={obj._id}>
+            {obj.title}
+          </MenuItem>
+        );
+      });
+  }
   return (
     <div className="page-wrapper" style={{ alignItems: "stretch" }}>
       <div className="page">
@@ -169,8 +188,36 @@ export default function NewItem() {
             item={item}
             handleChange={handleChange}
           />
-
-          <Category
+          <FormControl className="w-50 ms-2">
+            <InputLabel id="category"> دسته بندی</InputLabel>
+            <Select
+              labelId="category"
+              value={category}
+              label="دسته بندی"
+              onChange={(e) => {
+                setSubCategory("");
+                setCategory(e.target.value);
+              }}
+            >
+              {categories.map((obj, index) => (
+                <MenuItem key={obj._id} value={obj._id}>
+                  {obj.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className="my-2 w-50">
+            <InputLabel id="sub-category"> زیر دسته بندی</InputLabel>
+            <Select
+              labelId="sub-category"
+              value={subCategory}
+              label="زیر دسته بندی"
+              onChange={(e) => setSubCategory(e.target.value)}
+            >
+              {getSubCategoryItems()}
+            </Select>
+          </FormControl>
+          {/* <Category
             insertCategory={insertCategory}
             className="my-4"
             value={category}
@@ -191,7 +238,7 @@ export default function NewItem() {
             setValue={setSubCategory}
             label="زیر دسته بندی"
             getOptions={getSubCategory}
-          />
+          /> */}
           <Category
             insertCategory={async (val) => {
               const data = await insertCategory(val, undefined, true);

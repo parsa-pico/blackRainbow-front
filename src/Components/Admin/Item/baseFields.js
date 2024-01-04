@@ -4,7 +4,6 @@ export const fields = [
     label: "نام محصول",
     required: true,
   },
-
   {
     name: "price",
     label: "قیمت به تومان",
@@ -33,6 +32,8 @@ export const subCategoryBase = {
 };
 export const itemBase = {
   productName: "",
+  description: "",
+  brand: "",
   stock: 100,
   price: "",
   brand: "",

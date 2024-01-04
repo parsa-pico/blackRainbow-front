@@ -18,6 +18,8 @@ import { useCartCount } from "../../context/cartCountContext";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
+import NavCategories from "./NavCategories";
+import { CustuomLink } from "../../Common/commonComponents";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     right: -3,
@@ -71,28 +73,35 @@ export default function MyNav() {
             <Offcanvas.Body className="">
               {user && user.isAdmin && (
                 <>
-                  <CustuomLink
+                  <NavCustomLink
                     onClick={() => {
                       window.location = "/admin/new-item";
                     }}
                   >
                     محصول جدید
-                  </CustuomLink>
-                  <CustuomLink to="/admin/options">مدیریت آپشن ها</CustuomLink>
-                  <CustuomLink to="/admin/orders">مدیریت سفارشات</CustuomLink>
-                  <CustuomLink to="/admin/background">
+                  </NavCustomLink>
+                  <NavCustomLink to="/admin/options">
+                    مدیریت آپشن ها
+                  </NavCustomLink>
+                  <NavCustomLink to="/admin/orders">
+                    مدیریت سفارشات
+                  </NavCustomLink>
+                  <NavCustomLink to="/admin/background">
                     انتخاب پس زمینه
-                  </CustuomLink>
+                  </NavCustomLink>
                   <hr />
                 </>
               )}
+              <NavCategories />
               <>
-                {!user && <CustuomLink to="/login">ورود/ثبت نام</CustuomLink>}
+                {!user && (
+                  <NavCustomLink to="/login">ورود/ثبت نام</NavCustomLink>
+                )}
                 {user && (
                   <div>
-                    <CustuomLink to="/orders">سفارشات من</CustuomLink>
-                    <CustuomLink to="/likes">علاقه مندی ها</CustuomLink>
-                    <CustuomLink
+                    <NavCustomLink to="/orders">سفارشات من</NavCustomLink>
+                    <NavCustomLink to="/likes">علاقه مندی ها</NavCustomLink>
+                    <NavCustomLink
                       onClick={() => {
                         console.log("here");
                         clearUser();
@@ -105,7 +114,7 @@ export default function MyNav() {
                       }}
                     >
                       خروج
-                    </CustuomLink>
+                    </NavCustomLink>
                   </div>
                 )}
               </>
@@ -148,18 +157,15 @@ export default function MyNav() {
       </div>
     </div>
   );
-  function CustuomLink({ to, onClick, children }) {
+  function NavCustomLink({ to, onClick, children }) {
     return (
-      <p
-        style={{ display: "block", cursor: "pointer" }}
-        onClick={() => {
-          if (onClick) onClick();
-          if (to) nav(to);
-          setMenuOpen(false);
-        }}
-      >
-        {children}
-      </p>
+      <CustuomLink
+        to={to}
+        onClick={onClick}
+        children={children}
+        setMenuOpen={setMenuOpen}
+        nav={nav}
+      />
     );
   }
 }

@@ -24,7 +24,7 @@ export default function TextFields({ textFields, item, handleChange }) {
       })}
       <FormControlLabel
         name="private"
-        checked={item.private}
+        checked={item.private || false}
         onChange={handleChange}
         control={<Checkbox />}
         label="فقط به اعضا نشان داده شود"

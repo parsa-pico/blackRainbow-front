@@ -20,12 +20,13 @@ import {
   Button,
 } from "@mui/material";
 import { useGlobalLoading } from "../../context/globalLoadingContext";
+import { useCategories } from "../../context/categoryContext";
 
 export default function GetItems() {
   const nav = useNavigate();
   const [items, setItems] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useCategories();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedSortIndex, setSelectedSortIndex] = useState("");
@@ -49,20 +50,14 @@ export default function GetItems() {
         });
 
         setItems(data.result);
-        console.log(data.sortBy);
+        setSelectedCategory(category);
+        setSelectedSubCategory(subCategory);
+        setSelectedSortIndex(sortIndex);
       },
       () => {
         setGlobalLoading(false);
       }
     );
-    tryHTTP(async (http) => {
-      const { data } = await http.get("/categories");
-
-      setSelectedCategory(category);
-      setSelectedSubCategory(subCategory);
-      setSelectedSortIndex(sortIndex);
-      setCategories(data);
-    });
   }
   useEffect(() => {
     search();
@@ -72,7 +67,6 @@ export default function GetItems() {
     const index = categories.findIndex((o) => o._id === selectedCategory);
     if (index !== -1)
       return categories[index].subCategories.map((obj) => {
-        console.log(obj);
         return (
           <MenuItem key={obj._id} value={obj._id}>
             {obj.title}
@@ -167,6 +161,16 @@ export default function GetItems() {
               variant="outlined"
             >
               فیلتر نتایج
+            </Button>
+            <Button
+              onClick={() => {
+                window.location = `/items?search=${searchValue}`;
+              }}
+              color="error"
+              className="mt-4"
+              variant="outlined"
+            >
+              حذف فیلتر ها
             </Button>
           </div>
         </Grid>

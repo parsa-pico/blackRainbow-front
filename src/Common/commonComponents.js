@@ -5,6 +5,7 @@ import { NoCallBackErr } from "../socket";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useNavigate } from "react-router-dom";
 
 export function RadioButton({ id, name, label, error, ...rest }) {
   return (
@@ -126,5 +127,19 @@ export default function InputFileUpload({
         <VisuallyHiddenInput {...rest} type="file" />
       </Button>
     </div>
+  );
+}
+export function CustuomLink({ to, onClick, children, setMenuOpen, nav }) {
+  return (
+    <p
+      style={{ display: "block", cursor: "pointer" }}
+      onClick={() => {
+        if (onClick) onClick();
+        if (to) nav(to);
+        if (setMenuOpen) setMenuOpen(false);
+      }}
+    >
+      {children}
+    </p>
   );
 }

@@ -1,4 +1,4 @@
-import logo from "./logoCircle.png";
+import logo from "./logo2.png";
 
 export const createImage = (url) =>
   new Promise((resolve, reject) => {
@@ -77,12 +77,14 @@ export async function getCroppedImg(
   if (!croppedCtx) {
     return null;
   }
-
+  const pixelCropWidth = withLogo ? 1000 : pixelCrop.width;
+  const pixelCropHeight = withLogo ? 1000 : pixelCrop.height;
   // Set the size of the cropped canvas
-  croppedCanvas.width = pixelCrop.width;
-  croppedCanvas.height = pixelCrop.height;
+  croppedCanvas.width = pixelCropWidth;
+  croppedCanvas.height = pixelCropHeight;
 
   // Draw the cropped image onto the new canvas
+
   croppedCtx.drawImage(
     canvas,
     pixelCrop.x,
@@ -91,17 +93,16 @@ export async function getCroppedImg(
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height
+    pixelCropWidth,
+    pixelCropHeight
   );
   if (withLogo) {
-    const logoMargin = 10;
+    const logoMargin = 30;
     const logoImage = await createImage(logo);
 
-    const newWidth = 0.15 * croppedCanvas.width;
+    // const newWidth = Math.max(100, 0.15 * croppedCanvas.width);
+    const newWidth = 110;
     const newHeight = logoImage.height / (logoImage.width / newWidth);
-
-    console.log("here");
 
     croppedCtx.drawImage(
       logoImage,

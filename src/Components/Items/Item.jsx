@@ -14,6 +14,7 @@ import { useGlobalLoading } from "../../context/globalLoadingContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { toast } from "react-toastify";
+import PictureToggle from "./PictureToggle";
 export default function Item() {
   const nav = useNavigate();
   const params = useParams();
@@ -22,6 +23,7 @@ export default function Item() {
   const [cartItem, setCartItem] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [loading, setLoading] = useState(false);
+  const [pictures, setPictures] = useState([]);
   const [globalLoading, setGlobalLoading] = useGlobalLoading();
   function getItem() {
     tryHTTP(
@@ -33,8 +35,14 @@ export default function Item() {
 
         data = data[0];
         console.log(data);
-        if (data.pictures)
+        if (data.pictures) {
           data.pictures = data.pictures.map((p) => getPicture(p));
+          setPictures(data.pictures);
+        }
+        if (data.customersPictures)
+          data.customersPictures = data.customersPictures.map((p) =>
+            getPicture(p)
+          );
         setItemData(data);
 
         if (data.optionsData) {
@@ -59,7 +67,7 @@ export default function Item() {
       tryHTTP(async () => {
         const { itemId } = params;
         let { data } = await http.get(`/likes/${itemId}`);
-        console.log(data);
+
         setItemData((obj) => ({ ...obj, liked: data }));
       });
   }
@@ -133,7 +141,12 @@ export default function Item() {
         }
       />
       <div className="item-upper my-5">
-        <ItemImage picsData={itemData.pictures} />
+        {itemData &&
+          itemData.customersPictures &&
+          itemData.customersPictures.length > 0 && (
+            <PictureToggle itemData={itemData} setPictures={setPictures} />
+          )}
+        <ItemImage picsData={pictures} />
 
         <div style={{ justifyContent: "space-between" }} className="hstack">
           <div>

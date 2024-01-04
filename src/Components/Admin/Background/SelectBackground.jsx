@@ -93,78 +93,80 @@ const SelectBackground = () => {
     else nav.style.display = "block";
   }, [imageSrc]);
   return (
-    <div>
-      <h5>آپلود پس زمینه </h5>
-      <small>حتما jpg باشد</small>
-      {imageSrc ? (
-        <React.Fragment>
-          <Dialog
-            PaperProps={{
-              style: {
-                backgroundColor: "transparent",
-                boxShadow: "none",
-              },
-            }}
-            scroll="body"
-            fullScreen
-            open={imageSrc ? true : false}
-            onClose={handleClose}
-          >
-            <div>
-              <Cropper
-                image={imageSrc}
-                crop={crop}
-                // rotation={rotation}
-                zoom={zoom}
-                aspect={1 / 1}
-                onCropChange={(e) => {
-                  if (!loading) {
-                    setCrop(e);
-                  }
-                }}
-                onRotationChange={setRotation}
-                onCropComplete={onCropComplete}
-                onZoomChange={setZoom}
-              />
-            </div>
-            <div>
+    <div className="page-wrapper">
+      <div className="page">
+        <h5>آپلود پس زمینه </h5>
+        <small>حتما jpg باشد</small>
+        {imageSrc ? (
+          <React.Fragment>
+            <Dialog
+              PaperProps={{
+                style: {
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                },
+              }}
+              scroll="body"
+              fullScreen
+              open={imageSrc ? true : false}
+              onClose={handleClose}
+            >
               <div>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={handleClose}
-                  aria-label="close"
-                  style={{ position: "relative", right: "2%" }}
-                >
-                  <CloseIcon />
-                </IconButton>
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  // rotation={rotation}
+                  zoom={zoom}
+                  aspect={1 / 1}
+                  onCropChange={(e) => {
+                    if (!loading) {
+                      setCrop(e);
+                    }
+                  }}
+                  onRotationChange={setRotation}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                />
               </div>
-              <LoadingButton
-                loading={loading}
-                onClick={sendImage}
-                variant="contained"
-                color="primary"
-              >
-                <span>ثبت</span>
-              </LoadingButton>
-            </div>
-          </Dialog>
-        </React.Fragment>
-      ) : (
-        <InputFileUpload
-          label="آپلود پس زمینه سایت"
-          className="my-3"
-          onChange={onFileChange}
-          accept="image/*"
-        />
-      )}
-      <Grid maxWidth="50%" container spacing={1}>
-        {picture.uploadedFileName && (
-          <Grid className="relative" item xs={6}>
-            <img className="img-fluid" src={picture.blob} />
-          </Grid>
+              <div>
+                <div>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={handleClose}
+                    aria-label="close"
+                    style={{ position: "relative", right: "2%" }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+                <LoadingButton
+                  loading={loading}
+                  onClick={sendImage}
+                  variant="contained"
+                  color="primary"
+                >
+                  <span>ثبت</span>
+                </LoadingButton>
+              </div>
+            </Dialog>
+          </React.Fragment>
+        ) : (
+          <InputFileUpload
+            label="آپلود پس زمینه سایت"
+            className="my-3"
+            onChange={onFileChange}
+            accept="image/*"
+          />
         )}
-      </Grid>
+        <Grid maxWidth="50%" container spacing={1}>
+          {picture.uploadedFileName && (
+            <Grid className="relative" item xs={6}>
+              <img className="img-fluid" src={picture.blob} />
+            </Grid>
+          )}
+        </Grid>
+      </div>
     </div>
   );
 };

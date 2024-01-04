@@ -19,6 +19,7 @@ import "./styles/index.css";
 import { ToastProvider } from "./context/toastContext";
 import { CartCountProvider } from "./context/cartCountContext";
 import { GlobalLoadingProvider } from "./context/globalLoadingContext";
+import { CategoryProvider } from "./context/categoryContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const cacheRtl = createCache({
   key: "muirtl",
@@ -35,18 +36,20 @@ root.render(
   <>
     <Router>
       <GlobalLoadingProvider>
-        <CartCountProvider>
-          <ToastProvider>
-            <SocketProvider>
-              <CacheProvider value={cacheRtl}>
-                <ThemeProvider theme={darkTheme}>
-                  <CssBaseline />
-                  <App />
-                </ThemeProvider>
-              </CacheProvider>
-            </SocketProvider>
-          </ToastProvider>
-        </CartCountProvider>
+        <CategoryProvider>
+          <CartCountProvider>
+            <ToastProvider>
+              <SocketProvider>
+                <CacheProvider value={cacheRtl}>
+                  <ThemeProvider theme={darkTheme}>
+                    <CssBaseline />
+                    <App />
+                  </ThemeProvider>
+                </CacheProvider>
+              </SocketProvider>
+            </ToastProvider>
+          </CartCountProvider>
+        </CategoryProvider>
       </GlobalLoadingProvider>
     </Router>
   </>
