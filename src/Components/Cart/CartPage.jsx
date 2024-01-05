@@ -23,6 +23,7 @@ export default function CartPage() {
   const [cart, setCart] = useState([]);
   const [postPrice, setPostPrice] = useState(0);
   const [orderInfo, setOrderInfo] = useState(getOrderInfo() || {});
+  const [scheduleDate, setScheduleDate] = useState(null);
   const [globalLoading, setGlobalLoading] = useGlobalLoading();
   const nav = useNavigate();
   const totalSteps = 4;
@@ -36,6 +37,8 @@ export default function CartPage() {
       async (http) => {
         setGlobalLoading(true);
         const order = { ...orderInfo };
+        console.log(scheduleDate);
+        if (scheduleDate) order.schedule = scheduleDate;
         if (!order.description) delete order.description;
         const { data } = await http.post("/orders/submitPurchase", order);
         toast.success("خرید شما با موفقیت ثبت شد");
@@ -151,7 +154,13 @@ export default function CartPage() {
         />
       )}
       {activeStep === 1 && (
-        <FillInfo handleChange={handleChange} orderInfo={orderInfo} />
+        <FillInfo
+          postPrice={postPrice}
+          setScheduleDate={setScheduleDate}
+          scheduleDate={scheduleDate}
+          handleChange={handleChange}
+          orderInfo={orderInfo}
+        />
       )}
       {activeStep === 2 && (
         <PaymentMehtod

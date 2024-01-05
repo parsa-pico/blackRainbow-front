@@ -1,5 +1,5 @@
 {
-  "name": "blackRainbow",
+  "name": "blackrainbow",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,6 +11,7 @@
     "@mui/material": "^5.15.2",
     "@mui/x-data-grid": "^6.18.6",
     "@mui/x-tree-view": "^6.17.0",
+    "@skhazaei/persian-date-picker": "^0.1.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

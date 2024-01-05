@@ -102,19 +102,25 @@ export default function Order() {
               <td>هزینه کل</td>
               <td>{getPrice(order.totalPrice) + " تومان"}</td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>هزینه باقی مانده</td>
               <td>{getPrice(order.remaningPrice) + " تومان"}</td>
-            </tr>
+            </tr> */}
             <tr>
               <td> کد رهگیری پست</td>
               <td>{order.postTrackingCode || "-"}</td>
             </tr>
             <tr>
+              <td> بعدا ارسال شود</td>
+              <td>{order.schedule ? getDate(order.schedule) : "-"}</td>
+            </tr>
+            <tr>
               <td> عکس فیش </td>
               <td>
                 {order.paymentPicture ? (
-                  <a href={getPicture(order.paymentPicture)}>لینک</a>
+                  <a target="_blank" href={getPicture(order.paymentPicture)}>
+                    لینک
+                  </a>
                 ) : (
                   "-"
                 )}

@@ -161,12 +161,24 @@ const SelectPictures = ({ pictures, setPictures, label, withLogo }) => {
               <Grid key={i} className="relative" item xs={6}>
                 <IconButton
                   onClick={() => {
-                    tryHTTP(async (http) => {
-                      await http.delete(`/pictures/${imgObj.uploadedFileName}`);
-                      const copy = [...pictures];
-                      copy.splice(i, 1);
-                      setPictures(copy);
-                    });
+                    tryHTTP(
+                      async (http) => {
+                        await http.delete(
+                          `/pictures/${imgObj.uploadedFileName}`
+                        );
+                        const copy = [...pictures];
+                        copy.splice(i, 1);
+                        setPictures(copy);
+                      },
+                      undefined,
+                      (e) => {
+                        if (e.response && e.response.status == 404) {
+                          const copy = [...pictures];
+                          copy.splice(i, 1);
+                          setPictures(copy);
+                        }
+                      }
+                    );
                   }}
                   className="absolute bg-dark"
                   aria-label="delete"
