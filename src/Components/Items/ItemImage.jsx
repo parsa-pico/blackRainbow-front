@@ -5,6 +5,7 @@ export default function ItemImage({ picsData }) {
   const [index, setIndex] = useState(0);
   useEffect(() => {
     setPictures(picsData);
+    setIndex(0);
   }, [picsData]);
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
