@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Carousel } from "react-bootstrap";
 export default function ItemImage({ picsData }) {
   const [pictures, setPictures] = useState([]);
+  const baseInterval = 2500;
+  const [imgInterval, setImgInterval] = useState(baseInterval);
   const [index, setIndex] = useState(0);
   useEffect(() => {
     setPictures(picsData);
@@ -13,10 +15,16 @@ export default function ItemImage({ picsData }) {
   return (
     <div>
       <Carousel
+        onTouchStart={() => {
+          setImgInterval(null);
+        }}
+        onTouchEnd={() => {
+          setImgInterval(baseInterval);
+        }}
         activeIndex={index}
         onSelect={handleSelect}
         className="relative item-carousel"
-        interval={3000}
+        interval={imgInterval}
       >
         {pictures &&
           pictures.length > 0 &&

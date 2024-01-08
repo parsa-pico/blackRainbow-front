@@ -195,6 +195,7 @@ export default function GetItems() {
                       onClick={() => {
                         nav("/items/" + obj._id);
                       }}
+                      className="pointer"
                       component="img"
                       // style={{ width: "100px" }}
                       image={getPicture(obj.pictures[0])}
