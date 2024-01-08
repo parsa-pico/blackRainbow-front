@@ -5,13 +5,13 @@ import { searchText } from "../../Common/commonFuncs";
 export default function ItemTags({ tags }) {
   return (
     <div>
-      <small>برچسب ها :</small>
-      <Grid container>
+      <small>تگ ها :</small>
+      <Grid container xs={12} sm={12} md={12}>
         {tags &&
           tags.length > 0 &&
           tags.map((tag, i) => {
             return (
-              <Grid className="my-1" xs={2} md={1} key={i} item>
+              <Grid className="my-1" xs={4} sm={3} md={2} key={i} item>
                 <Chip
                   onClick={() => {
                     searchText(tag);

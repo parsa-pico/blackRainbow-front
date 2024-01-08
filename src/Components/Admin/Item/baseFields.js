@@ -16,7 +16,7 @@ export const fields = [
     type: "number",
     required: true,
   },
-  { name: "brand", label: " برند" },
+  // { name: "brand", label: " برند" },
   {
     name: "description",
     label: "توضیحات محصول",
@@ -33,11 +33,12 @@ export const subCategoryBase = {
 export const itemBase = {
   productName: "",
   description: "",
-  brand: "",
+  // brand: "",
   stock: 100,
   price: "",
   brand: "",
   private: false,
+  enabled: true,
   // category: categoryBase,
   // subCategory: subCategoryBase,
   // tags: [],

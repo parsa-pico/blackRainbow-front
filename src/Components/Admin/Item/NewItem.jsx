@@ -63,6 +63,9 @@ export default function NewItem() {
           console.log(obj);
           await http.put(`/items/${itemId}`, obj);
           toast("آیتم ادیت شد");
+          setTimeout(() => {
+            window.location = `/items/${itemId}`;
+          }, 1000);
         }
         // setTimeout(() => {
         //   window.location = "/items";
@@ -75,6 +78,7 @@ export default function NewItem() {
   }
   const handleChange = ({ target }) => {
     let value = target.value;
+    console.log(value);
     if (target.type === "checkbox") value = target.checked;
     if (target.type === "number") {
       value = parseInt(value);
@@ -128,36 +132,42 @@ export default function NewItem() {
       if (!itemId) return;
       setItemId(itemId);
 
-      tryHTTP(async (http) => {
-        let { data } = await http.get(`/items/${itemId}`);
-        data = data[0];
-
-        data.price /= 10;
-        setCategory(data.categoryData._id);
-        setSubCategory(data.subCategoryData._id);
-        setTags(data.tags);
-        setSelectedOptions(data.optionsData);
-        const pics = data.pictures.map((pic) => {
-          return { blob: getPicture(pic), uploadedFileName: pic };
-        });
-        const customersPics = data.customersPictures.map((pic) => {
-          return { blob: getPicture(pic), uploadedFileName: pic };
-        });
-        setCustomersPictures(customersPics);
-        setPictures(pics);
-        //
-        delete data.categoryData;
-        delete data.subCategoryData;
-        delete data.tags;
-        delete data.optionsData;
-        delete data.pictures;
-        delete data._id;
-        delete data.views;
-        //
-        console.log(data);
-        setItem(data);
-        console.log(data);
-      });
+      tryHTTP(
+        async (http) => {
+          setGlobalLoading(true);
+          let { data } = await http.get(`/items/${itemId}`);
+          data = data[0];
+          console.log(data);
+          data.price /= 10;
+          setCategory(data.categoryData._id);
+          setSubCategory(data.subCategoryData._id);
+          setTags(data.tags);
+          setSelectedOptions(data.optionsData);
+          const pics = data.pictures.map((pic) => {
+            return { blob: getPicture(pic), uploadedFileName: pic };
+          });
+          const customersPics = data.customersPictures.map((pic) => {
+            return { blob: getPicture(pic), uploadedFileName: pic };
+          });
+          setCustomersPictures(customersPics);
+          setPictures(pics);
+          //
+          delete data.categoryData;
+          delete data.subCategoryData;
+          delete data.tags;
+          delete data.optionsData;
+          delete data.pictures;
+          delete data._id;
+          delete data.views;
+          //
+          console.log(data);
+          setItem(data);
+          console.log(data);
+        },
+        () => {
+          setGlobalLoading(false);
+        }
+      );
     }
     search();
   }, []);

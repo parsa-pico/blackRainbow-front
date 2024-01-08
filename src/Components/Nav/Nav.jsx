@@ -28,11 +28,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     padding: "0 4px",
   },
 }));
-export default function MyNav() {
+export default function MyNav({ search }) {
+  const [searchValue, setSearchValue] = search;
   const [cartCount] = useCartCount();
   const nav = useNavigate();
   const user = getUser();
-  const [searchValue, setSearchValue] = useState("");
+
   const expand = "xl";
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => {

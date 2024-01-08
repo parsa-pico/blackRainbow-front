@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+
+import Pagination from "@mui/material/Pagination";
 import {
   Card,
   div,
@@ -22,7 +22,7 @@ import {
 import { useGlobalLoading } from "../../context/globalLoadingContext";
 import { useCategories } from "../../context/categoryContext";
 
-export default function GetItems() {
+export default function GetItems({ setSearchValue }) {
   const nav = useNavigate();
   const [items, setItems] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,14 +30,15 @@ export default function GetItems() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedSortIndex, setSelectedSortIndex] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
+  const [count, setCount] = useState(0);
   const [globalLoading, setGlobalLoading] = useGlobalLoading();
   const searchValue = searchParams.get("search") || "";
-
   const category = searchParams.get("category") || "";
   const subCategory = searchParams.get("subCategory") || "";
   const sortIndex =
     parseInt(searchParams.get("sortIndex")) || (searchValue ? 1 : 2);
-
+  const currentPage = parseInt(searchParams.get("page")) || 1;
   function search() {
     tryHTTP(
       async (http) => {
@@ -47,8 +48,10 @@ export default function GetItems() {
           category,
           subCategory,
           sortIndex,
+          page: currentPage,
         });
-
+        setCount(data.count);
+        setTotalPages(data.totalPages);
         setItems(data.result);
         setSelectedCategory(category);
         setSelectedSubCategory(subCategory);
@@ -61,6 +64,7 @@ export default function GetItems() {
   }
   useEffect(() => {
     search();
+    setSearchValue(searchValue);
   }, []);
 
   function getSubCategoryItems() {
@@ -74,6 +78,11 @@ export default function GetItems() {
         );
       });
   }
+  function handleFilter(pageNumber) {
+    window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
+      pageNumber || 1
+    }`;
+  }
   return (
     <div className="items-page-wrapper">
       <Typography
@@ -84,7 +93,12 @@ export default function GetItems() {
       >
         جستجوی محصولات
       </Typography>
-      {searchValue && <h3>نتایج برای "{searchValue}"</h3>}
+      {searchValue && (
+        <h3>
+          {count} نتیجه برای "{searchValue}"
+        </h3>
+      )}
+      {!searchValue && <h3>{count}محصول در این دسته</h3>}
       <Grid
         columns={{ xs: 2, md: 2, lg: 5 }}
         spacing={{ xs: 0, lg: 1 }}
@@ -154,12 +168,7 @@ export default function GetItems() {
                 <MenuItem value={4}>قدیمی ترین</MenuItem>
               </Select>
             </FormControl>
-            <Button
-              onClick={() => {
-                window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}`;
-              }}
-              variant="outlined"
-            >
+            <Button onClick={() => handleFilter()} variant="outlined">
               فیلتر نتایج
             </Button>
             <Button
@@ -229,6 +238,16 @@ export default function GetItems() {
             ))}
         </Grid>
       </Grid>
+      <div className="mt-2 item-pagination-wrapper">
+        <Pagination
+          className="item-pagination bg-dark"
+          count={totalPages}
+          page={currentPage}
+          onChange={(e, value) => {
+            handleFilter(value);
+          }}
+        />
+      </div>
     </div>
   );
 }

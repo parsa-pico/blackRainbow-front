@@ -29,6 +29,15 @@ export default function TextFields({ textFields, item, handleChange }) {
         control={<Checkbox />}
         label="فقط به اعضا نشان داده شود"
       />
+      <div className="my-2">
+        <FormControlLabel
+          name="enabled"
+          checked={item.enabled || false}
+          onChange={handleChange}
+          control={<Checkbox />}
+          label="محصول فعال"
+        />
+      </div>
     </div>
   );
 }

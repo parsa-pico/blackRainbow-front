@@ -16,6 +16,15 @@
   padding: 0.5rem;
   border-radius: 5px;
 }
+.item-pagination-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.item-pagination {
+  padding: 1rem;
+
+  border-radius: 10px;
+}
 @media screen and (min-width: 1024px) {
   .items-page {
     /* flex-direction: row; */

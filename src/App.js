@@ -31,6 +31,7 @@ import SelectBackground from "./Components/Admin/Background/SelectBackground";
 function App() {
   const loc = useLocation();
   const [showNav, setShowNav] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
   const [marginTop, setMarginTop] = useState(10);
   const [cartCount, setCartCount] = useCartCount();
   // hide menu
@@ -95,13 +96,17 @@ function App() {
 
   return (
     <div className="App">
-      {showNav && <Nav />}
+      {showNav && <Nav search={[searchValue, setSearchValue]} />}
       {showNav && <div style={{ marginTop: `${marginTop}px` }} />}
       <Routes>
         <Route path="/" exact element={<Navigate to="/items" />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
-        <Route path="/items" exact element={<GetItems />} />
+        <Route
+          path="/items"
+          exact
+          element={<GetItems setSearchValue={setSearchValue} />}
+        />
         <Route path="/cart" exact element={<CartPage />} />
         <Route path="/orders" exact element={<Orders />} />
         <Route path="/orders/:orderId" exact element={<Order />} />

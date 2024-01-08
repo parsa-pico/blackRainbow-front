@@ -6,12 +6,14 @@
 
   border-radius: 1%;
 }
-.item-carousel-item {
-}
+
+/* .item-carousel-item {
+} */
 .item-carousel-img {
   object-fit: cover;
   width: 100%;
   height: 100%;
+  /* max-width: 1000px; */
   /* max-height: 350px; */
   /* padding: 0.5rem 2rem; */
 }

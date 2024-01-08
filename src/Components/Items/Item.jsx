@@ -196,6 +196,10 @@ export default function Item() {
                   <td>{itemData.sold}</td>
                   <td>فروش</td>
                 </tr>
+                <tr>
+                  <td>محصول</td>
+                  <td>{itemData.enabled ? "فعال" : "غیر فعال"}</td>
+                </tr>
               </tbody>
             </table>
           </div>
