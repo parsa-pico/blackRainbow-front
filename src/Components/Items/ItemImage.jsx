@@ -16,7 +16,7 @@ export default function ItemImage({ picsData }) {
         activeIndex={index}
         onSelect={handleSelect}
         className="relative item-carousel"
-        interval={null}
+        interval={3000}
       >
         {pictures &&
           pictures.length > 0 &&
