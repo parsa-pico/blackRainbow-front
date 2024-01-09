@@ -17,6 +17,10 @@
   /* max-height: 350px; */
   /* padding: 0.5rem 2rem; */
 }
+.item-carousel-hold {
+  /* border: 2px solid white; */
+  transform: scale(1.04);
+}
 @media screen and (min-width: 1024px) {
   .item-carousel {
     /* width: 500px;
