@@ -3,11 +3,12 @@ import React from "react";
 
 export default function TextFields({ textFields, item, handleChange }) {
   return (
-    <div>
+    <div className="w-100">
       {textFields.map((obj, i) => {
         const { name, type, label, required, ...rest } = obj;
         return (
           <TextField
+            fullWidth
             key={i}
             sx={{ display: "block" }}
             name={name}
@@ -18,7 +19,7 @@ export default function TextFields({ textFields, item, handleChange }) {
             label={label}
             {...rest}
             variant="outlined"
-            className="my-3 w-100"
+            className="my-3 "
           />
         );
       })}

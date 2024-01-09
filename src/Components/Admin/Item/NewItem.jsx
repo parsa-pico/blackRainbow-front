@@ -20,6 +20,7 @@ import SelectPictures from "./SelectPictures/SelectPictures";
 import { useSearchParams } from "react-router-dom";
 import { useGlobalLoading } from "./../../../context/globalLoadingContext";
 import { useCategories } from "../../../context/categoryContext";
+import { getItemInfo, setItemInfo } from "../../../Services/authService";
 
 export default function NewItem() {
   const textFields = fields;
@@ -33,8 +34,11 @@ export default function NewItem() {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [pictures, setPictures] = useState([]);
   const [customersPictures, setCustomersPictures] = useState([]);
-  const [item, setItem] = useState(itemBase);
+  const [item, setItem] = useState(getItemInfo() || itemBase);
   const setGlobalLoading = useGlobalLoading()[1];
+  useEffect(() => {
+    setItemInfo(item);
+  }, [item]);
   function submitForm() {
     const obj = { ...item };
     obj.category = category;
@@ -49,7 +53,7 @@ export default function NewItem() {
     delete obj.views;
     if (!obj.brand) obj.brand = "";
     obj.price *= 10;
-    console.log(obj);
+
     tryHTTP(
       async (http) => {
         setGlobalLoading(true);
@@ -60,7 +64,6 @@ export default function NewItem() {
             window.location = "/items";
           }, 1000);
         } else {
-          console.log(obj);
           await http.put(`/items/${itemId}`, obj);
           toast("آیتم ادیت شد");
           setTimeout(() => {
@@ -78,7 +81,7 @@ export default function NewItem() {
   }
   const handleChange = ({ target }) => {
     let value = target.value;
-    console.log(value);
+
     if (target.type === "checkbox") value = target.checked;
     if (target.type === "number") {
       value = parseInt(value);
@@ -137,7 +140,7 @@ export default function NewItem() {
           setGlobalLoading(true);
           let { data } = await http.get(`/items/${itemId}`);
           data = data[0];
-          console.log(data);
+
           data.price /= 10;
           setCategory(data.categoryData._id);
           setSubCategory(data.subCategoryData._id);
@@ -160,9 +163,8 @@ export default function NewItem() {
           delete data._id;
           delete data.views;
           //
-          console.log(data);
+
           setItem(data);
-          console.log(data);
         },
         () => {
           setGlobalLoading(false);
@@ -186,6 +188,16 @@ export default function NewItem() {
     <div className="page-wrapper" style={{ alignItems: "stretch" }}>
       <div className="page">
         {itemId ? <h2>ادیت کالا</h2> : <h2>کالای جدید</h2>}
+        <Button
+          style={{ alignSelf: "start" }}
+          onClick={() => {
+            setItem(itemBase);
+          }}
+          color="secondary"
+          variant="outlined"
+        >
+          پاک کردن متن ها
+        </Button>
         <form
           className="w-100"
           onSubmit={(e) => {

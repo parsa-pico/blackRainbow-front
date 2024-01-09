@@ -35,6 +35,16 @@ export function getOrderInfo() {
 export function setOrderInfoStroage(info) {
   storage.setItem("orderInfo", JSON.stringify(info));
 }
+export function getItemInfo() {
+  const item = storage.getItem("itemInfo");
+  return item ? JSON.parse(item) : null;
+}
+export function setItemInfo(info) {
+  storage.setItem("itemInfo", JSON.stringify(info));
+}
+export function clearItemInfo() {
+  storage.clear("itemInfo");
+}
 // export function getToken() {
 //   return storage.getItem("token");
 // }
