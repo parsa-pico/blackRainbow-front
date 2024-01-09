@@ -6,7 +6,7 @@ export default function ItemTags({ tags }) {
   return (
     <div>
       <small>تگ ها :</small>
-      <Grid container xs={12} sm={12} md={12}>
+      <Grid container columns={{ xs: 12, sm: 12, md: 12 }}>
         {tags &&
           tags.length > 0 &&
           tags.map((tag, i) => {

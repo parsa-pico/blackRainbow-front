@@ -6,9 +6,14 @@ export default function ItemImage({ picsData }) {
   const [imgInterval, setImgInterval] = useState(baseInterval);
   const [itemClass, setItemClass] = useState("");
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (index !== 0) setImgInterval(null);
+  }, [picsData, index]);
   useEffect(() => {
     setPictures(picsData);
     setIndex(0);
+    setImgInterval(baseInterval);
   }, [picsData]);
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
@@ -16,20 +21,20 @@ export default function ItemImage({ picsData }) {
   return (
     <div>
       <Carousel
-        onTouchStart={(e) => {
-          if (e.target.name === "item-img") {
-            e.preventDefault();
-            setItemClass("item-carousel-hold");
-            setImgInterval(null);
-          }
-        }}
-        onTouchEnd={(e) => {
-          if (e.target.name === "item-img") {
-            e.preventDefault();
-            setItemClass("");
-            setImgInterval(baseInterval);
-          }
-        }}
+        // onTouchStart={(e) => {
+        //   if (e.target.name === "item-img") {
+        //     e.preventDefault();
+        //     setItemClass("item-carousel-hold");
+        //     setImgInterval(null);
+        //   }
+        // }}
+        // onTouchEnd={(e) => {
+        //   if (e.target.name === "item-img") {
+        //     e.preventDefault();
+        //     setItemClass("");
+        //     setImgInterval(baseInterval);
+        //   }
+        // }}
         activeIndex={index}
         onSelect={handleSelect}
         className="relative item-carousel"
