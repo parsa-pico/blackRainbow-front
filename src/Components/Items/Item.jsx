@@ -175,7 +175,9 @@ export default function Item() {
         </div>
         <hr />
 
-        <h6>ویژگی های محصول:</h6>
+        <Typography gutterBottom color="whitesmoke" variant="h5">
+          ویژگی های محصول:
+        </Typography>
         <p className="item-desc">{itemData.description}</p>
         <ItemOptions
           selectedOptions={selectedOptions}

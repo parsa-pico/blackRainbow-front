@@ -4,6 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Typography } from "@mui/material";
 
 export default function ItemOptions({
   itemOptions,
@@ -21,7 +22,9 @@ export default function ItemOptions({
   return (
     <div>
       <hr />
-      <p>گزینه های محصول:</p>
+      <Typography gutterBottom color="whitesmoke" className="mb-4" variant="h5">
+        گزینه های محصول:
+      </Typography>
       {itemOptions &&
         itemOptions.length > 0 &&
         itemOptions.map((optionObj, i) => {
