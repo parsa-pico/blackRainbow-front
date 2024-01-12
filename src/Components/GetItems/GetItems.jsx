@@ -201,7 +201,7 @@ export default function GetItems({ setSearchValue }) {
                   <div
                   // sx={{ display: "flex" }}
                   >
-                    <LazyLoad offset={500}>
+                    <LazyLoad offset={1000}>
                       <CardMedia
                         onClick={() => {
                           nav("/items/" + obj._id);
