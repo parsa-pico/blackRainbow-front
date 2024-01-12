@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { useGlobalLoading } from "../../context/globalLoadingContext";
 import { useCategories } from "../../context/categoryContext";
+import LazyLoad from "react-lazy-load";
 
 export default function GetItems({ setSearchValue }) {
   const nav = useNavigate();
@@ -200,15 +201,17 @@ export default function GetItems({ setSearchValue }) {
                   <div
                   // sx={{ display: "flex" }}
                   >
-                    <CardMedia
-                      onClick={() => {
-                        nav("/items/" + obj._id);
-                      }}
-                      className="pointer"
-                      component="img"
-                      // style={{ width: "100px" }}
-                      image={getPicture(obj.pictures[0])}
-                    />
+                    <LazyLoad offset={500}>
+                      <CardMedia
+                        onClick={() => {
+                          nav("/items/" + obj._id);
+                        }}
+                        className="pointer"
+                        component="img"
+                        // style={{ width: "100px" }}
+                        image={getPicture(obj.pictures[0])}
+                      />
+                    </LazyLoad>
 
                     <CardContent>
                       <Typography

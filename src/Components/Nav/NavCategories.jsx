@@ -14,11 +14,16 @@ import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { useGlobalLoading } from "../../context/globalLoadingContext";
 import { useCategories } from "../../context/categoryContext";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 export default function NavCategories() {
   const user = getUser();
   const [categories, setCategories] = useCategories();
+  // const [selectedCategory, setSelectedCategory] = useState(null);
   const [_, setGlobalLoading] = useGlobalLoading();
-
+  // function handleSelectCategory(category) {
+  //   setSelectedCategory(category);
+  // }
   return (
     <div>
       <TreeView
@@ -44,18 +49,67 @@ export default function NavCategories() {
                       }}
                       className="me-3"
                     />
+                    {user && user.isAdmin && (
+                      <>
+                        <EditIcon
+                          onClick={(e) => {
+                            const title = prompt("نام جدید را وارد کنید");
+                            if (title)
+                              updateCategory({ title, _id: category._id });
+                          }}
+                          className="me-3"
+                        />
+                        <DeleteForeverIcon
+                          onClick={async () => {
+                            await deleteCategory(category);
+                          }}
+                          className="me-3"
+                        />
+                      </>
+                    )}
                   </CustuomLink>
                 }
               >
                 {category.subCategories.map((subCategory) => (
                   <TreeItem
                     className="my-1"
-                    onClick={() => {
-                      window.location = `/items?category=${category._id}&subCategory=${subCategory._id}`;
+                    onClick={(e) => {
+                      console.log(e.target);
+                      if (e.target.name === "subLink")
+                        window.location = `/items?category=${category._id}&subCategory=${subCategory._id}`;
                     }}
                     key={subCategory._id}
                     nodeId={subCategory._id}
-                    label={subCategory.title}
+                    label={
+                      <div
+                        name="subLink"
+                        className="hstack"
+                        style={{ justifyContent: "space-between" }}
+                      >
+                        {subCategory.title}
+                        {user && user.isAdmin && (
+                          <>
+                            <EditIcon
+                              onClick={() => {
+                                const title = prompt("نام جدید را وارد کنید");
+                                if (title)
+                                  updateCategory({
+                                    title,
+                                    _id: subCategory._id,
+                                  });
+                              }}
+                              className="me-3"
+                            />
+                            <DeleteForeverIcon
+                              onClick={async () => {
+                                await deleteCategory(subCategory);
+                              }}
+                              className="me-3"
+                            />
+                          </>
+                        )}
+                      </div>
+                    }
                   />
                 ))}
                 {user && user.isAdmin && (
@@ -84,6 +138,40 @@ export default function NavCategories() {
         if (parentId) obj.parentId = parentId;
         await http.post(api, obj);
         alert("دسته بندی اضافه شد");
+
+        window.location = "/";
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
+  }
+  async function updateCategory(selectedCategory) {
+    await tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        const obj = { title: selectedCategory.title };
+        const api = "/categories/" + selectedCategory._id;
+
+        await http.put(api, obj);
+        alert("دسته بندی ادیت شد");
+
+        window.location = "/";
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
+  }
+  async function deleteCategory(selectedCategory) {
+    await tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+
+        const api = "/categories/" + selectedCategory._id;
+
+        await http.delete(api);
+        alert("دسته بندی حذف شد");
 
         window.location = "/";
       },

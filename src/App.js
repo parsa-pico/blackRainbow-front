@@ -80,7 +80,7 @@ function App() {
       },
       undefined,
       (e) => {
-        if (e.response && e.response.status === 403) window.location = "/";
+        if (e.response && e.response.status === 403) window.location.reload();
       }
     );
 
@@ -97,9 +97,9 @@ function App() {
   return (
     <div className="App">
       {showNav && <Nav search={[searchValue, setSearchValue]} />}
-      {showNav && <div style={{ marginTop: `${marginTop}px` }} />}
+      {showNav && <div id="push-top" style={{ marginTop: `${marginTop}px` }} />}
       <Routes>
-        <Route path="/" exact element={<Navigate to="/items" />} />
+        <Route path="/" exact element={<Home />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
         <Route
