@@ -74,8 +74,9 @@ export default function NavCategories() {
                   <TreeItem
                     className="my-1"
                     onClick={(e) => {
-                      console.log(e.target);
-                      if (e.target.name === "subLink")
+                      const name = e.target.getAttribute("name");
+                      console.log(name);
+                      if (name === "subLink")
                         window.location = `/items?category=${category._id}&subCategory=${subCategory._id}`;
                     }}
                     key={subCategory._id}

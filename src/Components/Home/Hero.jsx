@@ -23,8 +23,9 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
         setTimeout(() => {
           document.getElementById("cat").style.display = "block";
         }, 1000);
-
-        heroVideo.style.display = "none";
+        setTimeout(() => {
+          heroVideo.style.display = "none";
+        }, 1500);
       }, 1500);
   }, [videoLoaded]);
   return (
