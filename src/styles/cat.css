@@ -12,6 +12,7 @@
   }
 }
 .cat {
+  z-index: 999999;
   display: none;
   position: fixed;
   bottom: 0;
