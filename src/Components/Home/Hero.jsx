@@ -32,7 +32,14 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
         }, 1500);
       }, 1500);
   }, [videoLoaded]);
-
+  useEffect(() => {
+    if (showVideo) {
+      videoElement.current.play();
+      setTimeout(() => {
+        nav("/items");
+      }, 1000);
+    }
+  }, [showVideo]);
   return (
     <>
       <div className="w-100 hero-wrapper">
@@ -41,21 +48,21 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
         </Typography>
         {videoLoaded && (
           <>
-            {!showVideo && (
-              <img className="hero-real-img" src="/hero-img.jpg" alt="" />
-            )}
-            {/* {showVideo && (
-              <video
-                ref={videoElement}
-                className="hero-real-img"
-                src="/hero-moving.mp4"
-              />
-            )} */}
+            <img
+              className={"hero-real-img " + (showVideo && "none")}
+              src="/hero-img.jpg"
+              alt=""
+            />
+
+            <video
+              ref={videoElement}
+              className={"hero-real-img " + (!showVideo && "none")}
+              src="/avc_hero-moving.mp4"
+            />
+
             <Button
               onClick={() => {
-                // setShowVideo(!showVideo);
-                // videoElement.current.play();
-                nav("/items");
+                setShowVideo(true);
               }}
               variant="contained"
               color="secondary"
