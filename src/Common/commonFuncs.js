@@ -145,3 +145,13 @@ export function getOrderStatus(result, OrderStatus) {
     ? { text: "در انتظار تایید پرداخت", color: "yellow" }
     : { text: OrderStatus[result.status], color: "" };
 }
+export function mapValue(value, fromMin, fromMax, toMin, toMax) {
+  // Ensure the value is within the source range [fromMin, fromMax]
+  const clampedValue = Math.min(Math.max(value, fromMin), fromMax);
+
+  // Map the clamped value from the source range to the target range
+  const mappedValue =
+    ((clampedValue - fromMin) / (fromMax - fromMin)) * (toMax - toMin) + toMin;
+
+  return mappedValue;
+}

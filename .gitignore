@@ -27,5 +27,6 @@ test.mkv
 logo.psd
 t.py
 logo-assets/
+dump/
 #BE SURE TO REMOVE THIS BEFORE PRODUCTION
 package-lock.json

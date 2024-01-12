@@ -4,3 +4,9 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "titr"; /* Choose a name for your font */
+  src: url("../fonts/IRTitr.ttf") format("truetype"); /* Path to your TTF font file */
+  font-weight: normal;
+  font-style: normal;
+}

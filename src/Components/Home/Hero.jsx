@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function Hero({ videoLoaded, setVideoLoaded }) {
   const nav = useNavigate();
+  const [showVideo, setShowVideo] = useState(false);
+  const videoElement = useRef();
   useEffect(() => {
     const nav = document.getElementById("my-nav");
     nav.style.opacity = "0";
@@ -30,6 +32,7 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
         }, 1500);
       }, 1500);
   }, [videoLoaded]);
+
   return (
     <>
       <div className="w-100 hero-wrapper">
@@ -38,9 +41,20 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
         </Typography>
         {videoLoaded && (
           <>
-            <img className="hero-real-img" src="/hero-img.jpg" alt="" />
+            {!showVideo && (
+              <img className="hero-real-img" src="/hero-img.jpg" alt="" />
+            )}
+            {/* {showVideo && (
+              <video
+                ref={videoElement}
+                className="hero-real-img"
+                src="/hero-moving.mp4"
+              />
+            )} */}
             <Button
               onClick={() => {
+                // setShowVideo(!showVideo);
+                // videoElement.current.play();
                 nav("/items");
               }}
               variant="contained"

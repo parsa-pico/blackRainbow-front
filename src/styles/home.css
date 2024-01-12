@@ -59,3 +59,11 @@
   /* max-width: 60vw; */
   border-radius: 18px;
 }
+.home-category-wrapper {
+  position: relative;
+}
+.home-category-label {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+}

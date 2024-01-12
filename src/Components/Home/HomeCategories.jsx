@@ -1,10 +1,13 @@
 import React from "react";
+import HomeCategory from "./HomeCategory";
 
 export default function HomeCategories() {
+  const items = [{}, {}, {}, {}];
   return (
     <div className="home-categories-wrapper">
-      {/* <img src="/1.png" className="home-category" alt="" />
-      <img src="/2.png" className="home-category" alt="" /> */}
+      {items.map((item, i) => (
+        <HomeCategory imgSrc={`${i + 1}.jpg`} />
+      ))}
     </div>
   );
 }
