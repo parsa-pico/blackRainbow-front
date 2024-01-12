@@ -138,7 +138,8 @@ export default function MyNav({ search }) {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              searchText(searchValue);
+              nav(`/items/?search=${searchValue}`);
+              // searchText(searchValue);
             }}
             className="nav-search-wrapper d-flex"
           >

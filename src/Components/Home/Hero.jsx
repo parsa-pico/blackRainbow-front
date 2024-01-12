@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero({ videoLoaded, setVideoLoaded }) {
+  const nav = useNavigate();
   useEffect(() => {
     const nav = document.getElementById("my-nav");
     nav.style.opacity = "0";
@@ -38,6 +40,9 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
           <>
             <img className="hero-real-img" src="/hero-img.jpg" alt="" />
             <Button
+              onClick={() => {
+                nav("/items");
+              }}
               variant="contained"
               color="secondary"
               id="hero-btn"

@@ -40,6 +40,12 @@ export default function GetItems({ setSearchValue }) {
   const sortIndex =
     parseInt(searchParams.get("sortIndex")) || (searchValue ? 1 : 2);
   const currentPage = parseInt(searchParams.get("page")) || 1;
+
+  useEffect(() => {
+    search();
+    setSearchValue(searchValue);
+  }, [searchParams]);
+
   function search() {
     tryHTTP(
       async (http) => {
@@ -63,10 +69,6 @@ export default function GetItems({ setSearchValue }) {
       }
     );
   }
-  useEffect(() => {
-    search();
-    setSearchValue(searchValue);
-  }, []);
 
   function getSubCategoryItems() {
     const index = categories.findIndex((o) => o._id === selectedCategory);
@@ -80,9 +82,13 @@ export default function GetItems({ setSearchValue }) {
       });
   }
   function handleFilter(pageNumber) {
-    window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
+    // window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
+    //   pageNumber || 1
+    // }`;
+    const query = `search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
       pageNumber || 1
     }`;
+    setSearchParams(query);
   }
   return (
     <div className="items-page-wrapper">
