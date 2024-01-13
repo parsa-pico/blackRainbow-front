@@ -52,6 +52,12 @@ code {
 .block {
   display: block;
 }
+
+.dflex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .pointer {
   cursor: pointer;
 }

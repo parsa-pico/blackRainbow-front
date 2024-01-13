@@ -6,6 +6,9 @@ import { getAnonymousId } from "../../Services/authService";
 import Hero from "./Hero";
 import Cat from "./Cat";
 import HomeCategories from "./HomeCategories";
+import HomeCarousel from "./HomeCarousel";
+import HomeVideo from "./HomeVideo";
+import LazyLoad from "react-lazy-load";
 export default function Home() {
   const [videoLoaded, setVideoLoaded] = useState();
   return (
@@ -13,17 +16,15 @@ export default function Home() {
       <Hero videoLoaded={videoLoaded} setVideoLoaded={setVideoLoaded} />
       <Cat />
       <HomeCategories />
-      <video
-        onLoadedData={() => {
-          console.log("here");
-          setVideoLoaded(true);
-        }}
-        muted
-        autoPlay
-        id="hero-img"
-        className="img-fluid"
-        src="/avc_hero - Trim.mp4"
-      />
+      {videoLoaded && (
+        <LazyLoad offset={300}>
+          <div className="p-1">
+            <HomeCarousel />
+          </div>
+        </LazyLoad>
+      )}
+
+      <HomeVideo setVideoLoaded={setVideoLoaded} />
     </div>
   );
 }

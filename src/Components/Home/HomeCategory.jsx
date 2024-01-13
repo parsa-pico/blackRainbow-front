@@ -5,8 +5,10 @@ import { useRef } from "react";
 import { useState } from "react";
 import { mapValue } from "./../../Common/commonFuncs";
 import { Chip, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export default function HomeCategory({ imgSrc, label }) {
+export default function HomeCategory({ item, imgSrc }) {
+  const nav = useNavigate();
   const [percentageVisible, setPercentageVisible] = useState(0);
   const targetRef = useRef(null);
 
@@ -36,16 +38,26 @@ export default function HomeCategory({ imgSrc, label }) {
       }
     };
   }, []);
-  const maxBlurAmount = 1.5;
+  const maxBlurAmount = 2.5;
   const filterAmount = 100 - percentageVisible;
 
   const blurAmount = round(
     mapValue(percentageVisible, 0, 100, maxBlurAmount, 0),
     2
   );
-
+  function goto_() {
+    const { subCategory, category } = item;
+    let link = `items?category=${category}`;
+    if (subCategory) link += `&subCategory=${subCategory}`;
+    nav(link);
+  }
   return (
-    <div className="home-category-wrapper">
+    <div
+      onClick={() => {
+        goto_();
+      }}
+      className="home-category-wrapper"
+    >
       <img
         style={{
           filter: `grayscale(${filterAmount}%)  blur(${blurAmount}px)`,

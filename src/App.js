@@ -27,6 +27,7 @@ import AdminOrders from "./Components/Admin/Orders/AdminOrders";
 import AdminOrder from "./Components/Admin/Orders/AdminOrder";
 import GetLikedItems from "./Components/Liked/GetLikedItems";
 import SelectBackground from "./Components/Admin/Background/SelectBackground";
+import { throttle } from "lodash";
 
 function App() {
   const loc = useLocation();
@@ -34,26 +35,31 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
   const [marginTop, setMarginTop] = useState(10);
   const [cartCount, setCartCount] = useCartCount();
+
   // hide menu
   useEffect(() => {
-    // Your scroll event listener code here
     document.body.style.backgroundImage = `url(${process.env.REACT_APP_API_URL}/pictures/bg.jpg)`;
-    var prevScrollpos = window.pageYOffset;
+    // Your scroll event listener code here
+    var lastScrolls = [];
+    for (let i = 0; i < 2; i++) {
+      lastScrolls.push(window.scrollY);
+    }
     const handleScroll = () => {
-      var currentScrollPos = window.pageYOffset;
-      if (prevScrollpos > currentScrollPos) {
+      var currentScrollPos = window.scrollY;
+      lastScrolls.shift();
+      lastScrolls.push(currentScrollPos);
+      if (lastScrolls[0] > currentScrollPos) {
         document.getElementById("my-nav").style.top = "0";
       } else {
         document.getElementById("my-nav").style.top = "-300px";
       }
-      prevScrollpos = currentScrollPos;
     };
+    const handleScrollThrottled = throttle(handleScroll, 100); // Adjust the delay as needed (300 milliseconds in this example)
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScrollThrottled);
 
     // Cleanup function
     return () => {
-      // Remove the scroll event listener when the component is unmounted
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
