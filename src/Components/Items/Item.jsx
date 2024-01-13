@@ -59,8 +59,8 @@ export default function Item() {
           ogDescriptionMeta.setAttribute("content", pageDescription);
         }
         document
-          .querySelector('meta[name="name"]')
-          .setAttribute("description", pageDescription);
+          .querySelector('meta[name="description"]')
+          .setAttribute("content", pageDescription);
         //
         setItemData(data);
 
@@ -81,6 +81,10 @@ export default function Item() {
       }
     );
   }
+  useEffect(() => {
+    getItem();
+    getLiked();
+  }, []);
   function getLiked() {
     if (user)
       tryHTTP(async () => {
@@ -90,11 +94,6 @@ export default function Item() {
         setItemData((obj) => ({ ...obj, liked: data }));
       });
   }
-
-  useEffect(() => {
-    getItem();
-    getLiked();
-  }, []);
 
   function handleCart(quantity_) {
     tryHTTP(
