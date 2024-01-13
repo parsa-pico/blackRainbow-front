@@ -45,6 +45,12 @@ export function setItemInfo(info) {
 export function clearItemInfo() {
   storage.clear("itemInfo");
 }
+export function setHeroVideoDate() {
+  storage.setItem("heroVideo", new Date());
+}
+export function getHeroVideoDate() {
+  return new Date(storage.getItem("heroVideo"));
+}
 // export function getToken() {
 //   return storage.getItem("token");
 // }

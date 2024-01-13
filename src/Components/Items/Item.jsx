@@ -91,6 +91,8 @@ export default function Item() {
         const { itemId } = params;
         let { data } = await http.get(`/likes/${itemId}`);
 
+        data = data.toString() === "true" ? true : false;
+        console.log("result", data);
         setItemData((obj) => ({ ...obj, liked: data }));
       });
   }

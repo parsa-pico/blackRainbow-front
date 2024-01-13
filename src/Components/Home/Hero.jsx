@@ -2,11 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-export default function Hero({ videoLoaded, setVideoLoaded }) {
+export default function Hero({
+  showLoadingVideo,
+  videoLoaded,
+  setVideoLoaded,
+}) {
   const nav = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
   const videoElement = useRef();
   useEffect(() => {
+    if (!showLoadingVideo) return;
+
     const nav = document.getElementById("my-nav");
     nav.style.opacity = "0";
     document.body.style.overflow = "hidden";
@@ -64,6 +70,7 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
               onClick={() => {
                 setShowVideo(true);
               }}
+              style={{ zIndex: videoLoaded ? 1 : -1 }}
               variant="contained"
               color="secondary"
               id="hero-btn"
