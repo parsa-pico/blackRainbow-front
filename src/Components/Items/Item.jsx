@@ -50,13 +50,17 @@ export default function Item() {
           'meta[property="og:description"]'
         );
 
-        if (ogTitleMeta) {
-          ogTitleMeta.setAttribute("content", data.title);
-        }
-
+        // document.title = data.productName;
+        // if (ogTitleMeta) {
+        //   ogTitleMeta.setAttribute("content", data.productName);
+        // }
+        const pageDescription = `بلک رینبو | خرید ${data.productName}`;
         if (ogDescriptionMeta) {
-          ogDescriptionMeta.setAttribute("content", data.pictures[0]);
+          ogDescriptionMeta.setAttribute("content", pageDescription);
         }
+        document
+          .querySelector('meta[name="name"]')
+          .setAttribute("description", pageDescription);
         //
         setItemData(data);
 
