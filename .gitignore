@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 #my files
+.env.development
 test.mkv
 logo.psd
 t.py
