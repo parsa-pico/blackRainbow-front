@@ -45,6 +45,10 @@
   height: 100vh;
   max-height: 500px;
 }
+.hero-real-img-moving {
+  max-width: 100vw;
+  object-fit: cover;
+}
 .home-categories-wrapper {
   padding: 2rem;
   padding-top: 0;

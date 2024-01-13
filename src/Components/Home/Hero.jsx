@@ -56,7 +56,7 @@ export default function Hero({ videoLoaded, setVideoLoaded }) {
 
             <video
               ref={videoElement}
-              className={"hero-real-img " + (!showVideo && "none")}
+              className={"hero-real-img-moving " + (!showVideo && "none")}
               src="/avc_hero-moving.mp4"
             />
 
