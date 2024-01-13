@@ -23,7 +23,7 @@ export default function HomeCarousel() {
   async function search() {
     tryHTTP(async (http) => {
       const { data } = await http.post("/items/get-by-keyword", {
-        sortIndex: 3,
+        sortIndex: 5,
         page: 1,
       });
       setItems(data.result);
@@ -40,7 +40,7 @@ export default function HomeCarousel() {
         }}
       >
         <Typography fontFamily="titr" variant="h5" className="text-center">
-          جدید ترین محصولات
+          پرفروش ترین ها
         </Typography>
         <img
           src="/fire.webp"
@@ -128,6 +128,7 @@ export default function HomeCarousel() {
                       <CardContent>
                         <Typography
                           fontFamily={"yekan"}
+                          fontSize="medium"
                           className="mb-5"
                           gutterBottom
                           variant="h6"
