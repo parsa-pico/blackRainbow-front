@@ -44,6 +44,20 @@ export default function Item() {
           data.customersPictures = data.customersPictures.map((p) =>
             getPicture(p)
           );
+        //
+        const ogTitleMeta = document.querySelector('meta[property="og:title"]');
+        const ogDescriptionMeta = document.querySelector(
+          'meta[property="og:description"]'
+        );
+
+        if (ogTitleMeta) {
+          ogTitleMeta.setAttribute("content", data.title);
+        }
+
+        if (ogDescriptionMeta) {
+          ogDescriptionMeta.setAttribute("content", data.pictures[0]);
+        }
+        //
         setItemData(data);
 
         if (data.optionsData) {
@@ -53,7 +67,7 @@ export default function Item() {
           }
           setSelectedOptions(obj);
           const { data: cartItemData } = await http.get(`/carts/${itemId}`);
-          console.log(cartItemData);
+
           setCartItem(cartItemData);
         }
       },
