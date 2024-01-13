@@ -41,7 +41,8 @@ function App() {
     document.body.style.backgroundImage = `url(${process.env.REACT_APP_API_URL}/pictures/bg.jpg)`;
     // Your scroll event listener code here
     var lastScrolls = [];
-    for (let i = 0; i < 2; i++) {
+    const max = 2;
+    for (let i = 0; i < max; i++) {
       lastScrolls.push(window.scrollY);
     }
     const handleScroll = () => {
@@ -50,6 +51,7 @@ function App() {
       lastScrolls.push(currentScrollPos);
       if (lastScrolls[0] > currentScrollPos) {
         document.getElementById("my-nav").style.top = "0";
+        handleScrollThrottled.cancel();
       } else {
         document.getElementById("my-nav").style.top = "-300px";
       }

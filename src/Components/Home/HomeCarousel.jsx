@@ -104,7 +104,7 @@ export default function HomeCarousel() {
           shouldResetAutoplay
           showDots
           sliderClass=""
-          slidesToSlide={1}
+          slidesToSlide={2}
           swipeable
         >
           {items &&

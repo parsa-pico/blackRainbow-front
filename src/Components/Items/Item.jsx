@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import http from "../../Services/httpService";
 import { getPicture, tryHTTP } from "../../Common/commonFuncs";
-
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ItemImage from "./ItemImage";
 import ItemPath from "./ItemPath";
 import ItemOptions from "./ItemOptions";
@@ -16,6 +16,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { toast } from "react-toastify";
 import PictureToggle from "./PictureToggle";
 export default function Item() {
+  const loc = useLocation();
   const nav = useNavigate();
   const params = useParams();
   const user = getUser();
@@ -140,7 +141,20 @@ export default function Item() {
           ]
         }
       />
+
       <div className="item-upper my-5">
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            toast.success("لینک محصول کپی شد", { autoClose: 1000 });
+          }}
+          className="mb-3 w-50"
+          variant="outlined"
+          color="secondary"
+        >
+          <ContentCopyIcon />
+          اشتراک گذاری
+        </Button>
         {itemData &&
           itemData.customersPictures &&
           itemData.customersPictures.length > 0 && (
