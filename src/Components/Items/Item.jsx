@@ -83,19 +83,18 @@ export default function Item() {
   }
   useEffect(() => {
     getItem();
-    getLiked();
   }, []);
-  function getLiked() {
-    if (user)
-      tryHTTP(async () => {
-        const { itemId } = params;
-        let { data } = await http.get(`/likes/${itemId}`);
+  // function getLiked() {
+  //   if (user)
+  //     tryHTTP(async () => {
+  //       const { itemId } = params;
+  //       let { data } = await http.get(`/likes/${itemId}`);
 
-        data = data.toString() === "true" ? true : false;
-        console.log("result", data);
-        setItemData((obj) => ({ ...obj, liked: data }));
-      });
-  }
+  //       data = data.toString() === "true" ? true : false;
+  //       console.log("result", data);
+  //       setItemData((obj) => ({ ...obj, liked: data }));
+  //     });
+  // }
 
   function handleCart(quantity_) {
     tryHTTP(
@@ -130,7 +129,7 @@ export default function Item() {
         }
       );
     else {
-      toast.dark("ابتدا وارد حساب خود شوید");
+      toast.dark("لطفا ابتدا وارد حساب خود شوید");
     }
   }
   function dislikeItem() {
@@ -150,6 +149,9 @@ export default function Item() {
       toast.dark("ابتدا وارد حساب خود شوید");
     }
   }
+  useEffect(() => {
+    console.log(itemData);
+  }, [itemData]);
   return (
     <div className="item-wrapper container mt-2">
       <ItemPath
@@ -199,7 +201,7 @@ export default function Item() {
           </div>
 
           <div className="pointer">
-            {itemData.liked ? (
+            {itemData.liked === true ? (
               <FavoriteIcon onClick={dislikeItem} />
             ) : (
               <FavoriteBorderIcon onClick={likeItem} />

@@ -51,6 +51,7 @@ export default function NewItem() {
     );
     delete obj.sold;
     delete obj.views;
+    delete obj.liked;
     if (!obj.brand) obj.brand = "";
     obj.price *= 10;
 
@@ -162,6 +163,7 @@ export default function NewItem() {
           delete data.pictures;
           delete data._id;
           delete data.views;
+          delete data.liked;
           //
 
           setItem(data);

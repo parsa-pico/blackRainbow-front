@@ -11,7 +11,7 @@ export const CategoryProvider = ({ children }) => {
   useEffect(() => {
     tryHTTP(async (http) => {
       const { data } = await http.get("/categories");
-      console.log(data);
+
       setCategories(data);
     });
   }, []);
