@@ -7,7 +7,9 @@ export function getUser() {
 export function setUser(obj) {
   return storage.setItem("userInfo", JSON.stringify(obj));
 }
-
+export function setSessionId(id) {
+  return storage.setItem("sessionId", id);
+}
 export function clearUser() {
   return storage.removeItem("userInfo");
 }
@@ -15,7 +17,7 @@ export function clearUser() {
 //   return storage.setItem("anonymous", id);
 // }
 export function getAnonymousId() {
-  return getCookie("sessionId");
+  return getCookie("sessionId") || storage.getItem("sessionId");
 }
 function getCookie(cookieName) {
   const cookies = document.cookie.split(";");

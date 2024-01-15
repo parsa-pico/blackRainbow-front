@@ -4,6 +4,7 @@ import {
   getAnonymousId,
   getToken,
   getUser,
+  setSessionId,
 } from "./Services/authService";
 import { useEffect, useState } from "react";
 import Item from "./Components/Items/Item";
@@ -73,7 +74,8 @@ function App() {
 
     if (!user && !getAnonymousId()) {
       tryHTTP(async (http) => {
-        await http.post("/customers/login-anonymous");
+        const { data } = await http.post("/customers/login-anonymous");
+        setSessionId(data.sessionId);
         setCartCount(0);
       });
     }
