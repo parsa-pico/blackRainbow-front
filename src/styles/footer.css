@@ -1,0 +1,12 @@
+.footer-wrapper {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  padding-left: 4rem;
+}
+.footer-text {
+  color: rgb(219, 219, 219);
+  font-family: "yekan";
+}

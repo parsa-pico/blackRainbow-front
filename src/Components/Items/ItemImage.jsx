@@ -1,59 +1,78 @@
 import React, { useState, useEffect } from "react";
-import { Carousel } from "react-bootstrap";
+import { useRef } from "react";
+import Carousel from "react-multi-carousel";
+
 export default function ItemImage({ picsData }) {
-  const [pictures, setPictures] = useState([]);
-  const baseInterval = 2500;
-  const [imgInterval, setImgInterval] = useState(baseInterval);
-  const [itemClass, setItemClass] = useState("");
-  const [index, setIndex] = useState(0);
+  const pictures = picsData;
+  const carouselRef = useRef();
+  // const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (index !== 0) setImgInterval(null);
-  }, [picsData, index]);
-  useEffect(() => {
-    setPictures(picsData);
-    setIndex(0);
-    setImgInterval(baseInterval);
-  }, [picsData]);
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
+    carouselRef.current.goToSlide(0);
+  }, [pictures]);
+  // const handleSelect = (selectedIndex, e) => {
+  //   setIndex(selectedIndex);
+  // };
   return (
-    <div>
+    <div className="item-carousel">
       <Carousel
-        // onTouchStart={(e) => {
-        //   if (e.target.name === "item-img") {
-        //     e.preventDefault();
-        //     setItemClass("item-carousel-hold");
-        //     setImgInterval(null);
-        //   }
-        // }}
-        // onTouchEnd={(e) => {
-        //   if (e.target.name === "item-img") {
-        //     e.preventDefault();
-        //     setItemClass("");
-        //     setImgInterval(baseInterval);
-        //   }
-        // }}
-        activeIndex={index}
-        onSelect={handleSelect}
-        className="relative item-carousel"
-        interval={imgInterval}
+        ref={carouselRef}
+        additionalTransfrom={0}
+        arrows
+        // containerClass="container"
+        dotListClass=""
+        draggable
+        focusOnSelect
+        itemClass=""
+        keyBoardControl
+        minimumTouchDrag={80}
+        pauseOnHover
+        renderArrowsWhenDisabled={false}
+        renderButtonGroupOutside={false}
+        // renderDotsOutside
+        responsive={{
+          desktop: {
+            breakpoint: {
+              max: 3000,
+              min: 1024,
+            },
+            items: 1,
+          },
+          mobile: {
+            breakpoint: {
+              max: 464,
+              min: 0,
+            },
+            items: 1,
+          },
+          tablet: {
+            breakpoint: {
+              max: 1024,
+              min: 464,
+            },
+            items: 1,
+          },
+        }}
+        rewind={false}
+        rewindWithAnimation={false}
+        rtl
+        shouldResetAutoplay
+        showDots
+        sliderClass=""
+        slidesToSlide={1}
+        swipeable
       >
         {pictures &&
           pictures.length > 0 &&
           pictures.map((link, i) => (
-            <Carousel.Item
-              className={"item-carousel-item " + itemClass}
-              key={i}
-            >
+            <div className={"item-carousel-item "} key={i}>
               <img
                 name="item-img"
                 className="img-fluid item-carousel-img"
                 src={link}
                 alt=""
               />
-            </Carousel.Item>
+            </div>
           ))}
       </Carousel>
     </div>

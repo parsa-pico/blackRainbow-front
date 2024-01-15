@@ -12,6 +12,7 @@
 @import url("./likedItems.css");
 @import url("./home.css");
 @import url("./cat.css");
+@import url("./footer.css");
 
 body {
   --bg-purchase: rgb(35 37 55);

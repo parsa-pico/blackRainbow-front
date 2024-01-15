@@ -48,7 +48,7 @@ export default function Hero({
   }, [showVideo]);
   return (
     <>
-      <div className="w-100 hero-wrapper">
+      <header className="w-100 hero-wrapper">
         <Typography fontFamily={"Anton"} className="hero-heading" variant="h2">
           Black <br></br> Rainbow
         </Typography>
@@ -80,7 +80,7 @@ export default function Hero({
             </Button>
           </>
         )}
-      </div>
+      </header>
     </>
   );
 }

@@ -15,6 +15,7 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
+import "react-multi-carousel/lib/styles.css";
 import "./styles/index.css";
 import { ToastProvider } from "./context/toastContext";
 import { CartCountProvider } from "./context/cartCountContext";

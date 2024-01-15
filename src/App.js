@@ -28,6 +28,7 @@ import AdminOrder from "./Components/Admin/Orders/AdminOrder";
 import GetLikedItems from "./Components/Liked/GetLikedItems";
 import SelectBackground from "./Components/Admin/Background/SelectBackground";
 import { throttle } from "lodash";
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   const loc = useLocation();
@@ -132,6 +133,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <div style={{ marginTop: "200px" }} />
+      <Footer />
       <ToastContainer />
     </div>
   );

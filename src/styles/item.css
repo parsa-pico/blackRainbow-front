@@ -90,3 +90,11 @@
 .item-desc {
   white-space: pre-wrap;
 }
+@media screen and (min-width: 1024px) {
+  .item-upper {
+    flex-direction: row;
+  }
+  .item-upper-image {
+    margin-left: 1rem;
+  }
+}

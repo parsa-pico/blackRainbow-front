@@ -22,8 +22,13 @@ import {
 import { useGlobalLoading } from "../../context/globalLoadingContext";
 import { useCategories } from "../../context/categoryContext";
 import LazyLoad from "react-lazy-load";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import { getUser } from "../../Services/authService";
+import { toast } from "react-toastify";
 
 export default function GetItems({ setSearchValue }) {
+  const user = getUser();
   const nav = useNavigate();
   const [items, setItems] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,6 +62,7 @@ export default function GetItems({ setSearchValue }) {
           sortIndex,
           page: currentPage,
         });
+        console.log(data.result);
         setCount(data.count);
         setTotalPages(data.totalPages);
         setItems(data.result);
@@ -89,6 +95,46 @@ export default function GetItems({ setSearchValue }) {
       pageNumber || 1
     }`;
     setSearchParams(query);
+  }
+  function likeItem(itemData, i) {
+    if (user)
+      tryHTTP(
+        async (http) => {
+          setGlobalLoading(true);
+
+          await http.post(`/likes/${itemData._id}`);
+          const copy = [...items];
+          copy[i] = { ...items[i], liked: true };
+
+          setItems(copy);
+        },
+        () => {
+          setGlobalLoading(false);
+        }
+      );
+    else {
+      toast.dark("لطفا ابتدا وارد حساب خود شوید");
+    }
+  }
+  function dislikeItem(itemData, i) {
+    if (user)
+      tryHTTP(
+        async (http) => {
+          setGlobalLoading(true);
+
+          await http.delete(`/likes/${itemData._id}`);
+          const copy = [...items];
+          copy[i] = { ...items[i], liked: false };
+
+          setItems(copy);
+        },
+        () => {
+          setGlobalLoading(false);
+        }
+      );
+    else {
+      toast.dark("ابتدا وارد حساب خود شوید");
+    }
   }
   return (
     <div className="items-page-wrapper">
@@ -221,10 +267,10 @@ export default function GetItems({ setSearchValue }) {
 
                     <CardContent>
                       <Typography
-                        fontFamily={"yekan"}
+                        fontFamily={"titr"}
                         className="mb-5"
                         gutterBottom
-                        variant="h6"
+                        variant="h5"
                       >
                         {obj.productName}
                       </Typography>
@@ -232,7 +278,19 @@ export default function GetItems({ setSearchValue }) {
                         style={{ justifyContent: "space-between" }}
                         className="hstack"
                       >
-                        <div></div>
+                        <div>
+                          {obj.liked ? (
+                            <BookmarkIcon
+                              fontSize="medium"
+                              onClick={() => dislikeItem(obj, index)}
+                            />
+                          ) : (
+                            <BookmarkBorderIcon
+                              fontSize="medium"
+                              onClick={() => likeItem(obj, index)}
+                            />
+                          )}
+                        </div>
                         <Chip
                           size="medium"
                           variant="outlined"

@@ -22,7 +22,7 @@ export default function HomeCategories() {
     },
   ];
   return (
-    <div>
+    <section>
       <div className="dflex-center mt-3 mb-1">
         <Typography fontFamily="titr" variant="h5" className="text-center ms-1">
           محبوب ترین ها
@@ -34,6 +34,6 @@ export default function HomeCategories() {
           <HomeCategory item={item} key={i} imgSrc={`${i + 1}.jpg`} />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

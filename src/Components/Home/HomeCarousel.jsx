@@ -10,7 +10,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ export default function HomeCarousel() {
     });
   }
   return (
-    <div>
+    <section>
       <div
         style={{
           display: "flex",
@@ -64,7 +64,6 @@ export default function HomeCarousel() {
           autoPlaySpeed={3000}
           centerMode={false}
           className=""
-          containerClass="container"
           dotListClass=""
           draggable
           focusOnSelect={false}
@@ -155,6 +154,6 @@ export default function HomeCarousel() {
             })}
         </Carousel>
       </div>
-    </div>
+    </section>
   );
 }

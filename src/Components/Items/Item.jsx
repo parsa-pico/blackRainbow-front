@@ -11,10 +11,10 @@ import { Button, Chip, Typography } from "@mui/material";
 import ItemTags from "./ItemTags";
 import { getUser } from "../../Services/authService";
 import { useGlobalLoading } from "../../context/globalLoadingContext";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { toast } from "react-toastify";
 import PictureToggle from "./PictureToggle";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 export default function Item() {
   const loc = useLocation();
   const nav = useNavigate();
@@ -164,95 +164,97 @@ export default function Item() {
       />
 
       <div className="item-upper my-5">
-        <Button
-          onClick={() => {
-            navigator.clipboard.writeText(window.location.href);
-            toast.success("لینک محصول کپی شد", { autoClose: 1000 });
-          }}
-          className="mb-3 w-50"
-          variant="outlined"
-          color="secondary"
-        >
-          <ContentCopyIcon />
-          اشتراک گذاری
-        </Button>
-        {itemData &&
-          itemData.customersPictures &&
-          itemData.customersPictures.length > 0 && (
-            <PictureToggle itemData={itemData} setPictures={setPictures} />
-          )}
-        <ItemImage picsData={pictures} />
-
-        <div style={{ justifyContent: "space-between" }} className="hstack">
-          <div>
-            <Typography className="my-2" gutterBottom variant="h3">
-              {itemData.productName}
-            </Typography>
-            {itemData.brand && (
-              <Typography
-                className="my-2"
-                gutterBottom
-                color="whitesmoke"
-                variant="h6"
-              >
-                برند {itemData.brand}
-              </Typography>
+        <div className="item-upper-image">
+          {itemData &&
+            itemData.customersPictures &&
+            itemData.customersPictures.length > 0 && (
+              <PictureToggle itemData={itemData} setPictures={setPictures} />
             )}
-          </div>
-
-          <div className="pointer">
-            {itemData.liked === true ? (
-              <FavoriteIcon onClick={dislikeItem} />
-            ) : (
-              <FavoriteBorderIcon onClick={likeItem} />
-            )}
-          </div>
+          <ItemImage picsData={pictures} />
         </div>
-        <hr />
+        <div className="w-100">
+          <div style={{ justifyContent: "space-between" }} className="hstack">
+            <div>
+              <Typography className="my-2" gutterBottom variant="h3">
+                {itemData.productName}
+              </Typography>
+              {itemData.brand && (
+                <Typography
+                  className="my-2"
+                  gutterBottom
+                  color="whitesmoke"
+                  variant="h6"
+                >
+                  برند {itemData.brand}
+                </Typography>
+              )}
+            </div>
 
-        <Typography gutterBottom color="whitesmoke" variant="h5">
-          ویژگی های محصول:
-        </Typography>
-        <p className="item-desc">{itemData.description}</p>
-        <ItemOptions
-          selectedOptions={selectedOptions}
-          setSelectedOptions={setSelectedOptions}
-          itemOptions={itemData && itemData.optionsData}
-        />
-        <ItemTags tags={itemData.tags} />
-
-        {user && user.isAdmin && (
-          <div className="my-3">
-            <table>
-              <tbody>
-                <tr>
-                  <td>{itemData.views}</td>
-                  <td>بازدید</td>
-                </tr>
-                <tr>
-                  <td>{itemData.sold}</td>
-                  <td>فروش</td>
-                </tr>
-                <tr>
-                  <td>محصول</td>
-                  <td>{itemData.enabled ? "فعال" : "غیر فعال"}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="pointer">
+              {itemData.liked ? (
+                <BookmarkIcon fontSize="large" onClick={dislikeItem} />
+              ) : (
+                <BookmarkBorderIcon fontSize="large" onClick={likeItem} />
+              )}
+            </div>
           </div>
-        )}
-        {user && user.isAdmin && (
+          <hr />
+
+          <Typography gutterBottom color="whitesmoke" variant="h5">
+            ویژگی های محصول:
+          </Typography>
+          <p className="item-desc">{itemData.description}</p>
+          <ItemOptions
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+            itemOptions={itemData && itemData.optionsData}
+          />
+          <ItemTags tags={itemData.tags} />
           <Button
             onClick={() => {
-              nav(`/admin/new-item?itemId=${itemData._id}`);
+              navigator.clipboard.writeText(window.location.href);
+              toast.success("لینک محصول کپی شد", { autoClose: 1000 });
             }}
-            className="mt-2"
+            className="mt-3 w-50"
             variant="outlined"
-            color="warning"
+            color="secondary"
           >
-            ادیت کالا
+            <ContentCopyIcon />
+            اشتراک گذاری
           </Button>
-        )}
+          {user && user.isAdmin && (
+            <div className="my-3">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>{itemData.views}</td>
+                    <td>بازدید</td>
+                  </tr>
+                  <tr>
+                    <td>{itemData.sold}</td>
+                    <td>فروش</td>
+                  </tr>
+                  <tr>
+                    <td>محصول</td>
+                    <td>{itemData.enabled ? "فعال" : "غیر فعال"}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+          {user && user.isAdmin && (
+            <Button
+              onClick={() => {
+                nav(`/admin/new-item?itemId=${itemData._id}`);
+              }}
+              className="mt-2"
+              variant="outlined"
+              color="warning"
+            >
+              ادیت کالا
+            </Button>
+          )}
+        </div>
       </div>
       <ItemPurchase
         loading={loading}
