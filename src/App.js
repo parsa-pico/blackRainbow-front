@@ -72,7 +72,7 @@ function App() {
     const user = getUser();
     const now = new Date().getTime();
 
-    if (!user && !getAnonymousId()) {
+    if (!user) {
       tryHTTP(async (http) => {
         const { data } = await http.post("/customers/login-anonymous");
         setSessionId(data.sessionId);

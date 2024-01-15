@@ -16,8 +16,13 @@ export function clearUser() {
 // export function setAnonymousId(id) {
 //   return storage.setItem("anonymous", id);
 // }
+export function clearSessionId() {
+  storage.removeItem("sessionId");
+}
 export function getAnonymousId() {
-  return getCookie("sessionId") || storage.getItem("sessionId");
+  const result = getCookie("sessionId") || storage.getItem("sessionId");
+
+  return result;
 }
 function getCookie(cookieName) {
   const cookies = document.cookie.split(";");
