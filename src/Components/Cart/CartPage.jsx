@@ -43,7 +43,7 @@ export default function CartPage() {
         const { data } = await http.post("/orders/submitPurchase", order);
         toast.success("خرید شما با موفقیت ثبت شد");
         setTimeout(() => {
-          window.location = "/";
+          nav("/orders");
         }, 1000);
       },
       () => {
