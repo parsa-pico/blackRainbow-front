@@ -11,28 +11,36 @@ import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Table } from "react-bootstrap";
 import GetCart from "../Cart/GetCart";
+import { useGlobalLoading } from "../../context/globalLoadingContext";
 
 export default function Order() {
   const [order, setOrder] = useState({});
+  const [_, setGlobalLoading] = useGlobalLoading();
   const params = useParams();
   useEffect(() => {
     search();
   }, []);
   function search() {
-    tryHTTP(async (http) => {
-      const { data } = await http.get("/orders/" + params.orderId);
-      console.log(data);
-      const { result, OrderStatus } = data;
-      result.status = getOrderStatus(result, OrderStatus);
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        const { data } = await http.get("/orders/" + params.orderId);
+        console.log(data);
+        const { result, OrderStatus } = data;
+        result.status = getOrderStatus(result, OrderStatus);
 
-      result.paymentMethod =
-        result.paymentMethod === 2 ? "کارت به کارت" : "پرداخت اینترنتی";
-      setOrder(result);
-    });
+        result.paymentMethod =
+          result.paymentMethod === 2 ? "کارت به کارت" : "پرداخت اینترنتی";
+        setOrder(result);
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
   }
-  useEffect(() => {
-    console.log("order", order);
-  }, [order]);
+  // useEffect(() => {
+  //   console.log("order", order);
+  // }, [order]);
   function getTotalPrice() {
     const { totalPrice, postPrice } = order;
 

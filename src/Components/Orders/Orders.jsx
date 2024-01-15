@@ -7,24 +7,32 @@ import { Table } from "react-bootstrap";
 import { getPrice } from "./../../Common/commonFuncs";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useNavigate } from "react-router-dom";
+import { useGlobalLoading } from "./../../context/globalLoadingContext";
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [_, setGlobalLoading] = useGlobalLoading();
   const nav = useNavigate();
   useEffect(() => {
     search();
   }, []);
   function search() {
-    tryHTTP(async (http) => {
-      let { data } = await http.get("/orders");
-      let { orders: orders_, OrderStatus } = data;
-      console.log(OrderStatus);
-      orders_ = orders_.map((obj, i) => ({
-        ...obj,
-        id: i,
-        status: getOrderStatus(obj, OrderStatus),
-      }));
-      setOrders(orders_);
-    });
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        let { data } = await http.get("/orders");
+        let { orders: orders_, OrderStatus } = data;
+        console.log(OrderStatus);
+        orders_ = orders_.map((obj, i) => ({
+          ...obj,
+          id: i,
+          status: getOrderStatus(obj, OrderStatus),
+        }));
+        setOrders(orders_);
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
   }
 
   return (

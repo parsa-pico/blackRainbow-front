@@ -10,6 +10,7 @@ import { Chip } from "@mui/material";
 import { toast } from "react-toastify";
 import InputFileUpload from "../../Common/commonComponents";
 import { readFile, tryHTTP } from "../../Common/commonFuncs";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { useState } from "react";
 
 export default function PaymentMehtod({
@@ -117,7 +118,10 @@ export default function PaymentMehtod({
           )}
         </div>
       )}
-      <small className="mt-1">*ارسال سفارشات 2 هفته زمان میبرد</small>
+      <p className="mt-2">
+        <LocalShippingIcon className="ms-2" />
+        ارسال سفارشات طی 2هفته کاری
+      </p>
       <h5 className="mt-3 ">
         هزینه نهایی :{getTotalPrice().total} {" تومان"}{" "}
       </h5>

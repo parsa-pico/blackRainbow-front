@@ -23,7 +23,7 @@ export default function FillInfo({
     const currentDate = new Date();
 
     // Add one day
-    currentDate.setDate(currentDate.getDate() + 1);
+    currentDate.setDate(currentDate.getDate() + 12);
     return currentDate;
   }
   const handleTooltipClose = () => {

@@ -83,8 +83,8 @@ export default function CartPage() {
   function handleCart(quantity, itemData) {
     tryHTTP(
       async (http) => {
-        setLoading(true);
-
+        // setLoading(true);
+        setGlobalLoading(true);
         await http.post(`/carts/new/${itemData.itemId}`, {
           options: itemData.option,
           quantity,
@@ -92,7 +92,8 @@ export default function CartPage() {
         await getCart();
       },
       () => {
-        setLoading(false);
+        setGlobalLoading(false);
+        // setLoading(false);
       }
     );
   }
