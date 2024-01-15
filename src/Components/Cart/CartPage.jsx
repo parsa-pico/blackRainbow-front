@@ -55,6 +55,7 @@ export default function CartPage() {
     );
   }
   const handleNext = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     if (getAnonymousId()) return nav("/login", { state: "/cart" });
     const newStep = activeStep + 1;
     setActiveStep(newStep);
@@ -62,6 +63,7 @@ export default function CartPage() {
   };
 
   const handleBack = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   useEffect(() => {
