@@ -51,11 +51,11 @@ export default function Home() {
         <>
           <Cat />
           <HomeCategories />
-          <LazyLoad offset={300}>
-            <div className="p-1">
-              <HomeCarousel />
-            </div>
-          </LazyLoad>
+          {/* <LazyLoad offset={300}> */}
+          <div className="p-1">
+            <HomeCarousel />
+          </div>
+          {/* </LazyLoad> */}
         </>
       )}
 

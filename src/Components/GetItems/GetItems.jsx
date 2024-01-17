@@ -294,7 +294,7 @@ export default function GetItems({ setSearchValue }) {
             ))}
         </Grid>
       </Grid>
-      <div className="mt-2 item-pagination-wrapper">
+      <div className="mt-4 item-pagination-wrapper">
         <Pagination
           className="item-pagination bg-dark"
           count={totalPages}
