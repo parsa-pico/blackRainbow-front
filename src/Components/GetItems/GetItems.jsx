@@ -166,11 +166,8 @@ export default function GetItems({ setSearchValue }) {
           className="items-page-filters-wrapper mb-4 bg-dark"
         >
           <h6 className="my-2 mb-4"> فیلتر ها </h6>
-          <div className="vstack">
-            <FormControl
-              sx={{ width: { xs: "100%", md: "50%", xl: "100%" } }}
-              fullWidth
-            >
+          <div className="vstack w-100">
+            <FormControl fullWidth>
               <InputLabel id="category"> دسته بندی</InputLabel>
               <Select
                 labelId="category"
@@ -188,11 +185,7 @@ export default function GetItems({ setSearchValue }) {
                 ))}
               </Select>
             </FormControl>
-            <FormControl
-              className="my-2"
-              sx={{ width: { xs: "100%", md: "50%", xl: "100%" } }}
-              fullWidth
-            >
+            <FormControl className="my-2" fullWidth>
               <InputLabel id="sub-category"> زیر دسته بندی</InputLabel>
               <Select
                 labelId="sub-category"
@@ -203,11 +196,7 @@ export default function GetItems({ setSearchValue }) {
                 {getSubCategoryItems()}
               </Select>
             </FormControl>
-            <FormControl
-              className="my-2"
-              sx={{ width: { xs: "100%", md: "50%", xl: "100%" } }}
-              fullWidth
-            >
+            <FormControl className="my-2" fullWidth>
               <InputLabel id="sub-category">مرتب سازی بر اساس</InputLabel>
               <Select
                 labelId="sub-category"
@@ -226,7 +215,7 @@ export default function GetItems({ setSearchValue }) {
             </Button>
             <Button
               onClick={() => {
-                window.location = `/items?search=${searchValue}`;
+                nav(`/items?search=${searchValue}`);
               }}
               color="error"
               className="mt-4"

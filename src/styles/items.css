@@ -30,6 +30,6 @@
     /* flex-direction: row; */
   }
   .items-page-filters-wrapper {
-    /* margin-left: 10rem; */
+    margin-left: 3rem !important;
   }
 }

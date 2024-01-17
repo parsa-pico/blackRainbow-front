@@ -65,6 +65,11 @@
 }
 .home-category-wrapper {
   position: relative;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.home-category-wrapper:hover {
+  transform: scale(1.05);
 }
 .home-category-label {
   position: absolute;

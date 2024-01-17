@@ -1,6 +1,8 @@
 .item-carousel {
-  /* width: 400px;
-  height: 400px; */
+  min-width: 200px;
+  /* height: 20vw; */
+  /* width: 400px; */
+
   max-width: 500px;
   margin: auto;
 
@@ -21,8 +23,12 @@
   /* border: 2px solid white; */
   transform: scale(1.04);
 }
+[dir="rtl"] .carousel-container {
+  direction: ltr;
+}
 @media screen and (min-width: 1024px) {
   .item-carousel {
+    min-width: 400px;
     /* width: 500px;
     height: 500px; */
   }

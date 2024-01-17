@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRef } from "react";
 import Carousel from "react-multi-carousel";
 
-export default function ItemImage({ picsData }) {
-  const pictures = picsData;
+export default function ItemImage({ picsData: pictures }) {
   const carouselRef = useRef();
   // const [index, setIndex] = useState(0);
 
@@ -53,6 +52,7 @@ export default function ItemImage({ picsData }) {
             items: 1,
           },
         }}
+        containerClass="w-100"
         rewind={false}
         rewindWithAnimation={false}
         rtl
@@ -64,16 +64,18 @@ export default function ItemImage({ picsData }) {
       >
         {pictures &&
           pictures.length > 0 &&
-          pictures.map((link, i) => (
-            <div className={"item-carousel-item "} key={i}>
-              <img
-                name="item-img"
-                className="img-fluid item-carousel-img"
-                src={link}
-                alt=""
-              />
-            </div>
-          ))}
+          pictures.map((link, i) => {
+            return (
+              <div className={"item-carousel-item "} key={i}>
+                <img
+                  name="item-img"
+                  className="img-fluid item-carousel-img"
+                  src={link}
+                  alt=""
+                />
+              </div>
+            );
+          })}
       </Carousel>
     </div>
   );

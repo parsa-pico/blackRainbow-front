@@ -61,6 +61,7 @@ export default function GetLikedItems() {
                 // sx={{ display: "flex" }}
                 >
                   <CardMedia
+                    className="pointer"
                     onClick={() => {
                       nav("/items/" + obj._id);
                     }}

@@ -172,7 +172,7 @@ export default function Item() {
             )}
           <ItemImage picsData={pictures} />
         </div>
-        <div className="w-100">
+        <div className="item-upper-below w-100">
           <div style={{ justifyContent: "space-between" }} className="hstack">
             <div>
               <Typography className="my-2" gutterBottom variant="h3">
