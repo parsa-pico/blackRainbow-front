@@ -256,8 +256,11 @@ export default function GetItems({ setSearchValue }) {
 
                     <CardContent>
                       <Typography
+                        onClick={() => {
+                          nav("/items/" + obj._id);
+                        }}
                         fontFamily={"titr"}
-                        className="mb-5"
+                        className="mb-5 pointer"
                         gutterBottom
                         variant="h5"
                       >
