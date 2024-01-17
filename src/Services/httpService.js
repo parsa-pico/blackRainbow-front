@@ -4,6 +4,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true;
 const axiosInstance = axios.create({
   withCredentials: true,
+
   // Other default configuration options can be added here
 });
 
