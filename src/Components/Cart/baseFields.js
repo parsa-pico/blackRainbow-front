@@ -28,7 +28,6 @@ export const fields = [
   {
     name: "postalCode",
     label: "کد پستی",
-    required: true,
   },
 
   {

@@ -67,6 +67,7 @@ export default function Orders() {
                       <td>{order.status && order.status.text}</td>
                       <td>{getPrice(order.totalPrice)} </td>
                       <td
+                        className="pointer"
                         onClick={() => {
                           nav(`/orders/${order._id}`);
                         }}

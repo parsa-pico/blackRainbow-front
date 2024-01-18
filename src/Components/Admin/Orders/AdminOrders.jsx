@@ -87,6 +87,7 @@ export default function AdminOrders() {
                       </td>
                       <td>{getPrice(order.totalPrice)} </td>
                       <td
+                        className="pointer"
                         onClick={() => {
                           nav(`/admin/orders/${order._id}`);
                         }}

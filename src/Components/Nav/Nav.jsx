@@ -147,6 +147,7 @@ export default function MyNav({ search }) {
               value={searchValue}
               onChange={({ target }) => setSearchValue(target.value)}
               // type="search"
+              name="search"
               placeholder="جستجو"
               className="nav-search mb-2"
               aria-label="Search"

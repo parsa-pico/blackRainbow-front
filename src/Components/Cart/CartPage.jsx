@@ -40,7 +40,8 @@ export default function CartPage() {
         console.log(scheduleDate);
         if (scheduleDate) order.schedule = scheduleDate;
         if (!order.description) delete order.description;
-        const { data } = await http.post("/orders/submitPurchase", order);
+        if (!order.postalCode) order.postalCode = "-";
+        await http.post("/orders/submitPurchase", order);
         toast.success("خرید شما با موفقیت ثبت شد");
         setTimeout(() => {
           nav("/orders");
@@ -133,7 +134,8 @@ export default function CartPage() {
     if (activeStep === totalSteps - 1) return true;
     if (activeStep === 1)
       for (let { name } of fields) {
-        if (name !== "description" && !orderInfo[name]) return true;
+        if (!["description", "postalCode"].includes(name) && !orderInfo[name])
+          return true;
       }
 
     if (
