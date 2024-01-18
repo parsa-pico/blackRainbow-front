@@ -70,8 +70,6 @@ function App() {
   //
   useEffect(() => {
     const user = getUser();
-    const now = new Date().getTime();
-
     if (!user) {
       tryHTTP(async (http) => {
         const { data } = await http.post("/customers/login-anonymous");
@@ -79,6 +77,11 @@ function App() {
         setCartCount(0);
       });
     }
+  }, []);
+  useEffect(() => {
+    const user = getUser();
+    const now = new Date().getTime();
+
     if (user && now > user.exp) {
       clearUser();
       window.location = "/";
