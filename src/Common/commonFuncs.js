@@ -141,7 +141,6 @@ export function getDate(dateValue) {
   return date;
 }
 export function getOrderStatus(result, OrderStatus) {
-  console.log("result", result, OrderStatus);
   return result.paymentMethod === 2 && result.status === 1
     ? { text: "در انتظار تایید پرداخت", color: "yellow" }
     : { text: OrderStatus[result.status], color: "" };

@@ -30,6 +30,8 @@ import GetLikedItems from "./Components/Liked/GetLikedItems";
 import SelectBackground from "./Components/Admin/Background/SelectBackground";
 import { throttle } from "lodash";
 import Footer from "./Components/Footer/Footer";
+import GetCustomers from "./Components/Admin/Customers/GetCustomers";
+import AdminGetLiked from "./Components/Admin/GetLikedItems/AdminGetLiked";
 
 function App() {
   const loc = useLocation();
@@ -126,6 +128,8 @@ function App() {
           <Route path="orders" exact element={<AdminOrders />} />
           <Route path="orders/:orderId" exact element={<AdminOrder />} />
           <Route path="background" exact element={<SelectBackground />} />
+          <Route path="customers" exact element={<GetCustomers />} />
+          <Route path="get-liked" exact element={<AdminGetLiked />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

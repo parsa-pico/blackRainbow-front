@@ -9,28 +9,43 @@ import {
 } from "../../../Common/commonFuncs";
 import { Container, Form, Table } from "react-bootstrap";
 import FolderIcon from "@mui/icons-material/Folder";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useGlobalLoading } from "../../../context/globalLoadingContext";
 export default function AdminOrders() {
+  const [_, setGlobalLoading] = useGlobalLoading();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [orders, setOrders] = useState([]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const nav = useNavigate();
   useEffect(() => {
-    search();
+    const p = searchParams.get("phoneNumber") || "";
+
+    search(p);
+    setPhoneNumber(p);
   }, []);
-  function search() {
-    tryHTTP(async (http) => {
-      let { data } = await http.post("/orders/admin-get", { phoneNumber });
-      let { orders: orders_, OrderStatus } = data;
-      console.log(OrderStatus);
-      orders_ = orders_.map((obj, i) => ({
-        ...obj,
-        id: i,
-        status: getOrderStatus(obj, OrderStatus),
-      }));
-      setOrders(orders_);
-    });
+  function search(p) {
+    const phone = p || phoneNumber;
+    tryHTTP(
+      async (http) => {
+        setGlobalLoading(true);
+        let { data } = await http.post("/orders/admin-get", {
+          phoneNumber: phone,
+        });
+        let { orders: orders_, OrderStatus } = data;
+
+        orders_ = orders_.map((obj, i) => ({
+          ...obj,
+          id: i,
+          status: getOrderStatus(obj, OrderStatus),
+        }));
+        setOrders(orders_);
+      },
+      () => {
+        setGlobalLoading(false);
+      }
+    );
   }
 
   return (

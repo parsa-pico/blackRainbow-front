@@ -87,6 +87,12 @@ export default function MyNav({ search }) {
                   <NavCustomLink to="/admin/orders">
                     مدیریت سفارشات
                   </NavCustomLink>
+                  <NavCustomLink to="/admin/customers">
+                    مدیریت کاربران
+                  </NavCustomLink>
+                  <NavCustomLink to="/admin/get-liked">
+                    علاقمندی های کاربران
+                  </NavCustomLink>
                   <NavCustomLink to="/admin/background">
                     انتخاب پس زمینه
                   </NavCustomLink>
