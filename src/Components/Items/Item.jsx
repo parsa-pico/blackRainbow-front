@@ -35,7 +35,7 @@ export default function Item() {
         let { data } = await http.get(`/items/${itemId}`);
 
         data = data[0];
-        console.log(data);
+
         if (data.pictures) {
           data.pictures = data.pictures.map((p) => getPicture(p));
           setPictures(data.pictures);
@@ -69,9 +69,12 @@ export default function Item() {
           for (let optionObj of data.optionsData) {
             obj[optionObj.title] = optionObj.choices[0];
           }
+
           setSelectedOptions(obj);
           const { data: cartItemData } = await http.get(`/carts/${itemId}`);
-
+          if (cartItemData && cartItemData.options) {
+            setSelectedOptions(cartItemData.options);
+          }
           setCartItem(cartItemData);
         }
       },
@@ -96,14 +99,15 @@ export default function Item() {
   //     });
   // }
 
-  function handleCart(quantity_) {
+  function handleCart(quantity_, options) {
+    options = options || selectedOptions;
     tryHTTP(
       async (http) => {
         setLoading(true);
 
         const quantity = cartItem ? quantity_ : 1;
         const { data } = await http.post(`/carts/new/${itemData._id}`, {
-          options: selectedOptions,
+          options,
           quantity,
         });
         setCartItem(data.obj);
@@ -149,9 +153,7 @@ export default function Item() {
       toast.dark("ابتدا وارد حساب خود شوید");
     }
   }
-  useEffect(() => {
-    console.log(itemData);
-  }, [itemData]);
+
   return (
     <div className="item-wrapper container mt-2">
       <ItemPath
@@ -205,6 +207,8 @@ export default function Item() {
           </Typography>
           <p className="item-desc">{itemData.description}</p>
           <ItemOptions
+            handleCart={handleCart}
+            cartItem={cartItem}
             selectedOptions={selectedOptions}
             setSelectedOptions={setSelectedOptions}
             itemOptions={itemData && itemData.optionsData}

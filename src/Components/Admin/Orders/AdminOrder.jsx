@@ -93,6 +93,10 @@ export default function AdminOrder() {
               <td>{order.lastName}</td>
             </tr>
             <tr>
+              <td> شماره تماس</td>
+              <td>{order.phoneNumber || "-"}</td>
+            </tr>
+            <tr>
               <td>استان</td>
               <td>{order.province}</td>
             </tr>

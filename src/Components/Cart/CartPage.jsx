@@ -13,22 +13,31 @@ import { fields } from "./baseFields";
 import {
   getAnonymousId,
   getOrderInfo,
+  getUser,
   setOrderInfoStroage,
 } from "../../Services/authService";
 import { toast } from "react-toastify";
 import { useGlobalLoading } from "../../context/globalLoadingContext";
 
 export default function CartPage() {
+  const user = getUser();
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState([]);
   const [postPrice, setPostPrice] = useState(0);
-  const [orderInfo, setOrderInfo] = useState(getOrderInfo() || {});
+  const [orderInfo, setOrderInfo] = useState({});
   const [scheduleDate, setScheduleDate] = useState(null);
   const [globalLoading, setGlobalLoading] = useGlobalLoading();
   const nav = useNavigate();
   const totalSteps = 4;
   const [activeStep, setActiveStep] = React.useState(0);
+  useEffect(() => {
+    const result = getOrderInfo();
 
+    console.log(user);
+    if (result) setOrderInfo(result);
+    else if (user && user.phoneNumber)
+      setOrderInfo({ ...orderInfo, phoneNumber: user.phoneNumber });
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeStep]);

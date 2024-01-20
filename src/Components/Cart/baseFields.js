@@ -10,6 +10,12 @@ export const fields = [
     label: "نام خانوادگی",
     required: true,
   },
+
+  {
+    name: "phoneNumber",
+    label: "شماره موبایل",
+    required: true,
+  },
   {
     name: "province",
     label: "استان",

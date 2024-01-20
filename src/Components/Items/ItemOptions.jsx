@@ -8,6 +8,8 @@ import { Typography } from "@mui/material";
 
 export default function ItemOptions({
   itemOptions,
+  cartItem,
+  handleCart,
   setSelectedOptions,
   selectedOptions,
 }) {
@@ -16,7 +18,7 @@ export default function ItemOptions({
 
     const copy = { ...selectedOptions };
     copy[name] = value;
-    console.log(copy);
+    if (cartItem) handleCart(cartItem.quantity, copy);
     setSelectedOptions(copy);
   }
   return (
