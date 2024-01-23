@@ -25,6 +25,15 @@
 
   border-radius: 10px;
 }
+.items-original-price {
+  color: gray;
+  text-decoration-line: line-through;
+}
+.items-prices {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 @media screen and (min-width: 1024px) {
   .items-page {
     /* flex-direction: row; */

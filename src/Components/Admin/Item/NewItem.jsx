@@ -52,9 +52,17 @@ export default function NewItem() {
     delete obj.sold;
     delete obj.views;
     delete obj.liked;
-    if (!obj.brand) obj.brand = "";
-    obj.price *= 10;
 
+    if (!obj.brand) obj.brand = "";
+    console.log(obj.price);
+    obj.price *= 10;
+    if (obj.offPrice) {
+      obj.offPrice *= 10;
+    } else if (obj.originalPrice) {
+      obj.price = obj.originalPrice;
+      delete obj.offPrice;
+    }
+    delete obj.originalPrice;
     tryHTTP(
       async (http) => {
         setGlobalLoading(true);
@@ -141,8 +149,10 @@ export default function NewItem() {
           setGlobalLoading(true);
           let { data } = await http.get(`/items/${itemId}`);
           data = data[0];
-
-          data.price /= 10;
+          if (data.originalPrice) {
+            data.offPrice = data.price / 10;
+            data.price = data.originalPrice / 10;
+          } else data.price /= 10;
           setCategory(data.categoryData._id);
           setSubCategory(data.subCategoryData._id);
           setTags(data.tags);

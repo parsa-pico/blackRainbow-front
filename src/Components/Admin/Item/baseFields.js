@@ -11,6 +11,11 @@ export const fields = [
     required: true,
   },
   {
+    name: "offPrice",
+    label: "قیمت پس از تخفیف به تومان",
+    type: "number",
+  },
+  {
     name: "stock",
     label: "موجودی انبار",
     type: "number",

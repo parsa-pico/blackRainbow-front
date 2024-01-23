@@ -46,7 +46,15 @@ export default function GetCart({
               <div className="cart-item-desc me-2">
                 <h3 className="cart-item-title mt-2">{item.productName}</h3>
                 <div className="mt-1">
-                  <p className="mb-1">قیمت واحد:{getPrice(item.price)} تومان</p>
+                  <p className="mb-1">
+                    قیمت واحد:
+                    <div>{getPrice(item.price)} تومان</div>
+                    {item.originalPrice && (
+                      <small className="items-original-price mt-1">
+                        {getPrice(item.originalPrice)} تومان
+                      </small>
+                    )}
+                  </p>
                   {readOnly && <p>تعداد:{item.quantity}</p>}
                   <div className="mb-5">
                     {item.options &&

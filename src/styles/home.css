@@ -76,6 +76,10 @@
   bottom: 10%;
   right: 10%;
 }
+.home-carousel-card {
+  height: 100%;
+  width: auto;
+}
 @media screen and (min-width: 1024px) {
   .home-categories-wrapper {
     grid-template-columns: 40vw 40vw;

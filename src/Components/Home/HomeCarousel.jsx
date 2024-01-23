@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 export default function HomeCarousel() {
   const nav = useNavigate();
   const [items, setItems] = useState([]);
+
   useEffect(() => {
     search();
   }, []);
@@ -110,8 +111,8 @@ export default function HomeCarousel() {
             items.length > 0 &&
             items.map((obj, i) => {
               return (
-                <div className="mx-1" key={i}>
-                  <Card>
+                <div className=" mx-1" key={i}>
+                  <Card className="home-carousel-card">
                     <CardActionArea
                       onClick={() => {
                         nav("/items/" + obj._id);
@@ -139,12 +140,21 @@ export default function HomeCarousel() {
                           className="hstack"
                         >
                           <div></div>
-                          <Chip
-                            size="medium"
-                            variant="outlined"
-                            color="success"
-                            label={getPrice(obj.price) + " تومان"}
-                          />
+                          <div className="items-prices">
+                            <Chip
+                              size="medium"
+                              variant="outlined"
+                              color={
+                                !obj.originalPrice ? "secondary" : "success"
+                              }
+                              label={getPrice(obj.price) + " تومان"}
+                            />
+                            {obj.originalPrice && (
+                              <small className="items-original-price mt-1">
+                                {getPrice(obj.originalPrice) + " تومان"}
+                              </small>
+                            )}
+                          </div>
                         </div>
                       </CardContent>
                     </CardActionArea>

@@ -48,7 +48,14 @@ export default function ItemPurchase({
           quantity={cartItem.quantity}
         />
       )}
-      <div>{getPrice(itemData.price)}تومان</div>
+      <div className=".items-prices">
+        <div>{getPrice(itemData.price)}تومان</div>
+        {itemData.originalPrice && (
+          <small className="items-original-price">
+            {getPrice(itemData.originalPrice)}تومان
+          </small>
+        )}
+      </div>
     </div>
   );
 }

@@ -83,12 +83,19 @@ export default function GetLikedItems() {
                       className="hstack"
                     >
                       <div></div>
-                      <Chip
-                        size="medium"
-                        variant="outlined"
-                        color="success"
-                        label={getPrice(obj.price) + " تومان"}
-                      />
+                      <div className="items-prices">
+                        <Chip
+                          size="medium"
+                          variant="outlined"
+                          color={!obj.originalPrice ? "secondary" : "success"}
+                          label={getPrice(obj.price) + " تومان"}
+                        />
+                        {obj.originalPrice && (
+                          <small className="items-original-price mt-1">
+                            {getPrice(obj.originalPrice) + " تومان"}
+                          </small>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </div>
