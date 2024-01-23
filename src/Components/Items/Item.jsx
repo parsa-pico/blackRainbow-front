@@ -172,7 +172,7 @@ export default function Item() {
             itemData.customersPictures.length > 0 && (
               <PictureToggle itemData={itemData} setPictures={setPictures} />
             )}
-          <ItemImage picsData={pictures} />
+          <ItemImage itemData={itemData} picsData={pictures} />
         </div>
         <div className="item-upper-below w-100">
           <div style={{ justifyContent: "space-between" }} className="hstack">

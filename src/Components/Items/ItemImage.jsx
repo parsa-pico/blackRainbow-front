@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRef } from "react";
 import Carousel from "react-multi-carousel";
 
-export default function ItemImage({ picsData: pictures }) {
+export default function ItemImage({ picsData: pictures, itemData }) {
   const carouselRef = useRef();
   // const [index, setIndex] = useState(0);
 
@@ -71,7 +71,7 @@ export default function ItemImage({ picsData: pictures }) {
                   name="item-img"
                   className="img-fluid item-carousel-img"
                   src={link}
-                  alt=""
+                  alt={itemData && itemData.productName}
                 />
               </div>
             );

@@ -32,6 +32,7 @@ import { throttle } from "lodash";
 import Footer from "./Components/Footer/Footer";
 import GetCustomers from "./Components/Admin/Customers/GetCustomers";
 import AdminGetLiked from "./Components/Admin/GetLikedItems/AdminGetLiked";
+import SiteMap from "./Components/SiteMap";
 
 function App() {
   const loc = useLocation();
@@ -39,9 +40,11 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
   const [marginTop, setMarginTop] = useState(10);
   const [cartCount, setCartCount] = useCartCount();
+  const isSitemapRoute = loc.pathname === "/sitemap.xml";
 
   // hide menu
   useEffect(() => {
+    if (isSitemapRoute) return;
     document.body.style.backgroundImage = `url(${process.env.REACT_APP_API_URL}/pictures/bg.jpg)`;
     // Your scroll event listener code here
     var lastScrolls = [];
@@ -66,11 +69,14 @@ function App() {
 
     // Cleanup function
     return () => {
+      if (isSitemapRoute) return;
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   //
   useEffect(() => {
+    if (isSitemapRoute) return;
+
     const user = getUser();
     if (!user) {
       tryHTTP(async (http) => {
@@ -81,6 +87,7 @@ function App() {
     }
   }, []);
   useEffect(() => {
+    if (isSitemapRoute) return;
     const user = getUser();
     const now = new Date().getTime();
 
@@ -106,10 +113,17 @@ function App() {
 
   return (
     <div className="App">
-      {showNav && <Nav search={[searchValue, setSearchValue]} />}
-      {showNav && <div id="push-top" style={{ marginTop: `${marginTop}px` }} />}
+      {!isSitemapRoute && (
+        <>
+          {showNav && <Nav search={[searchValue, setSearchValue]} />}
+          {showNav && (
+            <div id="push-top" style={{ marginTop: `${marginTop}px` }} />
+          )}
+        </>
+      )}
       <Routes>
         <Route path="/" exact element={<Home />} />
+        <Route path="/sitemap.xml" exact element={<SiteMap />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/items/:itemId" exact element={<Item />} />
         <Route
@@ -134,9 +148,13 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <div style={{ marginTop: "200px" }} />
-      <Footer />
-      <ToastContainer />
+      {!isSitemapRoute && (
+        <>
+          <div style={{ marginTop: "200px" }} />
+          <Footer />
+          <ToastContainer />
+        </>
+      )}
     </div>
   );
 }
