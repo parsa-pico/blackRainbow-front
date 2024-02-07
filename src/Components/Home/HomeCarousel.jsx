@@ -14,7 +14,7 @@ import Carousel from "react-multi-carousel";
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { useNavigate } from "react-router-dom";
 
-export default function HomeCarousel() {
+export default function HomeCarousel({ sortIndex, title }) {
   const nav = useNavigate();
   const [items, setItems] = useState([]);
 
@@ -24,15 +24,16 @@ export default function HomeCarousel() {
   async function search() {
     tryHTTP(async (http) => {
       const { data } = await http.post("/items/get-by-keyword", {
-        sortIndex: 5,
+        sortIndex,
         page: 1,
       });
       setItems(data.result);
     });
   }
   return (
-    <section>
+    <section className="mt-3">
       <div
+        className="mb-1"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -40,18 +41,7 @@ export default function HomeCarousel() {
           flexDirection: "row",
         }}
       >
-        <Typography fontFamily="titr" variant="h5" className="text-center">
-          پرفروش ترین ها
-        </Typography>
-        <img
-          src="/fire.webp"
-          alt="fire"
-          style={{
-            width: "22px",
-            marginBottom: "1rem",
-            filter: "hue-rotate(3.142rad)",
-          }}
-        />
+        {title}
       </div>
       <div
         style={{

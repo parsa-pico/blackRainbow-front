@@ -10,6 +10,8 @@ import HomeCarousel from "./HomeCarousel";
 import HomeVideo from "./HomeVideo";
 import LazyLoad from "react-lazy-load";
 import { useGlobalLoading } from "./../../context/globalLoadingContext";
+import { Typography } from "@mui/material";
+import BoltIcon from "@mui/icons-material/Bolt";
 export default function Home() {
   const [showVideo, setShowVideo] = useState(false);
   const [_, setGlobalLoading] = useGlobalLoading();
@@ -51,11 +53,48 @@ export default function Home() {
         <>
           <Cat />
           <HomeCategories />
-          {/* <LazyLoad offset={300}> */}
+
           <div className="p-1">
-            <HomeCarousel />
+            <HomeCarousel
+              sortIndex={5}
+              title={
+                <>
+                  <Typography
+                    fontFamily="titr"
+                    variant="h5"
+                    className="text-center"
+                  >
+                    پرفروش ترین ها
+                  </Typography>
+                  <img
+                    src="/fire.webp"
+                    alt="fire"
+                    style={{
+                      width: "22px",
+                      paddingBottom: "1rem",
+                      filter: "hue-rotate(3.142rad)",
+                    }}
+                  />
+                </>
+              }
+            />
+
+            <HomeCarousel
+              sortIndex={3}
+              title={
+                <>
+                  <Typography
+                    fontFamily="titr"
+                    variant="h5"
+                    className="text-center"
+                  >
+                    جدید ترین ها
+                  </Typography>
+                  <BoltIcon color="success" />
+                </>
+              }
+            />
           </div>
-          {/* </LazyLoad> */}
         </>
       )}
 
