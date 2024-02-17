@@ -56,6 +56,21 @@ export default function Home() {
 
           <div className="p-1">
             <HomeCarousel
+              sortIndex={3}
+              title={
+                <>
+                  <Typography
+                    fontFamily="titr"
+                    variant="h5"
+                    className="text-center"
+                  >
+                    جدید ترین ها
+                  </Typography>
+                  <BoltIcon color="success" />
+                </>
+              }
+            />
+            <HomeCarousel
               sortIndex={5}
               title={
                 <>
@@ -75,22 +90,6 @@ export default function Home() {
                       filter: "hue-rotate(3.142rad)",
                     }}
                   />
-                </>
-              }
-            />
-
-            <HomeCarousel
-              sortIndex={3}
-              title={
-                <>
-                  <Typography
-                    fontFamily="titr"
-                    variant="h5"
-                    className="text-center"
-                  >
-                    جدید ترین ها
-                  </Typography>
-                  <BoltIcon color="success" />
                 </>
               }
             />
