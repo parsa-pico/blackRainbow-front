@@ -12,6 +12,7 @@ import LazyLoad from "react-lazy-load";
 import { useGlobalLoading } from "./../../context/globalLoadingContext";
 import { Typography } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
+import MoneyOffIcon from "@mui/icons-material/MoneyOff";
 export default function Home() {
   const [showVideo, setShowVideo] = useState(false);
   const [_, setGlobalLoading] = useGlobalLoading();
@@ -66,7 +67,22 @@ export default function Home() {
                   >
                     جدید ترین ها
                   </Typography>
-                  <BoltIcon color="success" />
+                  <BoltIcon color="secondary" />
+                </>
+              }
+            />
+            <HomeCarousel
+              sortIndex={8}
+              title={
+                <>
+                  <Typography
+                    fontFamily="titr"
+                    variant="h5"
+                    className="text-center"
+                  >
+                    تخفیف ها
+                  </Typography>
+                  <MoneyOffIcon color="success" />
                 </>
               }
             />
@@ -86,7 +102,9 @@ export default function Home() {
                     alt="fire"
                     style={{
                       width: "22px",
-                      paddingBottom: "1rem",
+                      // paddingBottom: "1rem",
+                      position: "relative",
+                      bottom: "9px",
                       filter: "hue-rotate(3.142rad)",
                     }}
                   />

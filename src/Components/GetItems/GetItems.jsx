@@ -206,9 +206,11 @@ export default function GetItems({ setSearchValue }) {
               >
                 {searchValue && <MenuItem value={1}>مرتبط ترین</MenuItem>}
                 <MenuItem value={2}>پربازدید ترین</MenuItem>
+                <MenuItem value={5}>پرفروش ترین</MenuItem>
                 <MenuItem value={3}> جدید ترین</MenuItem>
                 <MenuItem value={6}>ارزان ترین</MenuItem>
                 <MenuItem value={7}>گران ترین</MenuItem>
+                <MenuItem value={8}>تخفیف ها</MenuItem>
               </Select>
             </FormControl>
             <Button onClick={() => handleFilter()} variant="outlined">

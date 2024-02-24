@@ -30,18 +30,41 @@ export default function HomeCarousel({ sortIndex, title }) {
       setItems(data.result);
     });
   }
+  if (!items || items.length == 0) return;
   return (
-    <section className="mt-3">
+    <section className="my-3">
       <div
         className="mb-1"
         style={{
-          display: "flex",
+          // display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "row",
+          // flexDirection: "row",
+          display: "grid",
+          gridTemplateColumns: "1fr 3fr 1fr",
+          direction: "ltr",
         }}
       >
-        {title}
+        <div
+          onClick={() => {
+            nav(`/items?sortIndex=${sortIndex}`);
+          }}
+          className="ms-1"
+        >
+          <Typography variant="body2" color="primary">
+            مشاهده همه
+          </Typography>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            direction: "rtl",
+          }}
+        >
+          {title}
+        </div>
       </div>
       <div
         style={{
@@ -97,61 +120,57 @@ export default function HomeCarousel({ sortIndex, title }) {
           slidesToSlide={2}
           swipeable
         >
-          {items &&
-            items.length > 0 &&
-            items.map((obj, i) => {
-              return (
-                <div className=" mx-1" key={i}>
-                  <Card className="home-carousel-card">
-                    <CardActionArea
-                      onClick={() => {
-                        nav("/items/" + obj._id);
-                      }}
-                      // sx={{ display: "flex" }}
-                    >
-                      <CardMedia
-                        className="pointer"
-                        component="img"
-                        // style={{ width: "100px" }}
-                        image={getPicture(obj.pictures[0])}
-                      />
-                      <CardContent>
-                        <Typography
-                          fontFamily={"yekan"}
-                          fontSize="medium"
-                          className="mb-5"
-                          gutterBottom
-                          variant="h6"
-                        >
-                          {obj.productName}
-                        </Typography>
-                        <div
-                          style={{ justifyContent: "space-between" }}
-                          className="hstack"
-                        >
-                          <div></div>
-                          <div className="items-prices">
-                            <Chip
-                              size="medium"
-                              variant="outlined"
-                              color={
-                                !obj.originalPrice ? "secondary" : "success"
-                              }
-                              label={getPrice(obj.price) + " تومان"}
-                            />
-                            {obj.originalPrice && (
-                              <small className="items-original-price mt-1">
-                                {getPrice(obj.originalPrice) + " تومان"}
-                              </small>
-                            )}
-                          </div>
+          {items.map((obj, i) => {
+            return (
+              <div className=" mx-1" key={i}>
+                <Card className="home-carousel-card">
+                  <CardActionArea
+                    onClick={() => {
+                      nav("/items/" + obj._id);
+                    }}
+                    // sx={{ display: "flex" }}
+                  >
+                    <CardMedia
+                      className="pointer"
+                      component="img"
+                      // style={{ width: "100px" }}
+                      image={getPicture(obj.pictures[0])}
+                    />
+                    <CardContent>
+                      <Typography
+                        fontFamily={"yekan"}
+                        fontSize="medium"
+                        className="mb-5"
+                        gutterBottom
+                        variant="h6"
+                      >
+                        {obj.productName}
+                      </Typography>
+                      <div
+                        style={{ justifyContent: "space-between" }}
+                        className="hstack"
+                      >
+                        <div></div>
+                        <div className="items-prices">
+                          <Chip
+                            size="medium"
+                            variant="outlined"
+                            color={!obj.originalPrice ? "secondary" : "success"}
+                            label={getPrice(obj.price) + " تومان"}
+                          />
+                          {obj.originalPrice && (
+                            <small className="items-original-price mt-1">
+                              {getPrice(obj.originalPrice) + " تومان"}
+                            </small>
+                          )}
                         </div>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </div>
-              );
-            })}
+                      </div>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </div>
+            );
+          })}
         </Carousel>
       </div>
     </section>
