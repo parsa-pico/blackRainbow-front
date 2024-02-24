@@ -65,7 +65,10 @@ export default function MyNav({ search }) {
             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
             placement="end"
           >
-            <Offcanvas.Header closeButton>
+            <Offcanvas.Header
+              style={{ justifyContent: "space-between" }}
+              closeButton
+            >
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                 فروشگاه بلک رینبو
                 <hr />

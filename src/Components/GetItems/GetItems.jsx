@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 export default function GetItems({ setSearchValue }) {
   const user = getUser();
   const nav = useNavigate();
-  const [items, setItems] = useState();
+  const [items, setItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useCategories();
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -91,6 +91,7 @@ export default function GetItems({ setSearchValue }) {
     // window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
     //   pageNumber || 1
     // }`;
+    setItems([]);
     const query = `search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
       pageNumber || 1
     }`;
