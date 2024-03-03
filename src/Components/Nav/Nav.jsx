@@ -67,8 +67,9 @@ export default function MyNav({ search }) {
             placement="end"
           >
             <Offcanvas.Header
-            // closeButton
-            // style={{ justifyContent: "space-between" }}
+              // closeButton
+              // style={{ justifyContent: "space-between" }}
+              className="justify-content-space-between"
             >
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                 فروشگاه بلک رینبو
