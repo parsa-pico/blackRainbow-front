@@ -20,6 +20,7 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import NavCategories from "./NavCategories";
 import { CustuomLink } from "../../Common/commonComponents";
+import CloseIcon from "@mui/icons-material/Close";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     right: -3,
@@ -66,13 +67,14 @@ export default function MyNav({ search }) {
             placement="end"
           >
             <Offcanvas.Header
+              // closeButton
               style={{ justifyContent: "space-between" }}
-              closeButton
             >
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                 فروشگاه بلک رینبو
-                <hr />
+                {/* <hr /> */}
               </Offcanvas.Title>
+              <CloseIcon onClick={toggleMenu} className="pointer" />
             </Offcanvas.Header>
             <Offcanvas.Body className="">
               {user && user.isAdmin && (
