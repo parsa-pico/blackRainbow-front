@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getPicture, getPrice, tryHTTP } from "../../Common/commonFuncs";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
 import Pagination from "@mui/material/Pagination";
 import {
   Card,
+  Checkbox,
+  FormControlLabel,
   div,
   CardContent,
   CardMedia,
@@ -36,17 +37,20 @@ export default function GetItems({ setSearchValue }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedSortIndex, setSelectedSortIndex] = useState("");
+  const [selectedEnabled, setSelectedEnabled] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [count, setCount] = useState(0);
   const [globalLoading, setGlobalLoading] = useGlobalLoading();
   const searchValue = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
   const subCategory = searchParams.get("subCategory") || "";
+  const enabled = searchParams.get("enabled") || "true";
   const sortIndex =
     parseInt(searchParams.get("sortIndex")) || (searchValue ? 1 : 2);
   const currentPage = parseInt(searchParams.get("page")) || 1;
 
   useEffect(() => {
+    setSelectedEnabled(enabled === "true");
     search();
     setSearchValue(searchValue);
   }, [searchParams]);
@@ -58,6 +62,7 @@ export default function GetItems({ setSearchValue }) {
         const { data } = await http.post("/items/get-by-keyword", {
           search: searchValue,
           category,
+          enabled,
           subCategory,
           sortIndex,
           page: currentPage,
@@ -92,7 +97,7 @@ export default function GetItems({ setSearchValue }) {
     //   pageNumber || 1
     // }`;
     setItems([]);
-    const query = `search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
+    const query = `search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&enabled=${selectedEnabled}&sortIndex=${selectedSortIndex}&page=${
       pageNumber || 1
     }`;
     setSearchParams(query);
@@ -168,6 +173,13 @@ export default function GetItems({ setSearchValue }) {
         >
           <h6 className="my-2 mb-4"> فیلتر ها </h6>
           <div className="vstack w-100">
+            {user && user.isAdmin && (
+              <FormControlLabel
+                onChange={(e, checked) => setSelectedEnabled(checked)}
+                control={<Checkbox checked={selectedEnabled} />}
+                label="کالا های فعال"
+              />
+            )}
             <FormControl fullWidth>
               <InputLabel id="category"> دسته بندی</InputLabel>
               <Select
