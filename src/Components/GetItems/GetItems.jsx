@@ -37,6 +37,7 @@ export default function GetItems({ setSearchValue }) {
   const [items, setItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useCategories();
+  console.log(items);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
@@ -60,6 +61,9 @@ export default function GetItems({ setSearchValue }) {
   const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
+    setItems([]);
+    console.log("im here");
+
     setSelectedEnabled(enabled === "true");
     search();
     setSearchValue(searchValue);
@@ -111,6 +115,7 @@ export default function GetItems({ setSearchValue }) {
       }
     );
   };
+
   const handleRemoveDiscount = async () => {
     await tryHTTP(
       async (http) => {
@@ -162,6 +167,7 @@ export default function GetItems({ setSearchValue }) {
 
         setCount(data.count);
         setTotalPages(data.totalPages);
+
         setItems(data.result);
         setSelectedCategory(category);
         setSelectedSubCategory(subCategory);
@@ -173,8 +179,6 @@ export default function GetItems({ setSearchValue }) {
     );
   }
   function getCategoryTitle(categoryId) {
-    console.log("category id: ", categoryId);
-
     const category = categories.find((o) => o._id === categoryId);
     return category ? category.title : "دسته‌بندی نامشخص";
   }
@@ -187,7 +191,7 @@ export default function GetItems({ setSearchValue }) {
       );
       return subCategory ? subCategory.title : "زیر دسته‌بندی نامشخص";
     }
-    return "دسته‌بندی نامشخص";
+    return "زیر دسته بندی نامشخص";
   }
 
   function getSubCategoryItems() {
@@ -205,10 +209,11 @@ export default function GetItems({ setSearchValue }) {
     // window.location = `/items?search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&sortIndex=${selectedSortIndex}&page=${
     //   pageNumber || 1
     // }`;
-    setItems([]);
+
     const query = `search=${searchValue}&category=${selectedCategory}&subCategory=${selectedSubCategory}&enabled=${selectedEnabled}&sortIndex=${selectedSortIndex}&page=${
       pageNumber || 1
     }`;
+
     setSearchParams(query);
   }
   function likeItem(itemData, i) {
@@ -369,7 +374,7 @@ export default function GetItems({ setSearchValue }) {
                   fullWidth
                   className="mt-2"
                   type="number"
-                  label="مقدار"
+                  label="مقدار(به تومان)"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
@@ -535,14 +540,20 @@ export default function GetItems({ setSearchValue }) {
           <Typography className="mt-2">
             عملیات: {operation === "sum" ? "جمع" : "ضرب"}
           </Typography>
-          <Typography>مقدار: {amount}</Typography>
+          <Typography>
+            مقدار:
+            {"  "}
+            {parseInt(amount).toLocaleString("en-US")}
+            {"  "}
+            تومان
+          </Typography>
           <Typography>
             دسته‌بندی:{" "}
             {selectedCategory ? getCategoryTitle(selectedCategory) : "همه"}{" "}
             <br />
             زیر دسته‌بندی:{" "}
             {selectedSubCategory
-              ? getSubCategoryTitle(selectedSubCategory)
+              ? getSubCategoryTitle(selectedCategory, selectedSubCategory)
               : "همه"}
             <br />
             کلمه جستجو: {searchValue || "بدون کلمه"}
@@ -596,7 +607,7 @@ export default function GetItems({ setSearchValue }) {
             <br />
             زیر دسته‌بندی:{" "}
             {selectedSubCategory
-              ? getSubCategoryTitle(selectedSubCategory)
+              ? getSubCategoryTitle(selectedCategory, selectedSubCategory)
               : "همه"}
             <br />
             کلمه جستجو: {searchValue || "بدون کلمه"}
