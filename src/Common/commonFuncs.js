@@ -31,7 +31,8 @@ export async function tryHTTP(func, doFinally, doCatch) {
 
     if (e && e instanceof AxiosError && e.response) {
       if (expectedError) {
-        const msg = e.response.data.msg || e.response.data;
+        const msg =
+          e.response.data.msg || e.response.data.message || e.response.data;
 
         toast.error(msg);
       }

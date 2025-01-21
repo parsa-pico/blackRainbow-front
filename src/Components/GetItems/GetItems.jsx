@@ -7,6 +7,9 @@ import Pagination from "@mui/material/Pagination";
 import {
   Card,
   Checkbox,
+  Modal,
+  Box,
+  TextField,
   FormControlLabel,
   div,
   CardContent,
@@ -34,6 +37,7 @@ export default function GetItems({ setSearchValue }) {
   const [items, setItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useCategories();
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedSortIndex, setSelectedSortIndex] = useState("");
@@ -49,12 +53,100 @@ export default function GetItems({ setSearchValue }) {
     parseInt(searchParams.get("sortIndex")) || (searchValue ? 1 : 2);
   const currentPage = parseInt(searchParams.get("page")) || 1;
 
+  const [operation, setOperation] = useState("");
+  const [amount, setAmount] = useState("");
+  const [priceChangeModal, setPriceChangeModal] = useState(false);
+  const [applyDiscountModal, setApplyDiscountModal] = useState(false);
+  const [discount, setDiscount] = useState(0);
+
   useEffect(() => {
     setSelectedEnabled(enabled === "true");
     search();
     setSearchValue(searchValue);
   }, [searchParams]);
+  const handleConfirmOperation = async () => {
+    await tryHTTP(
+      async (http) => {
+        const response = await http.post("/items/update-price-by-keyword", {
+          search: searchValue,
+          category: selectedCategory,
+          subCategory: selectedSubCategory,
+          operation,
+          amount: parseFloat(amount),
+        });
+        toast.success(response.data.message);
+        setPriceChangeModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      },
 
+      () => {
+        setGlobalLoading(false);
+      }
+    );
+  };
+  const handleSetDiscount = async () => {
+    if (!discount || discount <= 0 || discount >= 100) {
+      alert("تخفیف باید بین صفر و صد باشد");
+      return;
+    }
+    await tryHTTP(
+      async (http) => {
+        const response = await http.post("/items/set-discount", {
+          search: searchValue,
+          category: selectedCategory,
+          subCategory: selectedSubCategory,
+          discount: discount / 100,
+        });
+        toast.success(response.data.message);
+        setApplyDiscountModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      },
+
+      () => {
+        setGlobalLoading(false);
+      }
+    );
+  };
+  const handleRemoveDiscount = async () => {
+    await tryHTTP(
+      async (http) => {
+        const response = await http.post("/items/remove-discount", {
+          search: searchValue,
+          category: selectedCategory,
+          subCategory: selectedSubCategory,
+        });
+        toast.success(response.data.message);
+        setApplyDiscountModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      },
+
+      () => {
+        setGlobalLoading(false);
+      }
+    );
+  };
+  const handleRoundPrices = async () => {
+    await tryHTTP(
+      async (http) => {
+        const response = await http.post("/items/round-prices", {});
+        toast.success(response.data.message);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      },
+
+      () => {
+        setGlobalLoading(false);
+      }
+    );
+  };
   function search() {
     tryHTTP(
       async (http) => {
@@ -67,7 +159,7 @@ export default function GetItems({ setSearchValue }) {
           sortIndex,
           page: currentPage,
         });
-        console.log(data.result);
+
         setCount(data.count);
         setTotalPages(data.totalPages);
         setItems(data.result);
@@ -80,10 +172,27 @@ export default function GetItems({ setSearchValue }) {
       }
     );
   }
+  function getCategoryTitle(categoryId) {
+    console.log("category id: ", categoryId);
+
+    const category = categories.find((o) => o._id === categoryId);
+    return category ? category.title : "دسته‌بندی نامشخص";
+  }
+
+  function getSubCategoryTitle(categoryId, subCategoryId) {
+    const category = categories.find((o) => o._id === categoryId);
+    if (category) {
+      const subCategory = category.subCategories.find(
+        (sub) => sub._id === subCategoryId
+      );
+      return subCategory ? subCategory.title : "زیر دسته‌بندی نامشخص";
+    }
+    return "دسته‌بندی نامشخص";
+  }
 
   function getSubCategoryItems() {
     const index = categories.findIndex((o) => o._id === selectedCategory);
-    if (index !== -1)
+    if (index !== -1 && categories[index].subCategories)
       return categories[index].subCategories.map((obj) => {
         return (
           <MenuItem key={obj._id} value={obj._id}>
@@ -180,6 +289,7 @@ export default function GetItems({ setSearchValue }) {
                 label="کالا های فعال"
               />
             )}
+
             <FormControl fullWidth>
               <InputLabel id="category"> دسته بندی</InputLabel>
               <Select
@@ -239,6 +349,83 @@ export default function GetItems({ setSearchValue }) {
             >
               حذف فیلتر ها
             </Button>
+            {user && user.isAdmin && (
+              <div className="mb-2">
+                <Typography className="mt-4" variant="h6">
+                  تغییر قیمت محصولات
+                </Typography>
+                <FormControl fullWidth className="mt-2">
+                  <InputLabel id="operation-label">عملیات</InputLabel>
+                  <Select
+                    labelId="operation-label"
+                    value={operation}
+                    onChange={(e) => setOperation(e.target.value)}
+                  >
+                    <MenuItem value="sum">جمع</MenuItem>
+                    <MenuItem value="multiply">ضرب</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField
+                  fullWidth
+                  className="mt-2"
+                  type="number"
+                  label="مقدار"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+                <Button
+                  className="mt-2"
+                  variant="contained"
+                  color="primary"
+                  disabled={!operation || !amount}
+                  onClick={() => setPriceChangeModal(true)}
+                >
+                  تایید تغییر قیمت
+                </Button>
+                <Typography className="mt-4" variant="h6">
+                  بخش تخفیف ها
+                </Typography>
+                <TextField
+                  fullWidth
+                  className="mt-2"
+                  type="number"
+                  label="درصد تخفیف"
+                  value={discount}
+                  onChange={(e) => setDiscount(parseInt(e.target.value))}
+                />
+                <Button
+                  sx={{ display: "block" }}
+                  className="mt-2"
+                  variant="contained"
+                  color="primary"
+                  disabled={discount == 0}
+                  onClick={() => setApplyDiscountModal(true)}
+                >
+                  تایید تخفیف
+                </Button>
+
+                <hr />
+                <Button
+                  sx={{ display: "block" }}
+                  className="mt-2"
+                  variant="contained"
+                  color="error"
+                  disabled={discount !== 0}
+                  onClick={() => setApplyDiscountModal(true)}
+                >
+                  برداشتن تخفیف
+                </Button>
+                <hr />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleRoundPrices}
+                  sx={{ mt: 2 }}
+                >
+                  گرد کردن قیمت‌ها
+                </Button>
+              </div>
+            )}
           </div>
         </Grid>
         <Grid
@@ -330,6 +517,120 @@ export default function GetItems({ setSearchValue }) {
           }}
         />
       </div>
+      <Modal open={priceChangeModal} onClose={() => setPriceChangeModal(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h6">تایید تغییر قیمت</Typography>
+          <Typography className="mt-2">
+            عملیات: {operation === "sum" ? "جمع" : "ضرب"}
+          </Typography>
+          <Typography>مقدار: {amount}</Typography>
+          <Typography>
+            دسته‌بندی:{" "}
+            {selectedCategory ? getCategoryTitle(selectedCategory) : "همه"}{" "}
+            <br />
+            زیر دسته‌بندی:{" "}
+            {selectedSubCategory
+              ? getSubCategoryTitle(selectedSubCategory)
+              : "همه"}
+            <br />
+            کلمه جستجو: {searchValue || "بدون کلمه"}
+          </Typography>
+          <div className="hstack mt-4" style={{ justifyContent: "flex-end" }}>
+            <Button
+              color="error"
+              onClick={() => setPriceChangeModal(false)}
+              variant="outlined"
+            >
+              لغو
+            </Button>
+            <Button
+              color="primary"
+              className="ms-2"
+              onClick={handleConfirmOperation}
+              variant="contained"
+            >
+              تایید
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+      <Modal
+        open={applyDiscountModal}
+        onClose={() => setApplyDiscountModal(false)}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          {discount !== 0 ? (
+            <Typography variant="h6">تایید اعمال تخفیف </Typography>
+          ) : (
+            <Typography variant="h6">تایید برداشتن تخفیف </Typography>
+          )}
+
+          {discount !== 0 && <Typography>درصد تخفیف: {discount}</Typography>}
+          <Typography>
+            دسته‌بندی:{" "}
+            {selectedCategory ? getCategoryTitle(selectedCategory) : "همه"}{" "}
+            <br />
+            زیر دسته‌بندی:{" "}
+            {selectedSubCategory
+              ? getSubCategoryTitle(selectedSubCategory)
+              : "همه"}
+            <br />
+            کلمه جستجو: {searchValue || "بدون کلمه"}
+          </Typography>
+          <div className="hstack mt-4" style={{ justifyContent: "flex-end" }}>
+            <Button
+              color="error"
+              onClick={() => setApplyDiscountModal(false)}
+              variant="outlined"
+            >
+              لغو
+            </Button>
+            {discount !== 0 ? (
+              <Button
+                color="primary"
+                className="ms-2 mx-2"
+                onClick={handleSetDiscount}
+                variant="contained"
+              >
+                اعمال تخفیف
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                className="ms-2 mx-2"
+                onClick={handleRemoveDiscount}
+                variant="contained"
+              >
+                برداشتن تخفیف
+              </Button>
+            )}
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 }
