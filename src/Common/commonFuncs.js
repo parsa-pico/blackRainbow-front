@@ -12,10 +12,16 @@ export const persianDays = [
   "پنجشنبه",
   "جمعه",
 ];
-export function getBackUrl() {
-  const url = process.env.REACT_APP_API_URL;
+// export function getBackUrl() {
+//   const url = process.env.REACT_APP_API_URL;
 
-  if (!url) throw new Error("back end url not defined");
+//   if (!url) throw new Error("back end url not defined");
+//   else return url;
+// }
+export function getUploadUrl() {
+  const url = process.env.REACT_APP_UPLOAD_API_URL;
+
+  if (!url) throw new Error("upload url not defined");
   else return url;
 }
 // export function handleLogout() {
@@ -133,9 +139,14 @@ export function requestFullscreen(elementId) {
 export function searchText(value) {
   window.location = `/items/?search=${value}`;
 }
+// export function getPicture(pictureName) {
+//   return `${getBackUrl()}/pictures/${pictureName}`;
+// }
+
 export function getPicture(pictureName) {
-  return `${getBackUrl()}/pictures/${pictureName}`;
+  return `${getUploadUrl()}/${pictureName}`;
 }
+
 export function getDate(dateValue) {
   let date = new Date(dateValue);
   date = date.toLocaleString("fa-IR").split(" ")[0].replace(/,/g, "").trim();

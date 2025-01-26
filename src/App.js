@@ -45,7 +45,7 @@ function App() {
   // hide menu
   useEffect(() => {
     if (isSitemapRoute) return;
-    document.body.style.backgroundImage = `url(${process.env.REACT_APP_API_URL}/pictures/bg.jpg)`;
+    document.body.style.backgroundImage = `url(${process.env.REACT_APP_UPLOAD_API_URL}/bg.jpg)`;
     // Your scroll event listener code here
     var lastScrolls = [];
     const max = 2;
